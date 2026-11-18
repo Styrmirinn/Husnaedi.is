@@ -18,8 +18,8 @@
   "mortgage": {
     "nominal": 9.5,
     "indexed": 4.5,
-    "updated": null,
-    "source": "áætlun",
-    "note": "Sjálfgefnir vextir í reiknivélinni. Handfært: setja inn dæmigerða vexti stóru bankanna og dagsetningu í updated (YYYY-MM-DD). Á meðan source er \"áætlun\" birtist gulur punktur við vextina á síðunni."
+    "updated": "2026-11-18",
+    "source": "Vaxtatafla Aurbjargar 18. nóv. 2026",
+    "note": "Dæmigerðir vextir. Óverðtryggt breytilegt hjá stóru bönkunum: Íslandsbanki 9,50%, Arion 9,69%, Landsbankinn 10,50% (Auður 9,40%). Verðtryggt: bankar 4,45 til 4,94%, lífeyrissjóðir 4,30 til 4,59%. Uppfæra þegar vextir breytast; skriftan minnir á eftir 45 daga eða þegar stýrivextir breytast."
   }
 }
