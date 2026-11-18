@@ -27,7 +27,7 @@ const SEDLABANKI = "https://www.sedlabanki.is/";
 const HAGSTOFA = "https://px.hagstofa.is/pxis/api/v1/is/Efnahagur/visitolur/1_vnv/1_vnv/VIS01000.px";
 const MORTGAGE_MAX_AGE_DAYS = 45;
 const AURBJORG = "https://aurbjorg.is/husnaedislan";
-const HMS_SEARCH = "https://hms.is/api/algolia/search/";
+const PRISMIC = "https://hms-web.cdn.prismic.io/api/v2"; // efnisveita hms.is (opin)
 const BIG3 = ["Landsbankinn", "Íslandsbanki", "Arion"];
 
 const warnings = [];
@@ -154,11 +154,22 @@ async function mortgageRates(){
 }
 
 /* ---------- HMS: vísitölur íbúðaverðs og leiguverðs ---------- */
+async function hmsHits(kind){
+  if(FIX) return JSON.parse(await readFile(path.join(FIX, kind === "leiguverðs" ? "hms-leiga.json" : "hms-ibud.json"), "utf8")).hits;
+  const api = await (await get(PRISMIC)).json();
+  const ref = (api.refs || []).find(r => r.isMasterRef)?.ref;
+  if(!ref) throw new Error("Prismic svaraði ekki rétt");
+  const qs = new URLSearchParams({ ref, q: `[[at(document.type,"news_item")][fulltext(document,"Vísitala ${kind}")]]`, orderings: "[document.first_publication_date desc]", pageSize: "40" });
+  const j = await (await get(PRISMIC + "/documents/search?" + qs)).json();
+  return (j.results || []).map(d => ({
+    title: (Array.isArray(d.data.title) ? d.data.title.map(b => b.text).join(" ") : String(d.data.title || "")),
+    date: Math.floor(Date.parse(d.data.datetime || d.data.date || d.first_publication_date) / 1000),
+    text: (JSON.stringify(d.data).match(/"text":"((?:[^"\\]|\\.)*)"/g) || []).map(x => JSON.parse(x.slice(7))).join(" ")
+  }));
+}
 async function hmsReleases(kind){ // kind: "íbúðaverðs" eða "leiguverðs"
-  const qs = new URLSearchParams({ pageSize: "30", page: "0", query: "Vísitala " + kind });
-  const j = await (await get(HMS_SEARCH + "?" + qs)).json();
   const out = {};
-  for(const h of (j.hits || [])){
+  for(const h of await hmsHits(kind)){
     const title = String(h.title || "");
     if(!new RegExp("^Vísitala " + kind, "i").test(title)) continue;
     const mt = title.toLowerCase().match(/(hækkaði|lækkaði) um ([\d,]+) prósent.*?í (janúar|febrúar|mars|apríl|maí|júní|júlí|ágúst|september|október|nóvember|desember)(?:\s+(\d{4}))?/)
