@@ -377,3 +377,14 @@ fetch("data/rates.json", {cache: "no-cache"}).then(r => r.ok ? r.json() : null).
   if(S.infl === init.infl) S.infl = SITE_DATA.inflation.value;
   buildFigures(); calc.refresh();
 }).catch(() => {});
+
+/* Íbúða- og leiguverð úr data/housing.json (uppfært sjálfkrafa daglega) */
+fetch("data/housing.json", {cache: "no-cache"}).then(r => r.ok ? r.json() : null).then(d => {
+  if(!d || !Array.isArray(d.kaup) || !Array.isArray(d.leiga)) return;
+  // Sýna aðeins mánuði þar sem báðar vísitölur liggja fyrir
+  const end = [d.kaup.at(-1)[0], d.leiga.at(-1)[0]].sort()[0];
+  const upTo = a => a.filter(x => x[0] <= end);
+  kaup.splice(0, kaup.length, ...upTo(d.kaup));
+  leiga.splice(0, leiga.length, ...upTo(d.leiga));
+  buildFigures(); priceChart.refresh();
+}).catch(() => {});

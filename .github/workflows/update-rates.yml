@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name "husnaedi-gogn[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/rates.json
+          git add data/
           git commit -m "Uppfæra vexti og verðbólgu ($(date -u +%Y-%m-%d))"
           git push
 

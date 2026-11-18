@@ -4,8 +4,10 @@
     - Stýrivextir (meginvextir) af forsíðu Seðlabanka Íslands
     - Verðbólga (12 mánaða breyting VNV) úr gagnagrunni Hagstofu Íslands,
       með forsíðu Seðlabankans til vara
-  Vextir íbúðalána í reiknivélinni eru handfærðir í data/rates.json (mortgage).
-  Skriftan minnir á þá þegar þeir eru orðnir gamlir eða stýrivextir hafa breyst.
+    - Vextir íbúðalána í reiknivélinni: miðgildi stóru bankanna þriggja úr vaxtatöflu Aurbjargar
+  Uppfærir líka data/housing.json:
+    - Vísitölur íbúðaverðs og leiguverðs (HMS). Nýr mánuður er framreiknaður með mánaðarbreytingu
+      sem HMS birtir og staðfestur með tólf mánaða breytingunni sem HMS birtir líka.
 
   Keyrt daglega af .github/workflows/update-rates.yml. Engin aukasöfn, Node 20+.
   Prófun án nets:  node scripts/update-rates.mjs --fixtures scripts/fixtures
@@ -16,6 +18,7 @@ import path from "node:path";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = path.join(ROOT, "data", "rates.json");
+const HOUSING = path.join(ROOT, "data", "housing.json");
 const args = process.argv.slice(2);
 const FIX = args.includes("--fixtures") ? path.resolve(args[args.indexOf("--fixtures") + 1]) : null;
 const DRY = args.includes("--dry");
@@ -23,6 +26,9 @@ const DRY = args.includes("--dry");
 const SEDLABANKI = "https://www.sedlabanki.is/";
 const HAGSTOFA = "https://px.hagstofa.is/pxis/api/v1/is/Efnahagur/visitolur/1_vnv/1_vnv/VIS01000.px";
 const MORTGAGE_MAX_AGE_DAYS = 45;
+const AURBJORG = "https://aurbjorg.is/husnaedislan";
+const HMS_SEARCH = "https://hms.is/api/algolia/search/";
+const BIG3 = ["Landsbankinn", "Íslandsbanki", "Arion"];
 
 const warnings = [];
 const notes = [];
@@ -44,7 +50,10 @@ async function get(url, opts = {}, tries = 3){
   throw last;
 }
 async function fixture(url, opts){
-  const name = url.includes("sedlabanki") ? "sedlabanki.html" : (opts.method === "POST" ? "hagstofa-data.json" : "hagstofa-meta.json");
+  const name = url.includes("sedlabanki") ? "sedlabanki.html"
+    : url.includes("aurbjorg") ? "aurbjorg.html"
+    : url.includes("hms.is") ? (decodeURIComponent(url).includes("leiguverðs") ? "hms-leiga.json" : "hms-ibud.json")
+    : (opts.method === "POST" ? "hagstofa-data.json" : "hagstofa-meta.json");
   const body = await readFile(path.join(FIX, name), "utf8").catch(() => null);
   if(body === null) throw new Error("fixture vantar: " + name);
   return new Response(body, { status: 200 });
@@ -121,6 +130,79 @@ async function inflationSedlabanki(){
   return { value: card.value, period: null, source: "Seðlabanki Íslands", sourceUrl: SEDLABANKI };
 }
 
+/* ---------- Aurbjörg: vextir íbúðalána ---------- */
+async function mortgageRates(){
+  const html = (await (await get(AURBJORG)).text()).replace(/<script[\s\S]*?<\/script>/g, "");
+  const rows = (html.match(/<tr[\s\S]*?<\/tr>/g) || []).map(tr => (tr.match(/<t[dh][\s\S]*?<\/t[dh]>/g) || []).map(stripTags));
+  const head = rows.find(r => /Lánveitandi/i.test(r[0] || ""));
+  if(!head) throw new Error("vaxtatafla Aurbjargar fannst ekki");
+  const col = re => head.findIndex(h => re.test(h));
+  const cNom = col(/^Óvt\.? breyt/i), cIdx = head.map((h, i) => /^Vt\./i.test(h) ? i : -1).filter(i => i > 0);
+  if(cNom < 0 || !cIdx.length) throw new Error("dálkar í vaxtatöflu Aurbjargar breyttust");
+  const pctOf = c => { const m = String(c || "").match(/(\d+,\d+)\s*%/); return m ? num(m[1]) : null; };
+  const banks = {};
+  for(const b of BIG3){
+    const r = rows.find(r => (r[0] || "").startsWith(b));
+    if(!r) throw new Error(b + " fannst ekki í vaxtatöflu Aurbjargar");
+    const idx = cIdx.map(i => pctOf(r[i])).filter(v => v !== null);
+    banks[b] = { nominal: pctOf(r[cNom]), indexed: idx.length ? Math.min(...idx) : null };
+  }
+  const median = a => { a = a.filter(v => v !== null && v > 0 && v < 30).sort((x, y) => x - y); if(!a.length) return null; const m = a.length >> 1; return a.length % 2 ? a[m] : Math.round((a[m - 1] + a[m]) / 2 * 100) / 100; };
+  const nominal = median(Object.values(banks).map(b => b.nominal)), indexed = median(Object.values(banks).map(b => b.indexed));
+  if(!nominal || !indexed) throw new Error("vantar vexti stóru bankanna");
+  return { nominal, indexed, banks };
+}
+
+/* ---------- HMS: vísitölur íbúðaverðs og leiguverðs ---------- */
+async function hmsReleases(kind){ // kind: "íbúðaverðs" eða "leiguverðs"
+  const qs = new URLSearchParams({ pageSize: "30", page: "0", query: "Vísitala " + kind });
+  const j = await (await get(HMS_SEARCH + "?" + qs)).json();
+  const out = {};
+  for(const h of (j.hits || [])){
+    const title = String(h.title || "");
+    if(!new RegExp("^Vísitala " + kind, "i").test(title)) continue;
+    const mt = title.toLowerCase().match(/(hækkaði|lækkaði) um ([\d,]+) prósent.*?í (janúar|febrúar|mars|apríl|maí|júní|júlí|ágúst|september|október|nóvember|desember)(?:\s+(\d{4}))?/)
+            || title.toLowerCase().match(/(stóð í stað)().*?í (janúar|febrúar|mars|apríl|maí|júní|júlí|ágúst|september|október|nóvember|desember)(?:\s+(\d{4}))?/);
+    if(!mt) continue;
+    const mi = MONTHS.indexOf(mt[3]) + 1;
+    let year = mt[4] ? +mt[4] : null;
+    if(!year){ // ártal vantar í titil: nota birtingardag
+      const d = new Date((+h.date || 0) * (String(h.date).length > 11 ? 1 : 1000));
+      if(isNaN(d)) continue;
+      year = d.getUTCFullYear() - (mi > d.getUTCMonth() + 1 ? 1 : 0);
+    }
+    const sign = mt[1] === "lækkaði" ? -1 : 1;
+    const pct = mt[1] === "stóð í stað" ? 0 : sign * num(mt[2]);
+    const yy = String(h.text || "").match(/tólf mánuðum hefur vísitala[n]?(?: [^\s]+)? (hækkað|lækkað) um ([\d,]+)/i);
+    const yoy = yy ? (yy[1].toLowerCase() === "lækkað" ? -1 : 1) * num(yy[2]) : null;
+    const key = `${year}-${String(mi).padStart(2, "0")}`;
+    if(!out[key]) out[key] = { pct, yoy, title };
+  }
+  return out;
+}
+const nextMonth = m => { const [y, mo] = m.split("-").map(Number); return mo === 12 ? `${y + 1}-01` : `${y}-${String(mo + 1).padStart(2, "0")}`; };
+function extend(series, releases, label){
+  let added = 0;
+  for(;;){
+    const last = series.at(-1), key = nextMonth(last[0]), r = releases[key];
+    if(!r) break;
+    const val = Math.round(last[1] * (1 + r.pct / 100) * 100) / 100;
+    if(r.yoy !== null){
+      const ago = series.find(x => x[0] === `${+key.slice(0, 4) - 1}${key.slice(4)}`);
+      if(ago){
+        const calcYoy = (val / ago[1] - 1) * 100;
+        if(Math.abs(calcYoy - r.yoy) > 0.2){
+          warnings.push(`${label} fyrir ${key} passar ekki: framreiknað ${calcYoy.toFixed(2)}% á 12 mánuðum en HMS segir ${r.yoy}%. Mánuðinum var ekki bætt við.`);
+          break;
+        }
+      }
+    }
+    series.push([key, val]); added++;
+    notes.push(`${label}: bætt við ${key} (${r.pct > 0 ? "+" : ""}${String(r.pct).replace(".", ",")}% milli mánaða${r.yoy !== null ? ", " + String(r.yoy).replace(".", ",") + "% á 12 mánuðum" : ""})`);
+  }
+  return added;
+}
+
 /* ---------- keyrsla ---------- */
 const old = JSON.parse(await readFile(DATA, "utf8"));
 const next = structuredClone(old);
@@ -153,15 +235,51 @@ try{
   }
 }catch(e){ warnings.push(`Verðbólga var ekki uppfærð: ${e.message}. Síðasta gildi (${old.inflation?.value}%) er notað áfram.`); }
 
-// Vextir íbúðalána: handfært, minna á þegar þarf
-const m = next.mortgage || {};
-const age = m.updated ? daysBetween(m.updated, today) : 9999;
-if(age > MORTGAGE_MAX_AGE_DAYS)
-  warnings.push(`Vextir íbúðalána í reiknivélinni voru síðast uppfærðir ${m.updated || "aldrei"} (${age} dagar). Athugaðu vaxtatöflur bankanna og uppfærðu "mortgage" í data/rates.json.`);
-if(next.policyRate?.effective && m.updated && next.policyRate.effective > m.updated)
-  warnings.push(`Stýrivextir breyttust ${next.policyRate.effective}, eftir að vextir íbúðalána voru síðast uppfærðir (${m.updated}). Bankarnir breyta oft vöxtum í kjölfarið, svo það er gott að athuga "mortgage" í data/rates.json.`);
+// Vextir íbúðalána: miðgildi stóru bankanna þriggja (Aurbjörg)
+try{
+  const r = await mortgageRates();
+  const om = old.mortgage || {};
+  if(r.nominal !== om.nominal || r.indexed !== om.indexed || om.source === "áætlun"){
+    next.mortgage = {
+      nominal: r.nominal, indexed: r.indexed, updated: today,
+      source: "Vaxtatafla Aurbjargar, miðgildi Landsbankans, Íslandsbanka og Arion banka",
+      sourceUrl: AURBJORG,
+      banks: r.banks
+    };
+    changed = true;
+    notes.push(`Vextir íbúðalána: óverðtryggt ${om.nominal} → ${r.nominal}%, verðtryggt ${om.indexed} → ${r.indexed}%`);
+  }
+}catch(e){
+  const m = next.mortgage || {};
+  const age = m.updated ? daysBetween(m.updated, today) : 9999;
+  const msg = `Vextir íbúðalána voru ekki uppfærðir: ${e.message}.`;
+  if(age > MORTGAGE_MAX_AGE_DAYS) warnings.push(`${msg} Þeir eru orðnir ${age} daga gamlir. Athugaðu vaxtatöflur bankanna og uppfærðu "mortgage" í data/rates.json.`);
+  else warnings.push(`${msg} Síðustu gildi (${m.nominal}% og ${m.indexed}%) eru notuð áfram.`);
+}
+
+// Íbúða- og leiguverð (HMS)
+let housingChanged = false, housing = null;
+try{
+  housing = JSON.parse(await readFile(HOUSING, "utf8"));
+  for(const [kind, key, label] of [["íbúðaverðs", "kaup", "Íbúðaverð"], ["leiguverðs", "leiga", "Leiguverð"]]){
+    try{
+      const rel = await hmsReleases(kind);
+      if(!Object.keys(rel).length) throw new Error("engar tilkynningar fundust");
+      if(extend(housing[key], rel, label)) housingChanged = true;
+      const behind = daysBetween(housing[key].at(-1)[0] + "-15", today);
+      if(behind > 75) warnings.push(`${label} hefur ekki verið uppfært síðan ${housing[key].at(-1)[0]}. Athugaðu tilkynningar HMS.`);
+    }catch(e){ warnings.push(`${label} var ekki uppfært: ${e.message}.`); }
+  }
+}catch(e){ warnings.push(`data/housing.json var ekki lesin: ${e.message}`); }
 
 if(changed){ next.updated = today; if(!DRY) await writeFile(DATA, JSON.stringify(next, null, 2) + "\n"); }
+if(housingChanged){
+  housing.updated = today;
+  const fmt = a => "[\n" + a.map(x => "    " + JSON.stringify(x)).join(",\n") + "\n  ]";
+  const txt = `{\n  "updated": ${JSON.stringify(housing.updated)},\n  "source": ${JSON.stringify(housing.source)},\n  "note": ${JSON.stringify(housing.note)},\n  "kaup": ${fmt(housing.kaup)},\n  "leiga": ${fmt(housing.leiga)}\n}\n`;
+  if(!DRY) await writeFile(HOUSING, txt);
+  changed = true;
+}
 
 const summary = [
   changed ? "### Gögn uppfærð" : "### Engar breytingar",
