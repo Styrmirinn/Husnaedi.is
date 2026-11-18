@@ -262,6 +262,7 @@ function buildFooter(){
       <a class="yt" href="https://www.youtube.com/@husnaediIS" target="_blank" rel="noopener">${ICONS.yt} YouTube</a></div>
     ${col(NAV[0])}${col(NAV[1])}${col(NAV[2])}
     <div><h4>${t("fAbout")}</h4><ul><li><a href="${url(stats.path)}">${stats.label[lang]}</a></li><li><a href="${url(about.path)}">${about.label[lang]}</a></li><li><a href="${PAGE==='home'?'':HOME}#reiknivel">${t("calcTitle")}</a></li></ul></div>`;
+  if(typeof footLogo === "function") setTimeout(footLogo, 0);
 }
 
 /* ---------- Language ---------- */
@@ -318,10 +319,9 @@ function observeReveal(){
   $$(".rv:not(.in)").forEach(e => io.observe(e));
 }
 (function logoIntro(){
-  // Plays once per visit, and only once the page is actually on screen
+  // Plays on every page load, once the page is actually on screen
   const logo = $(".brand .logo-svg");
-  let seen = false; try{ seen = sessionStorage.getItem("hlogo") === "1"; }catch(e){}
-  if(seen || matchMedia("(prefers-reduced-motion: reduce)").matches){ logo.classList.remove("logo-pre"); return; }
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ logo.classList.remove("logo-pre"); return; }
   const go = () => {
     if(document.visibilityState !== "visible") return;
     document.removeEventListener("visibilitychange", go);
@@ -329,7 +329,6 @@ function observeReveal(){
       logo.classList.add("logo-anim");
       logo.querySelector(".lg-t").addEventListener("animationend", () => {
         logo.classList.remove("logo-pre","logo-anim");
-        try{ sessionStorage.setItem("hlogo","1"); }catch(e){}
       }, {once:true});
     }));
   };
@@ -337,3 +336,17 @@ function observeReveal(){
   document.readyState === "complete" ? start() : addEventListener("load", start, {once:true});
 })();
 $("#year").textContent = new Date().getFullYear();
+/* Footer logo: same animation when the footer scrolls into view */
+let footLogoDone = false;
+function footLogo(){
+  const fl = $(".foot-brand .logo-svg");
+  if(!fl || footLogoDone || !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  fl.classList.add("logo-wait");
+  const ob = new IntersectionObserver(es => {
+    if(!es[0].isIntersecting) return;
+    ob.disconnect();
+    fl.classList.add("logo-anim");
+    fl.querySelector(".lg-t").addEventListener("animationend", () => { fl.classList.remove("logo-wait","logo-anim"); footLogoDone = true; }, {once:true});
+  }, {threshold:.6});
+  ob.observe(fl);
+}

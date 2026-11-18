@@ -631,3 +631,38 @@ a.doc:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translat
 .head-in>.lang button[aria-pressed="true"]{background:var(--surface-2);box-shadow:0 0 0 2px var(--blue)}
 .head-in>.lang .flag{display:block}
 .head-in>.lang .lcode{display:none}
+
+/* ===== Footer logo animation ===== */
+.logo-wait .lg-h{transform:translateY(105%)}
+.logo-wait .lg-t{transform:translateX(-102%)}
+
+/* ===== Livelier button hovers ===== */
+.btn{position:relative;overflow:hidden;isolation:isolate;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s,background .2s,color .2s,border-color .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.97);transition-duration:.08s}
+.btn svg{transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.btn:hover svg{transform:translateX(4px)}
+.btn-primary:hover{box-shadow:0 12px 28px rgba(0,97,255,.38)}
+.btn-primary::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.32) 50%,transparent 75%);transform:translateX(-130%);transition:transform .7s ease;pointer-events:none}
+.btn-primary:hover::after{transform:translateX(130%)}
+.btn-ghost:hover,.btn-outline:hover{box-shadow:0 10px 24px rgba(16,40,90,.14)}
+.btn-outline::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.btn-outline:hover{background:#fff}
+.btn-outline:hover::before{transform:scaleX(1)}
+.chip{transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,background .2s,color .2s,border-color .2s}
+.chip:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(16,40,90,.1)}
+.chip:active,.ref-open:active,.ref-cite:active,.tabs button:active,.lang button:active,.menu-btn:active{transform:scale(.95)}
+.ref-open,.ref-cite,.v-yt,.contact-row,.tabs button,.lang button,.menu-btn{transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,background .2s,color .2s,border-color .2s}
+.ref-open:hover,.ref-cite:hover,.v-yt:hover{transform:translateY(-1px)}
+.contact-row:hover{transform:translateY(-2px)}
+.lang button:hover{transform:scale(1.12)}
+.v-play{transition:transform .3s cubic-bezier(.3,1.6,.5,1),box-shadow .3s}
+.v-btn:hover .v-play{transform:scale(1.12);box-shadow:0 14px 34px rgba(0,0,0,.35)}
+.v-play::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(255,255,255,.75);opacity:0;transform:scale(.85)}
+.v-btn:hover .v-play::after{animation:playRing 1.2s ease-out infinite}
+@keyframes playRing{0%{opacity:.9;transform:scale(.9)}100%{opacity:0;transform:scale(1.35)}}
+@media (prefers-reduced-motion:reduce){.btn,.chip,.v-play{transition:none}.btn:hover,.chip:hover{transform:none}.v-btn:hover .v-play::after{animation:none}}
+
+/* ===== Video loading: black, not blue ===== */
+.v-frame:has(iframe){background:#000}
+.v-frame iframe{background:#000}
