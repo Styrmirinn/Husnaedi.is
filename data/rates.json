@@ -1,12 +1,12 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "policyRate": {
-    "value": 8.0,
-    "effective": "2026-10-07",
-    "nextDecision": "2026-11-18",
+    "value": 8,
+    "effective": "2026-11-18",
+    "nextDecision": "2027-02-03",
     "source": "Seðlabanki Íslands",
     "sourceUrl": "https://www.sedlabanki.is/",
-    "updated": "2026-11-17"
+    "updated": "2026-11-18"
   },
   "inflation": {
     "value": 5.9,
