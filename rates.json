@@ -1,0 +1,25 @@
+{
+  "updated": "2026-11-17",
+  "policyRate": {
+    "value": 8.0,
+    "effective": "2026-10-07",
+    "nextDecision": "2026-11-18",
+    "source": "Seðlabanki Íslands",
+    "sourceUrl": "https://www.sedlabanki.is/",
+    "updated": "2026-11-17"
+  },
+  "inflation": {
+    "value": 5.9,
+    "period": "2026-10",
+    "source": "Seðlabanki Íslands",
+    "sourceUrl": "https://www.sedlabanki.is/",
+    "updated": "2026-11-17"
+  },
+  "mortgage": {
+    "nominal": 9.5,
+    "indexed": 4.5,
+    "updated": null,
+    "source": "áætlun",
+    "note": "Sjálfgefnir vextir í reiknivélinni. Handfært: setja inn dæmigerða vexti stóru bankanna og dagsetningu í updated (YYYY-MM-DD). Á meðan source er \"áætlun\" birtist gulur punktur við vextina á síðunni."
+  }
+}

@@ -1,0 +1,4 @@
+{"title":"Vísitala neysluverðs og breytingar","variables":[
+ {"code":"Mánuður","text":"Mánuður","values":["2026M09","2026M10"],"valueTexts":["2026M09","2026M10"],"time":true},
+ {"code":"Vísitala","text":"Vísitala","values":["CPI","CPILH"],"valueTexts":["Vísitala neysluverðs","Vísitala neysluverðs án húsnæðis"]},
+ {"code":"Liður","text":"Liður","values":["index","change_M","change_A","change_A1","change_A3","change_A6"],"valueTexts":["Vísitala","Mánaðarbreyting, %","Ársbreyting, %","Ársbreyting síðasta mánuð, %","Ársbreyting síðustu 3 mánuði, %","Ársbreyting síðustu 6 mánuði, %"]}]}

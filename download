@@ -1,0 +1,9 @@
+parts
+scripts
+__pycache__
+*.py
+*.part
+*.md
+dead_log.json
+gen_repl.json
+src*.html

@@ -1,0 +1,177 @@
+#!/usr/bin/env node
+/*
+  Uppfærir data/rates.json með nýjustu tölum:
+    - Stýrivextir (meginvextir) af forsíðu Seðlabanka Íslands
+    - Verðbólga (12 mánaða breyting VNV) úr gagnagrunni Hagstofu Íslands,
+      með forsíðu Seðlabankans til vara
+  Vextir íbúðalána í reiknivélinni eru handfærðir í data/rates.json (mortgage).
+  Skriftan minnir á þá þegar þeir eru orðnir gamlir eða stýrivextir hafa breyst.
+
+  Keyrt daglega af .github/workflows/update-rates.yml. Engin aukasöfn, Node 20+.
+  Prófun án nets:  node scripts/update-rates.mjs --fixtures scripts/fixtures
+*/
+import { readFile, writeFile, appendFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DATA = path.join(ROOT, "data", "rates.json");
+const args = process.argv.slice(2);
+const FIX = args.includes("--fixtures") ? path.resolve(args[args.indexOf("--fixtures") + 1]) : null;
+const DRY = args.includes("--dry");
+
+const SEDLABANKI = "https://www.sedlabanki.is/";
+const HAGSTOFA = "https://px.hagstofa.is/pxis/api/v1/is/Efnahagur/visitolur/1_vnv/1_vnv/VIS01000.px";
+const MORTGAGE_MAX_AGE_DAYS = 45;
+
+const warnings = [];
+const notes = [];
+const today = new Date().toISOString().slice(0, 10);
+
+/* ---------- hjálparföll ---------- */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function get(url, opts = {}, tries = 3){
+  if(FIX) return fixture(url, opts);
+  let last;
+  for(let i = 0; i < tries; i++){
+    try{
+      const r = await fetch(url, { ...opts, headers: { "user-agent": "husnaedi.is rates updater (github action)", ...(opts.headers||{}) }, signal: AbortSignal.timeout(20000) });
+      if(r.status === 429 || r.status >= 500) throw new Error("HTTP " + r.status);
+      if(!r.ok) throw new Error("HTTP " + r.status);
+      return r;
+    }catch(e){ last = e; await sleep(15000 * (i + 1)); }
+  }
+  throw last;
+}
+async function fixture(url, opts){
+  const name = url.includes("sedlabanki") ? "sedlabanki.html" : (opts.method === "POST" ? "hagstofa-data.json" : "hagstofa-meta.json");
+  const body = await readFile(path.join(FIX, name), "utf8").catch(() => null);
+  if(body === null) throw new Error("fixture vantar: " + name);
+  return new Response(body, { status: 200 });
+}
+const num = s => parseFloat(String(s).replace(/\s/g, "").replace(",", "."));
+const MONTHS = ["janúar","febrúar","mars","apríl","maí","júní","júlí","ágúst","september","október","nóvember","desember"];
+function isDate(s){ // "7. október 2026" -> "2026-10-07"
+  const m = String(s).toLowerCase().match(/(\d{1,2})\.\s*([a-záéíóúýþæöð]+)\s+(\d{4})/);
+  if(!m) return null;
+  const mi = MONTHS.indexOf(m[2]);
+  return mi < 0 ? null : `${m[3]}-${String(mi + 1).padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+}
+const stripTags = h => h.replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+const daysBetween = (a, b) => Math.round((new Date(b) - new Date(a)) / 864e5);
+
+/* ---------- Seðlabanki: forsíðuspjöld (Meginvextir, Verðbólga) ---------- */
+let sbHtml = null;
+async function sedlabanki(){
+  if(sbHtml === null) sbHtml = await (await get(SEDLABANKI)).text();
+  return sbHtml;
+}
+function sbCard(html, label){
+  // <h3 ...>Meginvextir</h3><h4 class="data-big-numbers" ...>8,00%</h4><p class="data-captions" ...>Tók gildi: ...</p>
+  const re = new RegExp(">\\s*" + label + "\\s*</h3>\\s*<h4[^>]*>\\s*([\\d.,]+)\\s*%\\s*</h4>\\s*(?:<p[^>]*>([\\s\\S]*?)</p>)?", "i");
+  const m = html.match(re);
+  if(!m) return null;
+  return { value: num(m[1]), caption: m[2] ? stripTags(m[2].replace(/<br\s*\/?>/gi, " | ")) : "" };
+}
+async function policyRate(){
+  const card = sbCard(await sedlabanki(), "Meginvextir");
+  if(!card || !(card.value > 0 && card.value < 30)) throw new Error("fann ekki meginvexti á forsíðu Seðlabankans");
+  const eff = card.caption.match(/Tók gildi:\s*([^|]+)/i);
+  const nxt = card.caption.match(/Næsta vaxtaákvörðun:\s*([^|]+)/i);
+  return {
+    value: card.value,
+    effective: eff ? isDate(eff[1]) : null,
+    nextDecision: nxt ? isDate(nxt[1]) : null,
+    source: "Seðlabanki Íslands",
+    sourceUrl: SEDLABANKI
+  };
+}
+
+/* ---------- Hagstofa: 12 mánaða breyting vísitölu neysluverðs ---------- */
+async function inflationHagstofa(){
+  const meta = await (await get(HAGSTOFA)).json();
+  const vars = meta.variables || [];
+  const timeVar = vars.find(v => v.time) || vars.find(v => /mánuð/i.test(v.text));
+  const idxVar = vars.find(v => v !== timeVar && v.valueTexts.some(t => /^vísitala neysluverðs$/i.test(t.trim())));
+  const itemVar = vars.find(v => v !== timeVar && v !== idxVar && v.valueTexts.some(t => /^ársbreyting, ?%$/i.test(t.trim())));
+  if(!timeVar || !idxVar || !itemVar) throw new Error("breytur í töflu VIS01000 fundust ekki");
+  const pick = (v, re) => v.values[v.valueTexts.findIndex(t => re.test(t.trim()))];
+  const query = {
+    query: [
+      { code: timeVar.code, selection: { filter: "top", values: ["1"] } },
+      { code: idxVar.code, selection: { filter: "item", values: [pick(idxVar, /^vísitala neysluverðs$/i)] } },
+      { code: itemVar.code, selection: { filter: "item", values: [pick(itemVar, /^ársbreyting, ?%$/i)] } }
+    ],
+    response: { format: "json" }
+  };
+  await sleep(FIX ? 0 : 1500);
+  const res = await (await get(HAGSTOFA, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(query) })).json();
+  const cols = res.columns || [];
+  const ti = cols.findIndex(c => c.code === timeVar.code);
+  const row = (res.data || [])[0];
+  if(!row) throw new Error("engin gögn frá Hagstofu");
+  const value = num(row.values[0]);
+  const period = row.key[ti >= 0 ? ti : 0]; // t.d. "2026M10"
+  if(!(value > -10 && value < 50) || !/^\d{4}M\d{2}$/.test(period)) throw new Error("óvænt svar frá Hagstofu");
+  return { value: Math.round(value * 10) / 10, period: period.replace("M", "-"), source: "Hagstofa Íslands", sourceUrl: "https://px.hagstofa.is/pxis/pxweb/is/Efnahagur/Efnahagur__visitolur__1_vnv__1_vnv/VIS01000.px" };
+}
+async function inflationSedlabanki(){
+  const card = sbCard(await sedlabanki(), "Verðbólga");
+  if(!card || !(card.value > -10 && card.value < 50)) throw new Error("fann ekki verðbólgu á forsíðu Seðlabankans");
+  return { value: card.value, period: null, source: "Seðlabanki Íslands", sourceUrl: SEDLABANKI };
+}
+
+/* ---------- keyrsla ---------- */
+const old = JSON.parse(await readFile(DATA, "utf8"));
+const next = structuredClone(old);
+let changed = false;
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+try{
+  const p = await policyRate();
+  const prev = { value: old.policyRate?.value, effective: old.policyRate?.effective, nextDecision: old.policyRate?.nextDecision };
+  if(!same(prev, { value: p.value, effective: p.effective, nextDecision: p.nextDecision })){
+    next.policyRate = { ...p, updated: today };
+    changed = true;
+    notes.push(`Stýrivextir: ${old.policyRate?.value} → ${p.value}% (tók gildi ${p.effective})`);
+  }
+}catch(e){ warnings.push(`Stýrivextir voru ekki uppfærðir: ${e.message}. Síðasta gildi (${old.policyRate?.value}%) er notað áfram.`); }
+
+try{
+  let inf;
+  try{ inf = await inflationHagstofa(); }
+  catch(e){
+    inf = await inflationSedlabanki();
+    // Án mánaðar frá Hagstofu: halda síðasta mánuði ef talan er óbreytt
+    inf.period = inf.value === old.inflation?.value ? old.inflation?.period : today.slice(0, 7);
+    warnings.push(`Hagstofa svaraði ekki (${e.message}). Verðbólga var sótt af forsíðu Seðlabankans í staðinn.`);
+  }
+  if(inf.value !== old.inflation?.value || inf.period !== old.inflation?.period){
+    next.inflation = { ...inf, updated: today };
+    changed = true;
+    notes.push(`Verðbólga: ${old.inflation?.value} → ${inf.value}% (${inf.period})`);
+  }
+}catch(e){ warnings.push(`Verðbólga var ekki uppfærð: ${e.message}. Síðasta gildi (${old.inflation?.value}%) er notað áfram.`); }
+
+// Vextir íbúðalána: handfært, minna á þegar þarf
+const m = next.mortgage || {};
+const age = m.updated ? daysBetween(m.updated, today) : 9999;
+if(age > MORTGAGE_MAX_AGE_DAYS)
+  warnings.push(`Vextir íbúðalána í reiknivélinni voru síðast uppfærðir ${m.updated || "aldrei"} (${age} dagar). Athugaðu vaxtatöflur bankanna og uppfærðu "mortgage" í data/rates.json.`);
+if(next.policyRate?.effective && m.updated && next.policyRate.effective > m.updated)
+  warnings.push(`Stýrivextir breyttust ${next.policyRate.effective}, eftir að vextir íbúðalána voru síðast uppfærðir (${m.updated}). Bankarnir breyta oft vöxtum í kjölfarið, svo það er gott að athuga "mortgage" í data/rates.json.`);
+
+if(changed){ next.updated = today; if(!DRY) await writeFile(DATA, JSON.stringify(next, null, 2) + "\n"); }
+
+const summary = [
+  changed ? "### Gögn uppfærð" : "### Engar breytingar",
+  ...notes.map(n => "- " + n),
+  ...(warnings.length ? ["", "### Athugasemdir", ...warnings.map(w => "- " + w)] : [])
+].join("\n");
+console.log(summary);
+if(process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY, summary + "\n");
+if(process.env.GITHUB_OUTPUT){
+  await appendFile(process.env.GITHUB_OUTPUT, `changed=${changed}\n`);
+  await appendFile(process.env.GITHUB_OUTPUT, `warnings<<EOF\n${warnings.map(w => "- " + w).join("\n")}\nEOF\n`);
+}
+if(DRY && changed) console.log(JSON.stringify(next, null, 2));

@@ -1,0 +1,53 @@
+name: Uppfæra vexti og verðbólgu
+
+on:
+  schedule:
+    # Daglega kl. 09:40 að íslenskum tíma (UTC). Seðlabankinn birtir vaxtaákvarðanir kl. 08:30
+    # og Hagstofan vísitölu neysluverðs kl. 09:00, svo nýjar tölur nást samdægurs.
+    - cron: "40 9 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: update-rates
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sækja nýjustu tölur
+        id: rates
+        run: node scripts/update-rates.mjs
+
+      - name: Vista breytingar
+        if: steps.rates.outputs.changed == 'true'
+        run: |
+          git config user.name "husnaedi-gogn[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/rates.json
+          git commit -m "Uppfæra vexti og verðbólgu ($(date -u +%Y-%m-%d))"
+          git push
+
+      - name: Láta vita ef eitthvað þarf að athuga
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WARNINGS: ${{ steps.rates.outputs.warnings }}
+        run: |
+          TITLE="Tölur á husnaedi.is þarf að athuga"
+          OPEN=$(gh issue list --state open --search "\"$TITLE\" in:title" --json number --jq '.[0].number')
+          if [ -n "$(echo "$WARNINGS" | tr -d '[:space:]')" ]; then
+            BODY=$(printf "Sjálfvirka uppfærslan %s fann eftirfarandi:\n\n%s\n\nÞetta mál lokast sjálfkrafa þegar allt er í lagi." "$(date -u +%Y-%m-%d)" "$WARNINGS")
+            if [ -n "$OPEN" ]; then gh issue edit "$OPEN" --body "$BODY"; else gh issue create --title "$TITLE" --body "$BODY"; fi
+          elif [ -n "$OPEN" ]; then
+            gh issue close "$OPEN" --comment "Allt í lagi í dag, $(date -u +%Y-%m-%d)."
+          fi

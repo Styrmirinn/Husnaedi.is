@@ -1,0 +1,3 @@
+<script>
+...
+setLang(store.get("hlang") || "is");

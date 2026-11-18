@@ -1,0 +1,104 @@
+<main id="main">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="wrap hero-in">
+      <div class="hero-text">
+        <h1 data-t="heroTitle">Skildu húsnæðismál betur</h1>
+        <p data-t="heroText"></p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" data-href="/um-okkur"><span data-t="heroCta"></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+          <a class="btn btn-ghost" href="#reiknivel"><span data-t="heroCalc"></span></a>
+        </div>
+      </div>
+
+      <figure class="chart-card" style="margin:0">
+        <h2 data-t="chartTitle"></h2>
+        <div class="legend" id="chartLegend"></div>
+        <div class="chart-wrap" id="chartWrap">
+          <svg id="chart" role="img"></svg>
+          <div class="tip" id="chartTip"></div>
+        </div>
+        <figcaption class="chart-foot"><span data-t="chartIndex"></span><span data-t="chartSrc"></span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- KEY FIGURES -->
+  <div class="figures">
+    <div class="wrap">
+      <div class="fig-grid" id="figGrid"></div>
+    </div>
+  </div>
+
+  <!-- SECTIONS -->
+  <section id="efni">
+    <div class="wrap understand">
+      <div class="rv">
+        <h2 data-t="introTitle"></h2>
+        <div class="intro-l"><p data-t="intro1"></p><p data-t="intro2"></p></div>
+      </div>
+      <div class="house rv">
+        <svg class="house-roof" viewBox="0 0 640 152" aria-hidden="true">
+          <rect x="452" y="22" width="44" height="80" fill="#0048ee"/>
+          <rect x="444" y="14" width="60" height="14" rx="3" fill="#0048ee"/>
+          <path d="M320 4 640 138 610 152H30L0 138z" fill="#0048ee" stroke="#0048ee" stroke-width="6" stroke-linejoin="round"/>
+          <path d="M30 144 320 26 610 144" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="butt" stroke-linejoin="miter"/>
+        </svg>
+        <div class="house-body" id="cards"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOPICS -->
+  <section class="topics-sec">
+    <div class="wrap">
+      <div class="sec-head rv"><h2 data-t="topicsTitle"></h2><p data-t="topicsText"></p></div>
+      <ol class="path" id="topics"></ol>
+    </div>
+  </section>
+
+  <!-- VIDEOS -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head rv"><h2 data-t="videosTitle"></h2></div>
+      <div class="vids rv">
+        <div><div class="v-frame" id="vMain"></div><h3 class="v-main-title" id="vMainTitle"></h3><a class="v-yt" id="vMainYt" target="_blank" rel="noopener" data-t="openYt"></a></div>
+        <ol class="v-list" id="vList"></ol>
+      </div>
+      <div class="sec-cta"><a class="btn btn-outline" href="https://www.youtube.com/@husnaediIS" target="_blank" rel="noopener"><span data-t="moreVideos"></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section class="calc-sec" id="reiknivel" style="padding-top:0">
+    <div class="calc-band" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="calc-box rv">
+        <div class="calc-intro">
+          <div>
+            <h2 data-t="calcTitle"></h2>
+            <p data-t="calcText"></p>
+          </div>
+          <a class="btn btn-outline" data-href="/lánareiknar"><span data-t="calcMore"></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+        <div class="calc-grid">
+          <div id="calcInputs"></div>
+          <div>
+            <div class="results" id="calcResults"></div>
+            <div class="calc-tools">
+              <div class="tabs" role="group" id="calcTabs">
+                <button type="button" aria-pressed="true" data-v="pay" data-t="tabPay"></button>
+                <button type="button" aria-pressed="false" data-v="bal" data-t="tabBal"></button>
+              </div>
+              <label class="switch"><input type="checkbox" id="realToggle" checked><i></i><span data-t="realLabel"></span></label>
+            </div>
+            <div class="chart-wrap" id="calcWrap"><svg id="calcChart" role="img"></svg><div class="tip" id="calcTip"></div></div>
+            <p class="calc-note" data-t="calcNote"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
