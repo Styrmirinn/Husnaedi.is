@@ -285,7 +285,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .sp-label::before,.sp-label::after{content:"";width:44px;height:1px;background:#c9d4e4}
 .sponsor a{display:block;border-radius:8px;transition:transform .2s,opacity .2s;opacity:.9}
 .sponsor a:hover{opacity:1;transform:translateY(-2px)}
-.sponsor img{height:64px;width:auto}
+.sponsor img{height:72px;width:auto;border-radius:10px;display:block}
 .sponsor .hi-fallback{display:none;font-weight:700;color:#10099f;font-size:18px}
 footer{background:var(--surface);border-top:1px solid var(--line);padding:56px 0 28px;font-size:14.5px}
 .foot-grid{display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:28px}
@@ -356,7 +356,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding:56px 0
   .results{grid-template-columns:1fr}
   .num.w-amt{width:160px}
   .foot-grid{grid-template-columns:1fr 1fr}
-  .sponsor img{height:54px}
+  .sponsor img{height:60px}
   .sponsor{padding-bottom:36px;margin-bottom:36px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -666,3 +666,9 @@ a.doc:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translat
 /* ===== Video loading: black, not blue ===== */
 .v-frame:has(iframe){background:#000}
 .v-frame iframe{background:#000}
+
+/* Netfang í fæti */
+.foot-bottom{align-items:center}
+.foot-mail{display:inline-flex;align-items:center;gap:8px;color:var(--blue-ink);font-weight:600;font-size:14px;text-decoration:none;transition:color .2s}
+.foot-mail svg{width:17px;height:17px}
+.foot-mail:hover{color:var(--blue);text-decoration:underline}
