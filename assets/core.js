@@ -12,7 +12,7 @@ const T = {
  is:{
   skip:"Fara beint í efnið", menu:"Valmynd", navAll:"Allt um",
   heroTitle:"Skildu húsnæðismál betur",
-  heroText:"Hvort sem þú ert að kaupa, leigja eða einfaldlega forvitin um markaðinn, hér eru áreiðanlegar og óháðar upplýsingar um íslensk húsnæðismál, settar fram á mannamáli.",
+  heroText:"Hvort sem þú ert að kaupa, leigja eða vilt einfaldlega vita meira um markaðinn, hér eru áreiðanlegar og óháðar upplýsingar um íslensk húsnæðismál, settar fram á mannamáli.",
   heroCta:"Um Húsnæði.is", heroCalc:"Reikna lán",
   chartTitle:"Þróun íbúða- og leiguverðs á höfuðborgarsvæðinu frá 2016",
   chartIndex:"Vísitala, janúar 2016 = 100", chartSrc:"Gögn tekin frá HMS",
@@ -49,7 +49,7 @@ const T = {
   fTopics:"Efni", fAbout:"Um vefinn", fText:"Áreiðanlegar og óháðar upplýsingar um íslensk húsnæðismál, settar fram á mannamáli.",
   searchPh:"Leita í heimildum", all:"Allt", sortDefault:"Sjálfgefin röð", sortNew:"Nýjast fyrst", sortOld:"Elst fyrst", open:"Opna", copyCite:"Afrita tilvísun", copied:"Afritað",
   restricted:"Takmarkaður aðgangur", missingDoc:"Skjal ekki aðgengilegt", missingShort:"Vantar", noLink:"Ekki á netinu", noResults:"Engar heimildir fundust.",
-  nSources:"{n} heimildir", nLaws:"{n} lög", nDocs:"{n} skjöl", nLinks:"{n} tenglar", lawRead:"Lesa lögin", lawHistory:"Ferill málsins á Alþingi",
+  nSources:"{n} heimildir", nSources1:"{n} heimild", nLaws:"{n} lög", nDocs:"{n} skjöl", nDocs1:"{n} skjal", nLinks:"{n} tenglar", nLinks1:"{n} tengill", lawRead:"Lesa lögin", lawHistory:"Ferill málsins á Alþingi",
   latestTitle:"Nýjast á þessu sviði", watchYt:"Horfa á YouTube", ownCalc:"Reiknivél Húsnæði.is", home:"Forsíða",
   missingNoteT:"Unnið að því að endurheimta skjöl", missingNote:"{n} skjöl af gamla vefnum eru ekki lengur aðgengileg og verða sett inn aftur.",
   cur:"kr.", mShort:"m.kr."
@@ -83,7 +83,7 @@ const T = {
   v1:"Indexation", v2:"Interest rates", v3:"Money and inflation", v4:"Indexed and non-indexed mortgages – pros and cons",
   play:"Play video", openYt:"Open on YouTube", moreVideos:"More videos",
   calcTitle:"Mortgage calculator",
-  calcText:"Húsnæðis- og mannvirkjastofnun, banks, savings banks and pension funds all offer loan calculators. You can enter the loan assumptions — amount, term, interest rate and inflation — and get results you can use to compare different options.",
+  calcText:"Húsnæðis- og mannvirkjastofnun, banks, savings banks and pension funds all offer loan calculators. You can enter the loan assumptions (amount, term, interest rate and inflation) and get results you can use to compare different options.",
   calcMore:"More",
   amount:"Loan amount", years:"Loan term", yearsU:"years", rateIdx:"Interest, indexed", rateNom:"Interest, nominal", infl:"Inflation per year",
   idx:"Indexed loan", nom:"Nominal loan", first:"First payment", total:"Total paid", perMonth:"per month",
@@ -94,7 +94,7 @@ const T = {
   fTopics:"Topics", fAbout:"About", fText:"Reliable, independent information on Icelandic housing, explained in plain language.",
   searchPh:"Search sources", all:"All", sortDefault:"Default order", sortNew:"Newest first", sortOld:"Oldest first", open:"Open", copyCite:"Copy citation", copied:"Copied",
   restricted:"Restricted access", missingDoc:"Document unavailable", missingShort:"Missing", noLink:"Not online", noResults:"No sources found.",
-  nSources:"{n} sources", nLaws:"{n} acts", nDocs:"{n} documents", nLinks:"{n} links", lawRead:"Read the act", lawHistory:"Legislative history",
+  nSources:"{n} sources", nSources1:"{n} source", nLaws:"{n} acts", nLaws1:"{n} act", nDocs:"{n} documents", nDocs1:"{n} document", nLinks:"{n} links", nLinks1:"{n} link", lawRead:"Read the act", lawHistory:"Legislative history",
   latestTitle:"Latest in this area", watchYt:"Watch on YouTube", ownCalc:"Húsnæði.is calculator", home:"Home",
   missingNoteT:"Documents are being restored", missingNote:"{n} documents from the old site are no longer available and will be added again.",
   cur:"ISK", mShort:"M ISK"
@@ -102,7 +102,7 @@ const T = {
  pl:{
   skip:"Przejdź do treści", menu:"Menu", navAll:"Wszystko:",
   heroTitle:"Zrozum lepiej sprawy mieszkaniowe",
-  heroText:"Niezależnie od tego, czy kupujesz, wynajmujesz, czy po prostu interesuje Cię rynek — znajdziesz tu rzetelne i niezależne informacje o islandzkim rynku mieszkaniowym, podane zrozumiałym językiem.",
+  heroText:"Niezależnie od tego, czy kupujesz, wynajmujesz, czy po prostu interesuje Cię rynek, znajdziesz tu rzetelne i niezależne informacje o islandzkim rynku mieszkaniowym, podane zrozumiałym językiem.",
   heroCta:"O Húsnæði.is", heroCalc:"Oblicz kredyt",
   chartTitle:"Ceny mieszkań i najmu w regionie stołecznym od 2016 r.",
   chartIndex:"Indeks, styczeń 2016 = 100", chartSrc:"Dane: HMS",
@@ -271,7 +271,11 @@ function setLang(l){
   document.documentElement.lang = lang;
   $$("[data-t]").forEach(e => { e.textContent = t(e.dataset.t); });
   $$("[data-tr]").forEach(e => { try{ const o = JSON.parse(e.dataset.tr); e.textContent = o[lang] || o.is; }catch(err){} });
-  $$("[data-tc]").forEach(e => { e.textContent = t(e.dataset.tc).replace("{n}", e.dataset.n); });
+  $$("[data-tc]").forEach(e => {
+    const n = +e.dataset.n, one = lang === "is" ? (n % 10 === 1 && n % 100 !== 11) : n === 1;
+    const k = one && T[lang][e.dataset.tc + "1"] ? e.dataset.tc + "1" : e.dataset.tc;
+    e.textContent = t(k).replace("{n}", e.dataset.n);
+  });
   $$("[data-ph]").forEach(e => { e.placeholder = t(e.dataset.ph); });
   if(document.body.dataset.title){ try{ const o = JSON.parse(document.body.dataset.title); document.title = (o[lang] || o.is) + " | Húsnæði.is"; }catch(err){} }
   $$("[data-href]").forEach(a => a.href = url(a.dataset.href));
