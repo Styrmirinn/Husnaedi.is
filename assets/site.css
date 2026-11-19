@@ -146,7 +146,8 @@ h1,h2,h3{line-height:1.15;margin:0;font-weight:500;letter-spacing:-.015em}
 .fig:last-child{border-right:0}
 .fig-label{font-size:13.5px;font-weight:600;color:var(--ink-2);display:flex;align-items:center;gap:6px}
 .fig-value{font-size:clamp(26px,2.6vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:6px 0 2px;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:6px}
-.fig-value .arrow{font-size:.6em}
+.fig-value .arrow{font-size:.6em;color:var(--red)}
+.fig-value .arrow.up{color:var(--blue)}
 .up{color:var(--red)}
 .fig-sub{font-size:12.5px;color:var(--muted);line-height:1.4}
 .todo{display:inline-block;width:8px;height:8px;border-radius:50%;background:#f5a524;box-shadow:0 0 0 3px rgba(245,165,36,.22);flex:none;align-self:center;cursor:help}
