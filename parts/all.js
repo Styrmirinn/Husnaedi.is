@@ -40,7 +40,7 @@ const T = {
   intro2:"Þrátt fyrir mikilvægi húsnæðismála hefur mun meira verið skrifað um hlutabréfamarkaði en húsnæðismarkaði í almennri umræðu og fræðilegum skrifum. Markmiðið hér er að bæta úr því með því að safna óháðri og aðgengilegri þekkingu á einum stað fyrir fólk sem vill skilja húsnæðismarkaðinn betur: verð, framboð, leigu, lán og aðra þætti sem móta markaðinn.",
   more:"Nánar",
   cMarket:"Almenn og fræðileg skrif um húsnæðismarkaðinn, m.a. mánaðarskýrslur HMS",
-  cLoans:"Húsnæðislán skiptast í grófum dráttum í verðtryggð eða óverðtyggð húsnæðislán",
+  cLoans:"Húsnæðislán skiptast í grófum dráttum í verðtryggð eða óverðtryggð húsnæðislán",
   cRent:"Leigumarkaðurinn og það umhverfi sem þar er m.a. leigumarkaðskönnun",
   cStats:"Kaupverðsjá HMS og gögn frá Hagstofu Íslands og Þjóðskrá",
   cStatsTitle:"Hagtölur & mælaborð",
