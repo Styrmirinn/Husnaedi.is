@@ -252,6 +252,12 @@ $("#menuBtn").addEventListener("click", () => setMenu(!document.body.classList.c
 $("#mPanel").addEventListener("click", e => { if(e.target.closest("a")) setMenu(false); });
 
 if(PAGE !== "home") $(".brand").href = HOME;
+else $(".brand").addEventListener("click", e => {
+  // Logo á forsíðu: renna upp í hetjuhlutann
+  e.preventDefault();
+  window.scrollTo({top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  if(location.hash) history.replaceState(null, "", location.pathname + location.search);
+});
 
 /* ---------- Footer ---------- */
 function buildFooter(){
