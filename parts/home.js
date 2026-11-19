@@ -128,6 +128,17 @@ const priceChart = (() => {
   const holder = $("#chartWrap"), svg = $("#chart"), tip = $("#chartTip");
   const series = [{key:"kaup", color:"#0061ff", data:kaup, on:true},{key:"leiga", color:"#ff0050", data:leiga, on:true}];
   let x, y, padT, plotH, lastW = 0;
+  // Línurnar teiknast einu sinni, þegar nýjustu gögnin eru komin og línuritið sést á skjánum
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let played = still, dataReady = false, inView = false, paths = [];
+  function play(){
+    if(played || !dataReady || !inView) return;
+    played = true;
+    paths.forEach(p => { p.getBoundingClientRect(); p.style.transition = "stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1) .15s"; p.style.strokeDashoffset = 0; });
+    svg.classList.add("drawn");
+  }
+  new IntersectionObserver((es, ob) => { if(es[0].isIntersecting){ inView = true; ob.disconnect(); play(); } }, {threshold: .35}).observe(holder);
+  if(still) svg.classList.add("drawn");
   function legend(){
     $("#chartLegend").innerHTML = series.map(s => `<button type="button" aria-pressed="${s.on}" data-k="${s.key}"><span class="key" style="background:${s.color}"></span>${t(s.key)}</button>`).join("");
     $$("#chartLegend button").forEach(b => b.addEventListener("click", () => {
@@ -145,7 +156,7 @@ const priceChart = (() => {
     const plotW = W - padL - padR;
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
     svg.setAttribute("aria-label", t("chartTitle"));
-    svg.replaceChildren();
+    svg.replaceChildren(); paths = [];
     x = i => padL + (i/(kaup.length-1)) * plotW;
     const all = kaup.concat(leiga).map(d => d[1]);
     const dMin = Math.min(...all), dMax = Math.max(...all);
@@ -167,12 +178,10 @@ const priceChart = (() => {
       if(!s.on) return;
       const d = s.data.map((p,i) => (i?"L":"M") + x(i).toFixed(1) + "," + y(p[1]).toFixed(1)).join("");
       const path = el("path",{d, class:"series-line", stroke:s.color},svg);
-      if(!render.drawn && !matchMedia("(prefers-reduced-motion: reduce)").matches){
+      if(!played){
         const len = path.getTotalLength();
         path.style.strokeDasharray = len; path.style.strokeDashoffset = len;
-        path.getBoundingClientRect();
-        path.style.transition = "stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1) .9s";
-        path.style.strokeDashoffset = 0;
+        paths.push(path);
       }
       const li = s.data.length-1;
       el("circle",{cx:x(li),cy:y(s.data[li][1]),r:4,fill:s.color},svg);
@@ -180,7 +189,6 @@ const priceChart = (() => {
       const lab = el("text",{x:x(li)-8,y:y(s.data[li][1])-11,"text-anchor":"end",fill:s.color,"font-weight":"700","font-size":W<480?12:13.5,"font-family":"var(--font)",style:"paint-order:stroke;stroke:#f6faff;stroke-width:4px"},svg);
       lab.textContent = "+" + nf(chg,0) + "% " + t("sinceStart");
     });
-    render.drawn = true;
     el("line",{id:"hoverLine",class:"hover-line",y1:padT,y2:padT+plotH,style:"display:none"},svg);
     series.forEach(s => el("circle",{id:"hd-"+s.key,r:4,stroke:s.color,class:"series-dot",style:"display:none"},svg));
   }
@@ -220,7 +228,8 @@ const priceChart = (() => {
   svg.addEventListener("touchmove", e => show(nearest(e.touches[0].clientX)), {passive:true});
   svg.addEventListener("touchend", hide);
   new ResizeObserver(() => render()).observe(holder);
-  return { refresh(){ legend(); render(true); } };
+  setTimeout(() => { dataReady = true; play(); }, 2500); // til vara ef gögnin skila sér ekki
+  return { refresh(){ legend(); render(true); }, ready(){ dataReady = true; play(); } };
 })();
 
 /* ---------- Loan calculator ---------- */
@@ -387,4 +396,4 @@ fetch("data/housing.json", {cache: "no-cache"}).then(r => r.ok ? r.json() : null
   kaup.splice(0, kaup.length, ...upTo(d.kaup));
   leiga.splice(0, leiga.length, ...upTo(d.leiga));
   buildFigures(); priceChart.refresh();
-}).catch(() => {});
+}).catch(() => {}).finally(() => priceChart.ready());
