@@ -1,0 +1,12 @@
+{
+  "name": "husnaedi-is",
+  "version": "1.0.0",
+  "description": "Húsnæði.is - Reliable and independent information about Icelandic housing matters",
+  "private": true,
+  "scripts": {
+    "build": "python3 build.py"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  }
+}
