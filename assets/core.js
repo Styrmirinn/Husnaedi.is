@@ -342,8 +342,10 @@ function observeReveal(){
       }, {once:true});
     }));
   };
-  const start = () => { document.visibilityState === "visible" ? setTimeout(go, 250) : document.addEventListener("visibilitychange", go); };
-  document.readyState === "complete" ? start() : addEventListener("load", start, {once:true});
+  // Start once the page has painted, not on window "load": on phones, images further down
+  // can hold "load" back for several seconds and the logo would just pop in without animating.
+  const start = () => { document.visibilityState === "visible" ? setTimeout(go, 150) : document.addEventListener("visibilitychange", go); };
+  document.readyState === "loading" ? addEventListener("DOMContentLoaded", start, {once:true}) : start();
 })();
 $("#year").textContent = new Date().getFullYear();
 /* Footer logo: same animation when the footer scrolls into view */

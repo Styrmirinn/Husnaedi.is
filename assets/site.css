@@ -67,12 +67,14 @@ h1,h2,h3{line-height:1.15;margin:0;font-weight:500;letter-spacing:-.015em}
 .logo-pre .lg-h{transform:translateY(105%)}
 .logo-pre .lg-t{transform:translateX(-102%)}
 /* safety net: if the script never runs, the logo still appears */
-.logo-pre:not(.logo-anim) .lg-h{animation:lgH .01s linear 3s forwards}
-.logo-pre:not(.logo-anim) .lg-t{animation:lgT .01s linear 3s forwards}
+.logo-pre:not(.logo-anim) .lg-h{animation:lgHs .01s linear 3s forwards}
+.logo-pre:not(.logo-anim) .lg-t{animation:lgTs .01s linear 3s forwards}
 .logo-anim .lg-h{transform:translateY(105%);animation:lgH .6s cubic-bezier(.2,.9,.25,1) .1s forwards}
 .logo-anim .lg-t{transform:translateX(-102%);animation:lgT 1s cubic-bezier(.16,1,.3,1) .6s forwards}
 @keyframes lgH{to{transform:translateY(0)}}
 @keyframes lgT{to{transform:translateX(0)}}
+@keyframes lgHs{to{transform:translateY(0)}}
+@keyframes lgTs{to{transform:translateX(0)}}
 
 /* ---------- Mobile menu ---------- */
 .m-panel{display:none}
