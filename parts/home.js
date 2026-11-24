@@ -233,7 +233,7 @@ const priceChart = (() => {
 })();
 
 /* ---------- Loan calculator ---------- */
-const calc = (() => {
+const calc = !document.getElementById("calcInputs") ? { refresh(){}, state:{} } : (() => {
   const S = {
     amount: SITE_DATA.calc.amount, years: SITE_DATA.calc.years,
     rIdx: SITE_DATA.calc.rateIndexed.value, rNom: SITE_DATA.calc.rateNominal.value,

@@ -124,20 +124,10 @@
           </div>
           <a class="btn btn-outline" data-href="/lánareiknar"><span data-t="calcMore"></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         </div>
-        <div class="calc-grid">
-          <div id="calcInputs"></div>
-          <div>
-            <div class="results" id="calcResults"></div>
-            <div class="calc-tools">
-              <div class="tabs" role="group" id="calcTabs">
-                <button type="button" aria-pressed="true" data-v="pay" data-t="tabPay"></button>
-                <button type="button" aria-pressed="false" data-v="bal" data-t="tabBal"></button>
-              </div>
-              <label class="switch"><input type="checkbox" id="realToggle" checked><i></i><span data-t="realLabel"></span></label>
-            </div>
-            <div class="chart-wrap" id="calcWrap"><svg id="calcChart" role="img"></svg><div class="tip" id="calcTip"></div></div>
-            <p class="calc-note" data-t="calcNote"></p>
-          </div>
+        <div class="calc-links">
+          <a class="calc-link" href="reiknivelar/greidslubyrdi.html"><span class="cl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 7h8M8 11h2M12 11h2M16 11v6M8 15h2M12 15h2"/></svg></span><span class="cl-txt"><b data-t="cl1T"></b><span data-t="cl1D"></span></span><span class="cl-go"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+          <a class="calc-link" href="reiknivelar/hamarkslan.html"><span class="cl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M5 20V10l7-5 7 5v10"/><path d="M10 20v-5h4v5"/></svg></span><span class="cl-txt"><b data-t="cl2T"></b><span data-t="cl2D"></span></span><span class="cl-go"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+          <a class="calc-link" href="reiknivelar/eiginfjarframlag.html"><span class="cl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5V12l6 6"/></svg></span><span class="cl-txt"><b data-t="cl3T"></b><span data-t="cl3D"></span></span><span class="cl-go"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
         </div>
       </div>
     </div>
@@ -399,7 +389,7 @@ const priceChart = (() => {
 })();
 
 /* ---------- Loan calculator ---------- */
-const calc = (() => {
+const calc = !document.getElementById("calcInputs") ? { refresh(){}, state:{} } : (() => {
   const S = {
     amount: SITE_DATA.calc.amount, years: SITE_DATA.calc.years,
     rIdx: SITE_DATA.calc.rateIndexed.value, rNom: SITE_DATA.calc.rateNominal.value,

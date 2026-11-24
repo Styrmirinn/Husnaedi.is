@@ -691,3 +691,17 @@ a.doc:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translat
 .xl-doc .doc-t{display:flex;flex-direction:column;gap:2px}
 .xl-sub{font-size:12.5px;font-weight:400;color:var(--muted);line-height:1.35}
 @media (max-width:640px){.xl-files{grid-template-columns:1fr}.xl-box{padding:18px}}
+
+/* ===== Reiknivélar á forsíðu ===== */
+.calc-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.calc-link{display:flex;align-items:flex-start;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;text-decoration:none;color:var(--ink);transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,border-color .2s}
+.calc-link:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--blue)}
+.cl-ic{flex:none;width:44px;height:44px;border-radius:12px;background:var(--blue-logo);color:#fff;display:flex;align-items:center;justify-content:center}
+.cl-ic svg{width:22px;height:22px}
+.cl-txt{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.cl-txt b{font-size:17px;font-weight:600;line-height:1.3}
+.cl-txt span{font-size:14.5px;color:var(--ink-2);line-height:1.45}
+.cl-go{flex:none;color:var(--blue);margin-top:2px;transition:transform .2s}
+.cl-go svg{width:18px;height:18px}
+.calc-link:hover .cl-go{transform:translateX(3px)}
+@media (max-width:900px){.calc-links{grid-template-columns:1fr}}

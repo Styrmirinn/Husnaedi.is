@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eiginfjárframlag | Húsnæði.is</title>
+<meta name="description" content="Sjáðu hversu mikið eigið fé þú þarft til fasteignakaupa, að meðtöldu stimpilgjaldi og öðrum kaupkostnaði.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Questrial&display=swap" rel="stylesheet">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="calc.css">
+<script src="config.js"></script>
+<script src="calc-common.js"></script>
+</head>
+<body>
+<main id="main">
+  <section class="c-intro"><div class="wrap">
+    <p class="c-eyebrow" data-t="eyebrow">Reiknivél</p>
+    <h1 data-t="h1">Eiginfjárframlag</h1>
+    <p data-t="lead">Sjáðu hversu mikið eigið fé þú þarft til að kaupa eign, að meðtöldu stimpilgjaldi og öðrum kostnaði við kaupin.</p>
+  </div></section>
+
+  <div class="wrap c-grid">
+    <section class="card c-inputs" aria-labelledby="inH">
+      <h2 id="inH" data-t="inputs">Forsendur</h2>
+      <div class="field">
+        <label class="f-label" for="price"><span data-t="price">Kaupverð fasteignar</span></label>
+        <div class="f-wrap"><input id="price" data-kind="kr" data-min="1000000" data-max="2000000000" data-value="75000000"><span class="f-unit" data-t="kr">kr.</span></div>
+      </div>
+      <div class="field">
+        <label class="f-label" for="equity"><span data-t="equity">Núverandi eigið fé</span><button data-tip="tipEquity"></button></label>
+        <div class="f-wrap"><input id="equity" data-kind="kr" data-min="0" data-max="2000000000" data-value="10000000"><span class="f-unit" data-t="kr">kr.</span></div>
+      </div>
+      <div class="field">
+        <span class="f-label"><span data-t="first">Fyrstu fasteignakaup</span><button data-tip="tipFirst"></button></span>
+        <div class="seg" id="first"><button data-v="yes" aria-pressed="true" data-t="yes">Já</button><button data-v="no" data-t="no">Nei</button></div>
+      </div>
+      <div class="field">
+        <label class="f-label" for="ltv"><span data-t="ltv">Æskilegt veðsetningarhlutfall</span><button data-tip="tipLtv"></button></label>
+        <div class="f-wrap"><input id="ltv" data-kind="pct" data-min="0" data-max="90" data-value="90"><span class="f-unit">%</span></div>
+        <input type="range" id="ltvR" min="0" max="90" step="1" value="90" aria-labelledby="ltvRL"><span id="ltvRL" class="sr" data-t="ltv">Æskilegt veðsetningarhlutfall</span>
+        <p class="f-hint" id="ltvHint"></p>
+      </div>
+      <button class="c-toggle" id="advBtn" aria-expanded="false" aria-controls="adv"><span data-t="adv">Nánari forsendur</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg></button>
+      <div id="adv" hidden style="margin-top:12px">
+        <div class="field">
+          <label class="f-label" for="fmat"><span data-t="fmat">Fasteignamat</span><button data-tip="tipFmat"></button></label>
+          <div class="f-wrap"><input id="fmat" data-kind="kr" data-min="0" data-max="2000000000" data-value="0"><span class="f-unit" data-t="kr">kr.</span></div>
+          <p class="f-hint" data-t="hintFmat">Ef þú skilur reitinn eftir á 0 er stimpilgjald reiknað af kaupverði. Fasteignamatið finnurðu á island.is.</p>
+        </div>
+        <div class="field">
+          <label class="f-label" for="broker"><span data-t="broker">Umsýslugjald fasteignasölu</span><button data-tip="tipBroker"></button></label>
+          <div class="f-wrap"><input id="broker" data-kind="kr" data-min="0" data-max="2000000" data-value="70000"><span class="f-unit" data-t="kr">kr.</span></div>
+        </div>
+        <div class="field">
+          <label class="f-label" for="loanfee"><span data-t="loanfee">Lántökugjald banka</span><button data-tip="tipLoanfee"></button></label>
+          <div class="f-wrap"><input id="loanfee" data-kind="kr" data-min="0" data-max="2000000" data-value="65000"><span class="f-unit" data-t="kr">kr.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="res-col" aria-live="polite">
+      <section class="card hero-res">
+        <p class="h-label" id="gapLabel">Það vantar upp á eigið fé</p>
+        <div class="h-value" id="rGap">–</div>
+        <p class="h-sub" id="rGapSub"></p>
+        <div class="bar" style="background:rgba(255,255,255,.22)" aria-hidden="true"><i id="gapBar" style="background:#fff"></i></div>
+      </section>
+      <div class="stats" style="margin-top:0">
+        <div class="stat"><p class="s-label"><span data-t="minEq">Lágmarkseiginfjárframlag</span><button data-tip="tipMinEq"></button></p><div class="s-value" id="rMin">–</div><div class="s-sub" id="rMinSub"></div></div>
+        <div class="stat"><p class="s-label"><span data-t="loan">Nauðsynleg lánsfjárhæð</span></p><div class="s-value" id="rLoan">–</div><div class="s-sub" id="rLoanSub"></div></div>
+        <div class="stat"><p class="s-label"><span data-t="costs">Áætlaður kaupkostnaður</span></p><div class="s-value" id="rCost">–</div><div class="s-sub" id="rCostSub"></div></div>
+        <div class="stat"><p class="s-label"><span data-t="total">Heildarfjárþörf</span><button data-tip="tipTotal"></button></p><div class="s-value" id="rTotal">–</div><div class="s-sub" data-t="totalSub">Útborgun og kaupkostnaður</div></div>
+      </div>
+
+      <section class="card">
+        <h2 data-t="breakH">Sundurliðun</h2>
+        <ul class="rows" id="rows"></ul>
+        <p class="f-hint" style="margin-top:12px" data-th="legendTags"></p>
+      </section>
+      <div id="notes" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="c-sources" aria-labelledby="srcH">
+      <h2 id="srcH" data-t="sources">Heimildir og forsendur</h2>
+      <ul id="srcList"></ul>
+    </section>
+    <p class="disclaimer" data-t="disclaimer"></p>
+    <div data-others style="margin-top:26px"></div>
+  </div>
+</main>
+<footer class="c-foot"><div class="wrap"><span data-t="foot"></span> <a href="../index.html">husnaedi.is</a></div></footer>
+
+<script>
+const PAGE = {
+  is:{ docTitle:"Eiginfjárframlag | Húsnæði.is", eyebrow:"Reiknivél", h1:"Eiginfjárframlag",
+    lead:"Sjáðu hversu mikið eigið fé þú þarft til að kaupa eign, að meðtöldu stimpilgjaldi og öðrum kostnaði við kaupin.",
+    inputs:"Forsendur", price:"Kaupverð fasteignar", equity:"Núverandi eigið fé", first:"Fyrstu fasteignakaup", ltv:"Æskilegt veðsetningarhlutfall",
+    ltvHint:"Hámark samkvæmt reglum Seðlabankans: {max} %{first}.", ltvFirst:" við fyrstu kaup", ltvCapped:"Lækkað í {max} %, sem er hámarkið.",
+    adv:"Nánari forsendur", fmat:"Fasteignamat", hintFmat:"Ef þú skilur reitinn eftir á 0 er stimpilgjald reiknað af kaupverði. Fasteignamatið finnurðu á island.is.",
+    broker:"Umsýslugjald fasteignasölu", loanfee:"Lántökugjald banka",
+    gapMissing:"Það vantar upp á eigið fé", gapOk:"Eigið féð dugar", gapOkSub:"Þú átt {v} umfram heildarfjárþörfina.", gapSub:"Þú átt {have} af {need} sem þarf ({p} %).",
+    minEq:"Lágmarkseiginfjárframlag", minEqSub:"{p} % af kaupverði", loan:"Nauðsynleg lánsfjárhæð", loanSub:"{p} % veðsetning",
+    costs:"Áætlaður kaupkostnaður", costSub:"Þar af lögbundið: {v}", total:"Heildarfjárþörf", totalSub:"Útborgun og kaupkostnaður",
+    breakH:"Sundurliðun", bPrice:"Kaupverð", bLoan:"Lán", bDown:"Útborgun (eigið fé í eigninni)",
+    bStamp:"Stimpilgjald ({p} % af {base})", baseFmat:"fasteignamati", basePrice:"kaupverði", bReg:"Þinglýsingargjöld ({n} skjöl × {v})",
+    bLoanfee:"Lántökugjald", bCredit:"Greiðslumat", bBroker:"Umsýslugjald fasteignasölu", bTotal:"Heildarfjárþörf", bHave:"Eigið fé", bGap:"Vantar", bLeft:"Afgangur",
+    must:"Lögbundið", est:"Áætlað", legendTags:'<span class="tag tag-must">Lögbundið</span> gjöld sem ákveðin eru í lögum og gjaldskrám. <span class="tag tag-est">Áætlað</span> kostnaður sem er misjafn eftir banka og fasteignasölu.',
+    noteMax:"Veðsetningin er undir hámarkinu. Með {max} % veðsetningu þyrftirðu {v} minna í eigið fé, en greiðslubyrðin yrði hærri.",
+    noteLoanfee:"Sumir bankar fella niður lántökugjald við fyrstu kaup.",
+    noteOther:"Ef þú átt ekki nóg eigið fé gætu hlutdeildarlán HMS eða séreignarsparnaður hjálpað. Skoðaðu líka hvort greiðslubyrðin standist reglur Seðlabankans í reiknivélinni Hámarkslán miðað við tekjur.",
+    s1:"Reglur Seðlabankans um veðsetningarhlutfall: {r}", s2:"Stimpilgjald: {r}. Reiknast af fasteignamati, 0,8 % fyrir einstaklinga og 0,4 % við fyrstu kaup.",
+    s3:"Þinglýsingargjald: {r}, {v} á hvert skjal. Reiknað er með kaupsamningi, afsali og einu veðskuldabréfi.",
+    s4:"Áætlaður kostnaður: lántökugjald um {lf} ({lfs}), greiðslumat um {cc} ({ccs}) og umsýslugjald fasteignasölu um {bf} en algengt bil er {bmin} til {bmax} ({bs}). Tölur sóttar {date}.",
+    tipEquity:"Peningar sem þú leggur sjálf(ur) fram, t.d. sparnaður, séreignarsparnaður eða söluhagnaður af fyrri eign.",
+    tipFirst:"Þú telst kaupa fyrstu eign ef þú hefur aldrei verið þinglýstur eigandi íbúðarhúsnæðis. Þá má lánið vera allt að 90 % af kaupverði og stimpilgjaldið er helmingi lægra.",
+    tipLtv:"Hlutfall láns af kaupverði. 80 % veðsetning þýðir að lánið er 80 % af kaupverðinu og þú greiðir 20 % sjálf(ur). Lægri veðsetning gefur oft betri vaxtakjör.",
+    tipFmat:"Opinbert mat HMS á virði eignarinnar. Stimpilgjaldið reiknast af því, ekki af kaupverðinu.",
+    tipBroker:"Gjald sem flestar fasteignasölur innheimta af kaupanda fyrir aðstoð við kaupsamning, afsal og þinglýsingu. Misjafnt eftir fasteignasölum.",
+    tipLoanfee:"Fast gjald sem bankinn tekur fyrir að veita íbúðalán. Misjafnt eftir bönkum.",
+    tipMinEq:"Minnsta útborgun sem reglur Seðlabankans leyfa: kaupverð að frádregnu hámarksláni.",
+    tipTotal:"Það sem þú þarft að eiga til að ljúka kaupunum: útborgun að viðbættum öllum kaupkostnaði.",
+    tipLabel:"Nánari skýring" },
+  en:{ docTitle:"Down payment calculator | Húsnæði.is", eyebrow:"Calculator", h1:"Down payment",
+    lead:"See how much of your own money you need to buy a property, including stamp duty and other purchase costs.",
+    inputs:"Assumptions", price:"Purchase price", equity:"Current own funds", first:"First time buyer", ltv:"Desired loan to value",
+    ltvHint:"Central Bank maximum: {max}%{first}.", ltvFirst:" for first time buyers", ltvCapped:"Lowered to {max}%, the maximum.",
+    adv:"More assumptions", fmat:"Official property valuation (fasteignamat)", hintFmat:"If you leave this at 0, stamp duty is calculated from the price. You can find the valuation on island.is.",
+    broker:"Estate agent buyer fee", loanfee:"Bank loan fee",
+    gapMissing:"You are short of own funds by", gapOk:"Your own funds are enough", gapOkSub:"You have {v} more than you need.", gapSub:"You have {have} of the {need} needed ({p}%).",
+    minEq:"Minimum down payment", minEqSub:"{p}% of the price", loan:"Loan needed", loanSub:"{p}% loan to value",
+    costs:"Estimated purchase costs", costSub:"Of which mandatory: {v}", total:"Total funds needed", totalSub:"Down payment and purchase costs",
+    breakH:"Breakdown", bPrice:"Purchase price", bLoan:"Loan", bDown:"Down payment (your equity in the property)",
+    bStamp:"Stamp duty ({p}% of {base})", baseFmat:"valuation", basePrice:"price", bReg:"Registration fees ({n} documents × {v})",
+    bLoanfee:"Loan fee", bCredit:"Credit assessment", bBroker:"Estate agent buyer fee", bTotal:"Total funds needed", bHave:"Own funds", bGap:"Shortfall", bLeft:"Left over",
+    must:"Mandatory", est:"Estimate", legendTags:'<span class="tag tag-must">Mandatory</span> fees set by law and official fee schedules. <span class="tag tag-est">Estimate</span> costs that vary between banks and estate agents.',
+    noteMax:"Your loan to value is below the maximum. At {max}% you would need {v} less of your own money, but your payments would be higher.",
+    noteLoanfee:"Some banks waive the loan fee for first time buyers.",
+    noteOther:"If you are short of funds, HMS shared equity loans or private pension savings may help. Also check that the payments meet Central Bank rules in the Maximum loan based on income calculator.",
+    s1:"Central Bank rules on loan to value: {r}", s2:"Stamp duty: {r}. Based on the official valuation, 0.8% for individuals and 0.4% for first time buyers.",
+    s3:"Registration fee: {r}, {v} per document. Assumes a purchase contract, a deed and one mortgage bond.",
+    s4:"Estimated costs: loan fee about {lf} ({lfs}), credit assessment about {cc} ({ccs}) and estate agent buyer fee about {bf}, typically {bmin} to {bmax} ({bs}). Figures checked {date}.",
+    tipEquity:"Money you put in yourself, e.g. savings, private pension savings or proceeds from selling a previous home.",
+    tipFirst:"You are a first time buyer if you have never been the registered owner of residential property. The loan can then be up to 90% of the price and stamp duty is halved.",
+    tipLtv:"The loan as a share of the price. 80% means the loan is 80% of the price and you pay 20% yourself. A lower loan to value often gets better interest rates.",
+    tipFmat:"The official HMS valuation of the property. Stamp duty is based on it, not on the price.",
+    tipBroker:"A fee most estate agents charge the buyer for help with the contract, deed and registration. It varies between agents.",
+    tipLoanfee:"A fixed fee the bank charges for granting a mortgage. It varies between banks.",
+    tipMinEq:"The smallest down payment the Central Bank rules allow: the price minus the maximum loan.",
+    tipTotal:"What you need to complete the purchase: down payment plus all purchase costs.",
+    tipLabel:"More information" },
+  pl:{ docTitle:"Wkład własny | Húsnæði.is", eyebrow:"Kalkulator", h1:"Wkład własny",
+    lead:"Sprawdź, ile własnych środków potrzebujesz na zakup nieruchomości, łącznie z opłatą skarbową i innymi kosztami zakupu.",
+    inputs:"Założenia", price:"Cena nieruchomości", equity:"Obecne środki własne", first:"Pierwszy zakup nieruchomości", ltv:"Pożądany wskaźnik LTV",
+    ltvHint:"Maksimum według Banku Centralnego: {max}%{first}.", ltvFirst:" przy pierwszym zakupie", ltvCapped:"Obniżono do {max}%, czyli maksimum.",
+    adv:"Więcej założeń", fmat:"Urzędowa wycena nieruchomości (fasteignamat)", hintFmat:"Jeśli zostawisz 0, opłata skarbowa zostanie obliczona od ceny. Wycenę znajdziesz na island.is.",
+    broker:"Opłata pośrednika dla kupującego", loanfee:"Prowizja banku za udzielenie kredytu",
+    gapMissing:"Brakuje Ci środków własnych", gapOk:"Twoje środki własne wystarczą", gapOkSub:"Masz {v} więcej, niż potrzeba.", gapSub:"Masz {have} z potrzebnych {need} ({p}%).",
+    minEq:"Minimalny wkład własny", minEqSub:"{p}% ceny", loan:"Potrzebna kwota kredytu", loanSub:"LTV {p}%",
+    costs:"Szacowane koszty zakupu", costSub:"W tym obowiązkowe: {v}", total:"Łączne zapotrzebowanie", totalSub:"Wkład i koszty zakupu",
+    breakH:"Szczegóły", bPrice:"Cena", bLoan:"Kredyt", bDown:"Wkład własny w nieruchomości",
+    bStamp:"Opłata skarbowa ({p}% od {base})", baseFmat:"wyceny", basePrice:"ceny", bReg:"Opłaty za wpis ({n} dokumenty × {v})",
+    bLoanfee:"Prowizja za kredyt", bCredit:"Ocena zdolności kredytowej", bBroker:"Opłata pośrednika", bTotal:"Łączne zapotrzebowanie", bHave:"Środki własne", bGap:"Brakuje", bLeft:"Pozostaje",
+    must:"Obowiązkowe", est:"Szacunek", legendTags:'<span class="tag tag-must">Obowiązkowe</span> opłaty określone w przepisach i urzędowych cennikach. <span class="tag tag-est">Szacunek</span> koszty różniące się między bankami i biurami nieruchomości.',
+    noteMax:"Twój wskaźnik LTV jest poniżej maksimum. Przy {max}% potrzebował(a)byś {v} mniej środków własnych, ale raty byłyby wyższe.",
+    noteLoanfee:"Niektóre banki nie pobierają prowizji przy pierwszym zakupie.",
+    noteOther:"Jeśli brakuje Ci środków, mogą pomóc kredyty partycypacyjne HMS lub prywatne oszczędności emerytalne. Sprawdź też, czy rata spełnia przepisy Banku Centralnego, w kalkulatorze Maksymalny kredyt według dochodu.",
+    s1:"Przepisy Banku Centralnego o wskaźniku LTV: {r}", s2:"Opłata skarbowa: {r}. Liczona od urzędowej wyceny: 0,8% dla osób fizycznych i 0,4% przy pierwszym zakupie.",
+    s3:"Opłata za wpis: {r}, {v} za dokument. Przyjęto umowę kupna, akt przeniesienia własności i jeden list zastawny.",
+    s4:"Koszty szacunkowe: prowizja za kredyt około {lf} ({lfs}), ocena zdolności około {cc} ({ccs}) i opłata pośrednika około {bf}, zwykle od {bmin} do {bmax} ({bs}). Dane sprawdzone {date}.",
+    tipEquity:"Pieniądze, które wnosisz sam, np. oszczędności, prywatne oszczędności emerytalne lub zysk ze sprzedaży poprzedniej nieruchomości.",
+    tipFirst:"Pierwszym nabywcą jest osoba, która nigdy nie była wpisanym właścicielem nieruchomości mieszkalnej. Kredyt może wtedy wynosić do 90% ceny, a opłata skarbowa jest o połowę niższa.",
+    tipLtv:"Kredyt jako udział w cenie. 80% oznacza, że kredyt to 80% ceny, a 20% płacisz sam. Niższy wskaźnik często daje lepsze oprocentowanie.",
+    tipFmat:"Urzędowa wycena nieruchomości przez HMS. Od niej, a nie od ceny, liczy się opłatę skarbową.",
+    tipBroker:"Opłata, którą większość biur nieruchomości pobiera od kupującego za pomoc przy umowie, akcie i wpisie. Różni się między biurami.",
+    tipLoanfee:"Stała opłata pobierana przez bank za udzielenie kredytu mieszkaniowego. Różni się między bankami.",
+    tipMinEq:"Najmniejszy wkład dozwolony przez przepisy Banku Centralnego: cena minus maksymalny kredyt.",
+    tipTotal:"Ile musisz mieć, aby sfinalizować zakup: wkład własny plus wszystkie koszty zakupu.",
+    tipLabel:"Więcej informacji" }
+};
+
+H.start(PAGE, function(){
+  const C = H.C, R = C.rules, K = C.costs, $ = id => document.getElementById(id);
+  let ltvTouched = false;
+  const price = H.bindInput($("price"), calc), equity = H.bindInput($("equity"), calc);
+  const ltv = H.bindInput($("ltv"), () => { ltvTouched = true; $("ltvR").value = Math.round(ltv.value); calc(); });
+  const fmat = H.bindInput($("fmat"), calc), broker = H.bindInput($("broker"), calc), loanfee = H.bindInput($("loanfee"), calc);
+  const first = H.bindSeg($("first"), () => { if(!ltvTouched) ltv.set(maxLtv(), true); calc(); });
+  broker.set(K.brokerFee.value, true); loanfee.set(K.loanFee.value, true);
+  $("ltvR").addEventListener("input", e => { ltvTouched = true; ltv.set(+e.target.value, true); calc(); });
+  $("advBtn").addEventListener("click", e => { const b = e.currentTarget, o = b.getAttribute("aria-expanded") !== "true"; b.setAttribute("aria-expanded", String(o)); $("adv").hidden = !o; });
+  const maxLtv = () => first.value === "yes" ? R.ltv.firstTime : R.ltv.general;
+  ltv.set(maxLtv(), true);
+  H.onLang(calc);
+  H.others("c3");
+
+  function calc(){
+    const fT = first.value === "yes", max = maxLtv(), P = price.value;
+    let capped = false;
+    if(ltv.value > max){ ltv.set(max, true); capped = true; }
+    $("ltvR").max = max; $("ltvR").value = Math.round(ltv.value);
+    const L = ltv.value / 100;
+    const loan = P * L, down = P - loan, minEq = P * (1 - max/100);
+    const base = fmat.value > 0 ? fmat.value : P;
+    const stP = fT ? K.stampDuty.firstTime : K.stampDuty.individual;
+    const stamp = base * stP / 100, reg = K.registrationFee.perDocument * K.registrationFee.documents;
+    const lf = loanfee.value, cc = K.creditCheck.value, bf = broker.value;
+    const must = stamp + reg, est = lf + cc + bf, costs = must + est;
+    const need = down + costs, have = equity.value, gap = need - have;
+    // Aðalniðurstaða
+    if(gap > 0){
+      $("gapLabel").textContent = H.t("gapMissing"); $("rGap").textContent = H.kr(gap);
+      $("rGapSub").textContent = H.t("gapSub", { have: H.krM(have), need: H.krM(need), p: H.num(have/need*100, 0) });
+    } else {
+      $("gapLabel").textContent = H.t("gapOk"); $("rGap").textContent = "✓";
+      $("rGapSub").textContent = H.t("gapOkSub", { v: H.kr(-gap) });
+    }
+    $("gapBar").style.width = Math.min(100, need > 0 ? have/need*100 : 100) + "%";
+    $("rMin").textContent = H.kr(minEq); $("rMinSub").textContent = H.t("minEqSub", { p: H.num(100 - max) });
+    $("rLoan").textContent = H.kr(loan); $("rLoanSub").textContent = H.t("loanSub", { p: H.num(ltv.value, Number.isInteger(ltv.value) ? 0 : 1) });
+    $("rCost").textContent = H.kr(costs); $("rCostSub").textContent = H.t("costSub", { v: H.kr(must) });
+    $("rTotal").textContent = H.kr(need);
+    $("ltvHint").textContent = (capped ? H.t("ltvCapped", { max: H.num(max) }) + " " : "") + H.t("ltvHint", { max: H.num(max), first: fT ? H.t("ltvFirst") : "" });
+    const tm = `<span class="tag tag-must">${H.t("must")}</span>`, te = `<span class="tag tag-est">${H.t("est")}</span>`;
+    const li = (l, v, cls) => `<li${cls ? ` class="${cls}"` : ""}><span class="r-label">${l}</span><span>${v}</span></li>`;
+    $("rows").innerHTML =
+      li(H.t("bPrice"), H.kr(P)) + li(H.t("bLoan"), "−" + H.kr(loan)) + li(`<b>${H.t("bDown")}</b>`, `<b>${H.kr(down)}</b>`) +
+      li(H.t("bStamp", { p: H.num(stP, 1), base: H.t(fmat.value > 0 ? "baseFmat" : "basePrice") }) + tm, H.kr(stamp)) +
+      li(H.t("bReg", { n: K.registrationFee.documents, v: H.kr(K.registrationFee.perDocument) }) + tm, H.kr(reg)) +
+      li(H.t("bLoanfee") + te, H.kr(lf)) + li(H.t("bCredit") + te, H.kr(cc)) + li(H.t("bBroker") + te, H.kr(bf)) +
+      li(H.t("bTotal"), H.kr(need), "total") + li(H.t("bHave"), H.kr(have)) + li(`<b>${H.t(gap > 0 ? "bGap" : "bLeft")}</b>`, `<b>${H.kr(Math.abs(gap))}</b>`);
+    // Ábendingar
+    const n = (k, t) => `<div class="note note-${k}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6.2v.1" stroke-linecap="round"/></svg><span>${t}</span></div>`;
+    let notes = "";
+    if(ltv.value < max - 0.01 && gap > 0) notes += n("info", H.t("noteMax", { max: H.num(max), v: H.kr(P * (max/100 - L)) }));
+    if(fT && lf > 0) notes += n("info", H.t("noteLoanfee"));
+    if(gap > 0) notes += n("warn", H.t("noteOther"));
+    $("notes").innerHTML = notes;
+    const a = (u, t) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
+    $("srcList").innerHTML = [
+      H.t("s1", { r: a(R.ltv.sourceUrl, R.ltv.source) }),
+      H.t("s2", { r: a(K.stampDuty.sourceUrl, K.stampDuty.source) }),
+      H.t("s3", { r: a(K.registrationFee.sourceUrl, K.registrationFee.source), v: H.kr(K.registrationFee.perDocument) }),
+      H.t("s4", { lf: H.kr(K.loanFee.value), lfs: K.loanFee.source, cc: H.kr(K.creditCheck.value), ccs: K.creditCheck.source, bf: H.kr(K.brokerFee.value), bmin: H.kr(K.brokerFee.min), bmax: H.kr(K.brokerFee.max), bs: K.brokerFee.source, date: H.date(K.date) })
+    ].map(x => `<li>${x}</li>`).join("");
+  }
+});
+</script>
+</body>
+</html>
