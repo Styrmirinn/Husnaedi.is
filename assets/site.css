@@ -680,3 +680,14 @@ a.doc:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translat
 /* Línurit: endapunktar og merkingar birtast þegar línurnar hafa teiknast */
 #chart:not(.drawn) circle[fill],#chart:not(.drawn) text[fill]{opacity:0}
 #chart circle[fill],#chart text[fill]{transition:opacity .5s ease 1.6s}
+
+/* ===== Excel reiknilíkön á Verðtryggingarsíðu ===== */
+.xl-box{margin-top:28px;background:var(--surface-2);border-radius:20px;padding:22px}
+.xl-title{font-size:18px;font-weight:600;line-height:1.3;margin:0 0 6px}
+.xl-lead{font-size:14.5px;color:var(--muted);margin:0 0 14px;line-height:1.55}
+.xl-steps{margin:0 0 16px;padding-left:20px;font-size:14px;line-height:1.55;color:var(--ink)}
+.xl-steps li{margin:3px 0}
+.xl-files{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.xl-doc .doc-t{display:flex;flex-direction:column;gap:2px}
+.xl-sub{font-size:12.5px;font-weight:400;color:var(--muted);line-height:1.35}
+@media (max-width:640px){.xl-files{grid-template-columns:1fr}.xl-box{padding:18px}}
