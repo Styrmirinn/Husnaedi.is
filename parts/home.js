@@ -365,8 +365,26 @@ const calc = !document.getElementById("calcInputs") ? { refresh(){}, state:{} } 
 })();
 
 
+/* ---------- Dæmin í reiknivélahlutanum (reiknuð með nýjustu vöxtum og verðbólgu) ---------- */
+function buildQuick(){
+  const el = n => document.getElementById("qv" + n);
+  if(!el(1)) return;
+  const rIdx = SITE_DATA.calc.rateIndexed.value, infl = SITE_DATA.inflation.value;
+  const ann = (P, r, n) => r === 0 ? P/n : P * r / (1 - Math.pow(1 + r, -n));
+  const pv = (pay, r, n) => r === 0 ? pay*n : pay * (1 - Math.pow(1 + r, -n)) / r;
+  // 1) 50 m.kr. verðtryggt lán til 30 ára: fyrsta greiðsla (verðbætur fyrsta mánaðar meðtaldar)
+  const im = Math.pow(1 + infl/100, 1/12) - 1;
+  const pay = ann(50e6 * (1 + im), rIdx/1200, 360);
+  // 2) 700 þús. kr. útborguð laun, fyrstu kaup: 40% greiðslubyrðarhámark, álagspróf verðtryggðra lána (minnst 3%, mest 25 ár)
+  const loan = pv(700000 * 0.40, Math.max(rIdx, 3)/1200, 25*12);
+  // 3) 60 m.kr. íbúð, fyrstu kaup: 10% útborgun + stimpilgjald 0,4% + þinglýsing 3 × 3.800 + lántöku, greiðslumats og umsýslugjald
+  const eq = 60e6 * 0.10 + 60e6 * 0.004 + 3*3800 + 65000 + 12500 + 70000;
+  const m = v => nf(v/1e6, 1) + " " + t("mShort");
+  el(1).textContent = kr(pay); el(2).textContent = m(loan); el(3).textContent = m(eq);
+}
+
 /* ---------- Page hook ---------- */
-onLang(() => { buildContent(); buildFigures(); priceChart.refresh(); calc.refresh(); });
+onLang(() => { buildContent(); buildFigures(); priceChart.refresh(); calc.refresh(); buildQuick(); });
 startSite();
 
 /* Nýjustu tölur úr data/rates.json */
@@ -384,7 +402,7 @@ fetch("data/rates.json", {cache: "no-cache"}).then(r => r.ok ? r.json() : null).
   if(S.rNom === init.rNom) S.rNom = SITE_DATA.calc.rateNominal.value;
   if(S.rIdx === init.rIdx) S.rIdx = SITE_DATA.calc.rateIndexed.value;
   if(S.infl === init.infl) S.infl = SITE_DATA.inflation.value;
-  buildFigures(); calc.refresh();
+  buildFigures(); calc.refresh(); buildQuick();
 }).catch(() => {});
 
 /* Íbúða- og leiguverð úr data/housing.json (uppfært sjálfkrafa daglega) */

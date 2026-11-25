@@ -26,11 +26,11 @@
       <h2 id="inH" data-t="inputs">Forsendur</h2>
       <div class="field">
         <label class="f-label" for="amount"><span data-t="amount">Lánsfjárhæð</span></label>
-        <div class="f-wrap"><input id="amount" data-kind="kr" data-min="1000000" data-max="1000000000" data-value="45000000"><span class="f-unit" data-t="kr">kr.</span></div>
+        <div class="f-wrap"><input id="amount" data-kind="kr" data-min="1000000" data-max="1000000000" data-value="50000000"><span class="f-unit" data-t="kr">kr.</span></div>
       </div>
       <div class="field">
         <span class="f-label"><span data-t="type">Tegund láns</span><button data-tip="tipType"></button></span>
-        <div class="seg" id="type"><button data-v="nominal" aria-pressed="true" data-t="nominal">Óverðtryggt</button><button data-v="indexed" data-t="indexed">Verðtryggt</button></div>
+        <div class="seg" id="type"><button data-v="nominal" data-t="nominal">Óverðtryggt</button><button data-v="indexed" aria-pressed="true" data-t="indexed">Verðtryggt</button></div>
       </div>
       <div class="field">
         <span class="f-label"><span data-t="method">Greiðsluform</span><button data-tip="tipMethod"></button></span>
@@ -212,7 +212,7 @@ H.start(PAGE, function(){
   const view = H.bindSeg($("view"), calc);
   const yr = $("yr"); yr.addEventListener("input", calc);
   $("tblBtn").addEventListener("click", e => { const b = e.currentTarget, o = b.getAttribute("aria-expanded") !== "true"; b.setAttribute("aria-expanded", String(o)); $("tbl").hidden = !o; });
-  rate.set(rates.nominal, true); infl.set(C.inflation.value, true);
+  rate.set(rates[type.value], true); infl.set(C.inflation.value, true);
 
   function defaults(){
     if(!edited.nominal) rates.nominal = C.rates.nominal;

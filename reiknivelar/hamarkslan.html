@@ -25,7 +25,7 @@
       <h2 id="inH" data-t="inputs">Forsendur</h2>
       <div class="field">
         <label class="f-label" for="income"><span data-t="income">Ráðstöfunartekjur á mánuði</span><button data-tip="tipIncome"></button></label>
-        <div class="f-wrap"><input id="income" data-kind="kr" data-min="0" data-max="20000000" data-value="800000"><span class="f-unit" data-t="kr">kr.</span></div>
+        <div class="f-wrap"><input id="income" data-kind="kr" data-min="0" data-max="20000000" data-value="700000"><span class="f-unit" data-t="kr">kr.</span></div>
         <p class="f-hint" data-t="hintIncome">Útborguð laun eftir skatt. Leggðu saman tekjur ef þið kaupið saman.</p>
       </div>
       <div class="field">
@@ -42,7 +42,7 @@
       </div>
       <div class="field">
         <span class="f-label"><span data-t="type">Tegund láns</span><button data-tip="tipType"></button></span>
-        <div class="seg" id="type"><button data-v="nominal" aria-pressed="true" data-t="nominal">Óverðtryggt</button><button data-v="indexed" data-t="indexed">Verðtryggt</button></div>
+        <div class="seg" id="type"><button data-v="nominal" data-t="nominal">Óverðtryggt</button><button data-v="indexed" aria-pressed="true" data-t="indexed">Verðtryggt</button></div>
       </div>
       <div class="f-row">
         <div class="field">
@@ -208,7 +208,7 @@ H.start(PAGE, function(){
   const infl = H.bindInput($("infl"), () => { inflEdited = true; calc(); });
   const first = H.bindSeg($("first"), calc);
   const type = H.bindSeg($("type"), () => { rate.set(rates[type.value], true); calc(); });
-  rate.set(rates.nominal, true); infl.set(C.inflation.value, true);
+  rate.set(rates[type.value], true); infl.set(C.inflation.value, true);
   H.loadLive(() => {
     if(!edited.nominal) rates.nominal = C.rates.nominal;
     if(!edited.indexed) rates.indexed = C.rates.indexed;
