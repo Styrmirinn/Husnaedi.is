@@ -46,7 +46,7 @@ const T = {
   cStatsTitle:"Hagtölur & mælaborð",
   topicsTitle:"Allt um húsnæðislán",
   topicsText:"Helstu efnissvæði vefsins. Hver flokkur safnar saman fræðslu, gögnum, lögum og heimildum um sitt efni.",
-  tFirstQ:"Ertu að flytja að heiman?", tPensionQ:"Er hagstætt að nýta séreignasparnað?", tIndexQ:"Hvað er verðtrygging?", tShareQ:"Borga þau sig fyrir fyrstu kaupendur?",
+  tFirstQ:"Ertu að flytja að heiman?", tPensionQ:"Er hagstætt að nýta séreignarsparnað?", tIndexQ:"Hvað er verðtrygging?", tShareQ:"Borga þau sig fyrir fyrstu kaupendur?",
   videosTitle:"Lærðu um verðtryggingu húsnæðislána",
   v1:"Verðtrygging", v2:"Vextir", v3:"Peningar og verðbólga", v4:"Verðtryggð og óverðtryggð húsnæðislán - kostir og ókostir",
   play:"Spila myndband", openYt:"Opna á YouTube", moreVideos:"Fleiri myndbönd",
@@ -155,7 +155,7 @@ const NAV = [
  {key:"loans", path:"/húsnæðislán", label:{is:"Húsnæðislán",en:"Mortgages",pl:"Kredyty mieszkaniowe"}, kids:[
    ["/fyrstu-kaup",{is:"Fyrstu kaup",en:"First-time buyers",pl:"Pierwszy zakup mieszkania"}],
    ["/hlutdeildarlán",{is:"Hlutdeildarlán",en:"Shared-equity loans",pl:"Kredyty partycypacyjne"}],
-   ["/séreignasparnaður",{is:"Séreignasparnaður",en:"Private pension savings",pl:"Dobrowolne oszczędności emerytalne"}],
+   ["/séreignasparnaður",{is:"Séreignarsparnaður",en:"Private pension savings",pl:"Dobrowolne oszczędności emerytalne"}],
    ["/verðtrygging",{is:"Verðtrygging",en:"Indexation",pl:"Indeksacja"}],
    ["/lánareiknar",{is:"Lánareiknar",en:"Loan calculators",pl:"Kalkulatory kredytowe"}],
    ["/copy-of-lög-og-reglugerðir",{is:"Lög og reglugerðir",en:"Laws and regulations",pl:"Ustawy i rozporządzenia"}]]},
@@ -193,7 +193,7 @@ const SECTIONS = [
 ];
 const TOPICS = [
  {icon:"first", path:"/fyrstu-kaup", q:"tFirstQ", label:{is:"Fyrstu kaup",en:"First-time buyers",pl:"Pierwszy zakup mieszkania"}},
- {icon:"pension", path:"/séreignasparnaður", q:"tPensionQ", label:{is:"Séreignasparnaður",en:"Private pension savings",pl:"Dobrowolne oszczędności emerytalne"}},
+ {icon:"pension", path:"/séreignasparnaður", q:"tPensionQ", label:{is:"Séreignarsparnaður",en:"Private pension savings",pl:"Dobrowolne oszczędności emerytalne"}},
  {icon:"share", path:"/hlutdeildarlán", q:"tShareQ", label:{is:"Hlutdeildarlán",en:"Shared-equity loans",pl:"Kredyty partycypacyjne"}},
  {icon:"index", path:"/verðtrygging", q:"tIndexQ", label:{is:"Verðtrygging",en:"Indexation",pl:"Indeksacja"}}
 ];

@@ -1,7 +1,7 @@
 /* Húsnæði.is: sameiginlegur kóði (haus, valmynd, fótur, tungumál) */
 const BASE = "https://www.husnaedi.is"; // undirsíður eru enn á Wix
 const HOME = "/";
-const LOCAL = {"/um-okkur": "/um-okkur", "/": "/", "/húsnæðislán": "/husnaedislan", "/fyrstu-kaup": "/fyrstu-kaup", "/hlutdeildarlán": "/hlutdeildarlan", "/séreignasparnaður": "/sereignasparnadur", "/verðtrygging": "/verdtrygging", "/lánareiknar": "/lanareiknar", "/copy-of-lög-og-reglugerðir": "/log-husnaedislan", "/húsnæðismarkaðurinn": "/husnaedismarkadurinn", "/fræðileg-gögn": "/fraedileg-gogn", "/fjölmiðlaumfjöllun": "/fjolmidlaumfjollun", "/hms-mánaðarskýrslur": "/hms-manadarskyrslur", "/ársskýrslur-íbúðalánasjóðs": "/arsskyrslur-ils", "/lög-og-reglugerðir": "/log-husnaedismarkadur", "/leigumarkaðurinn": "/leigumarkadurinn", "/fræðileg-gögn-1": "/fraedileg-gogn-leiga", "/fjölmiðlaumfjöllun-1": "/fjolmidlaumfjollun-leiga", "/leigumarkaðskönnun": "/leigumarkadskonnun", "/airbnb": "/airbnb", "/copy-of-hús-lög-og-reglugerðir": "/log-leigumarkadur", "/hagtölur-og-mælaborð": "/hagtolur"};   // gamla slóðin á Wix -> ný síða
+const LOCAL = {"/um-okkur": "/um-okkur", "/": "/", "/húsnæðislán": "/husnaedislan", "/fyrstu-kaup": "/fyrstu-kaup", "/hlutdeildarlán": "/hlutdeildarlan", "/séreignasparnaður": "/sereignarsparnadur", "/verðtrygging": "/verdtrygging", "/lánareiknar": "/lanareiknar", "/copy-of-lög-og-reglugerðir": "/log-husnaedislan", "/húsnæðismarkaðurinn": "/husnaedismarkadurinn", "/fræðileg-gögn": "/fraedileg-gogn", "/fjölmiðlaumfjöllun": "/fjolmidlaumfjollun", "/hms-mánaðarskýrslur": "/hms-manadarskyrslur", "/ársskýrslur-íbúðalánasjóðs": "/arsskyrslur-ils", "/lög-og-reglugerðir": "/log-husnaedismarkadur", "/leigumarkaðurinn": "/leigumarkadurinn", "/fræðileg-gögn-1": "/fraedileg-gogn-leiga", "/fjölmiðlaumfjöllun-1": "/fjolmidlaumfjollun-leiga", "/leigumarkaðskönnun": "/leigumarkadskonnun", "/airbnb": "/airbnb", "/copy-of-hús-lög-og-reglugerðir": "/log-leigumarkadur", "/hagtölur-og-mælaborð": "/hagtolur"};   // gamla slóðin á Wix -> ný síða
 const PAGE = document.body.dataset.page || "home";
 const LANGS = ["is","en","pl"];
 const PREFIX = {is:"", en:"/en", pl:"/pl"};
@@ -33,7 +33,7 @@ const T = {
   cStatsTitle:"Hagtölur & mælaborð",
   topicsTitle:"Allt um húsnæðislán",
   topicsText:"Helstu efnissvæði vefsins. Hver flokkur safnar saman fræðslu, gögnum, lögum og heimildum um sitt efni.",
-  tFirstQ:"Ertu að flytja að heiman?", tPensionQ:"Er hagstætt að nýta séreignasparnað?", tIndexQ:"Hvað er verðtrygging?", tShareQ:"Borga þau sig fyrir fyrstu kaupendur?",
+  tFirstQ:"Ertu að flytja að heiman?", tPensionQ:"Er hagstætt að nýta séreignarsparnað?", tIndexQ:"Hvað er verðtrygging?", tShareQ:"Borga þau sig fyrir fyrstu kaupendur?",
   videosTitle:"Lærðu um verðtryggingu húsnæðislána",
   v1:"Verðtrygging", v2:"Vextir", v3:"Peningar og verðbólga", v4:"Verðtryggð og óverðtryggð húsnæðislán: kostir og ókostir",
   play:"Spila myndband", openYt:"Opna á YouTube", moreVideos:"Fleiri myndbönd",
@@ -160,7 +160,7 @@ const NAV = [
  {key:"loans", path:"/húsnæðislán", label:{is:"Húsnæðislán",en:"Mortgages",pl:"Kredyty mieszkaniowe"}, kids:[
    ["/fyrstu-kaup",{is:"Fyrstu kaup",en:"First-time buyers",pl:"Pierwszy zakup mieszkania"}],
    ["/hlutdeildarlán",{is:"Hlutdeildarlán",en:"Shared-equity loans",pl:"Kredyty partycypacyjne"}],
-   ["/séreignasparnaður",{is:"Séreignasparnaður",en:"Private pension savings",pl:"Dobrowolne oszczędności emerytalne"}],
+   ["/séreignasparnaður",{is:"Séreignarsparnaður",en:"Private pension savings",pl:"Dobrowolne oszczędności emerytalne"}],
    ["/verðtrygging",{is:"Verðtrygging",en:"Indexation",pl:"Indeksacja"}],
    ["/lánareiknar",{is:"Lánareiknar",en:"Loan calculators",pl:"Kalkulatory kredytowe"}],
    ["/copy-of-lög-og-reglugerðir",{is:"Lög og reglugerðir",en:"Laws and regulations",pl:"Ustawy i rozporządzenia"}]]},

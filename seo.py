@@ -13,7 +13,7 @@ PAGES = {
  'husnaedislan.html': (None, 'Allt um húsnæðislán á einum stað: fyrstu kaup, hlutdeildarlán, séreignarsparnaður, verðtrygging, lánareiknar og lög og reglugerðir.'),
  'fyrstu-kaup.html': ('Fyrstu kaup á íbúð', 'Upplýsingar og heimildir fyrir fyrstu kaupendur: það sem gott er að vita áður en fyrsta íbúðin er keypt á Íslandi.'),
  'hlutdeildarlan.html': (None, 'Hvað eru hlutdeildarlán og hverjir geta fengið þau? Greinar, skýrslur og heimildir um hlutdeildarlán HMS á einum stað.'),
- 'sereignasparnadur.html': ('Séreignarsparnaður og íbúðakaup', 'Hvernig nýtist séreignarsparnaður við íbúðakaup og til að greiða inn á húsnæðislán? Greinar og heimildir á einum stað.'),
+ 'sereignarsparnadur.html': ('Séreignarsparnaður og íbúðakaup', 'Hvernig nýtist séreignarsparnaður við íbúðakaup og til að greiða inn á húsnæðislán? Greinar og heimildir á einum stað.'),
  'verdtrygging.html': (None, 'Lærðu um verðtryggingu húsnæðislána: greinar, skýrslur, myndbönd og Excel reiknilíkön sem bera saman verðtryggð og óverðtryggð lán.'),
  'lanareiknar.html': (None, 'Reiknivélar Húsnæði.is fyrir greiðslubyrði, hámarkslán og eigið fé, auk lánareiknivéla banka, lífeyrissjóða og HMS á einum stað.'),
  'log-husnaedislan.html': ('Lög og reglugerðir um húsnæðislán', 'Lög og reglugerðir sem gilda um húsnæðislán á Íslandi, með beinum tenglum á gildandi texta.'),

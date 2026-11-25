@@ -24,7 +24,7 @@ const SECTIONS = [
 ];
 const TOPICS = [
  {icon:"first", path:"/fyrstu-kaup", q:"tFirstQ", label:{is:"Fyrstu kaup",en:"First-time buyers",pl:"Pierwszy zakup mieszkania"}},
- {icon:"pension", path:"/séreignasparnaður", q:"tPensionQ", label:{is:"Séreignasparnaður",en:"Private pension savings",pl:"Dobrowolne oszczędności emerytalne"}},
+ {icon:"pension", path:"/séreignasparnaður", q:"tPensionQ", label:{is:"Séreignarsparnaður",en:"Private pension savings",pl:"Dobrowolne oszczędności emerytalne"}},
  {icon:"share", path:"/hlutdeildarlán", q:"tShareQ", label:{is:"Hlutdeildarlán",en:"Shared-equity loans",pl:"Kredyty partycypacyjne"}},
  {icon:"index", path:"/verðtrygging", q:"tIndexQ", label:{is:"Verðtrygging",en:"Indexation",pl:"Indeksacja"}}
 ];

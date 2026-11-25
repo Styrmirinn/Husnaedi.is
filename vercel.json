@@ -91,6 +91,16 @@
    "permanent": true
   },
   {
+   "source": "/sereignasparnadur",
+   "destination": "/sereignarsparnadur",
+   "permanent": true
+  },
+  {
+   "source": "/sereignasparnadur.html",
+   "destination": "/sereignarsparnadur",
+   "permanent": true
+  },
+  {
    "source": "/reiknivelar/greidslubyrdi",
    "destination": "/greidslubyrdi",
    "permanent": true
@@ -212,32 +222,32 @@
   },
   {
    "source": "/s%C3%A9reignasparna%C3%B0ur",
-   "destination": "/sereignasparnadur",
+   "destination": "/sereignarsparnadur",
    "permanent": true
   },
   {
    "source": "/séreignasparnaður",
-   "destination": "/sereignasparnadur",
+   "destination": "/sereignarsparnadur",
    "permanent": true
   },
   {
    "source": "/en/séreignasparnaður",
-   "destination": "/sereignasparnadur?lang=en",
+   "destination": "/sereignarsparnadur?lang=en",
    "permanent": true
   },
   {
    "source": "/en/s%C3%A9reignasparna%C3%B0ur",
-   "destination": "/sereignasparnadur?lang=en",
+   "destination": "/sereignarsparnadur?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/séreignasparnaður",
-   "destination": "/sereignasparnadur?lang=pl",
+   "destination": "/sereignarsparnadur?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/s%C3%A9reignasparna%C3%B0ur",
-   "destination": "/sereignasparnadur?lang=pl",
+   "destination": "/sereignarsparnadur?lang=pl",
    "permanent": true
   },
   {
