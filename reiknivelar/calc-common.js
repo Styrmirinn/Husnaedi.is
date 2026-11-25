@@ -331,6 +331,8 @@ H.chart = function(el, o){
 H.start = function(page, init){
   H.extend(page);
   H.header();
+  const q = new URLSearchParams(location.search).get("lang");
+  if(q && LANGS.includes(q)){ store.set("hlang", q); history.replaceState(null, "", location.pathname + location.hash); }
   lang = LANGS.includes(store.get("hlang")) ? store.get("hlang") : "is";
   init();
   H.tips();

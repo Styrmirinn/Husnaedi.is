@@ -1,6 +1,94 @@
 {
  "redirects": [
   {
+   "source": "/",
+   "has": [
+    {
+     "type": "host",
+     "value": "housing.is"
+    }
+   ],
+   "destination": "https://husnaedi.is/?lang=en",
+   "permanent": true
+  },
+  {
+   "source": "/:path*",
+   "has": [
+    {
+     "type": "host",
+     "value": "housing.is"
+    }
+   ],
+   "destination": "https://husnaedi.is/:path*?lang=en",
+   "permanent": true
+  },
+  {
+   "source": "/",
+   "has": [
+    {
+     "type": "host",
+     "value": "www.housing.is"
+    }
+   ],
+   "destination": "https://husnaedi.is/?lang=en",
+   "permanent": true
+  },
+  {
+   "source": "/:path*",
+   "has": [
+    {
+     "type": "host",
+     "value": "www.housing.is"
+    }
+   ],
+   "destination": "https://husnaedi.is/:path*?lang=en",
+   "permanent": true
+  },
+  {
+   "source": "/",
+   "has": [
+    {
+     "type": "host",
+     "value": "mieszkanie.is"
+    }
+   ],
+   "destination": "https://husnaedi.is/?lang=pl",
+   "permanent": true
+  },
+  {
+   "source": "/:path*",
+   "has": [
+    {
+     "type": "host",
+     "value": "mieszkanie.is"
+    }
+   ],
+   "destination": "https://husnaedi.is/:path*?lang=pl",
+   "permanent": true
+  },
+  {
+   "source": "/",
+   "has": [
+    {
+     "type": "host",
+     "value": "www.mieszkanie.is"
+    }
+   ],
+   "destination": "https://husnaedi.is/?lang=pl",
+   "permanent": true
+  },
+  {
+   "source": "/:path*",
+   "has": [
+    {
+     "type": "host",
+     "value": "www.mieszkanie.is"
+    }
+   ],
+   "destination": "https://husnaedi.is/:path*?lang=pl",
+   "permanent": true
+  },
+  {
    "source": "/um-okkur",
    "destination": "/um-okkur.html",
    "permanent": true
