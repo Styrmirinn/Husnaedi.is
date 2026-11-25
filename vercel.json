@@ -89,6 +89,21 @@
    "permanent": true
   },
   {
+   "source": "/reiknivelar/greidslubyrdi.html",
+   "destination": "/greidslubyrdi.html",
+   "permanent": true
+  },
+  {
+   "source": "/reiknivelar/hamarkslan.html",
+   "destination": "/hamarkslan.html",
+   "permanent": true
+  },
+  {
+   "source": "/reiknivelar/eiginfjarframlag.html",
+   "destination": "/eiginfjarframlag.html",
+   "permanent": true
+  },
+  {
    "source": "/um-okkur",
    "destination": "/um-okkur.html",
    "permanent": true

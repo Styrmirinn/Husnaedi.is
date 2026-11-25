@@ -145,9 +145,9 @@ H.bindSeg = function(el, onChange){
 /* ---------- Þýðingar í DOM ---------- */
 function applyText(){
   document.documentElement.lang = lang;
-  document.querySelectorAll("[data-t]").forEach(e => e.textContent = H.t(e.dataset.t));
-  document.querySelectorAll("[data-th]").forEach(e => e.innerHTML = H.t(e.dataset.th));
-  document.querySelectorAll("[data-tip]").forEach(e => { const p = e.querySelector(".tip-pop"); if(p) p.textContent = H.t(e.dataset.tip); e.setAttribute("aria-label", H.t("tipLabel") === "tipLabel" ? "?" : H.t("tipLabel")); });
+  document.querySelectorAll("[data-c]").forEach(e => e.textContent = H.t(e.dataset.c));
+  document.querySelectorAll("[data-ch]").forEach(e => e.innerHTML = H.t(e.dataset.ch));
+  document.querySelectorAll("[data-tip]").forEach(e => { const p = e.querySelector(".ctip-pop"); if(p) p.textContent = H.t(e.dataset.tip); e.setAttribute("aria-label", H.t("tipLabel") === "tipLabel" ? "?" : H.t("tipLabel")); });
   document.querySelectorAll("[data-ta]").forEach(e => e.setAttribute("aria-label", H.t(e.dataset.ta)));
   document.title = H.t("docTitle");
   const g = document.querySelector(".c-lang");
@@ -167,7 +167,7 @@ H.header = function(){
 };
 /* Heldur skýringunni innan skjásins (annars lendir hún utan við hægri brún í síma) */
 function fit(b){
-  const p = b.querySelector(".tip-pop"); if(!p) return;
+  const p = b.querySelector(".ctip-pop"); if(!p) return;
   requestAnimationFrame(() => {
     p.style.setProperty("--tip-dx", "0px");
     const r = p.getBoundingClientRect(); if(!r.width) return;
@@ -180,22 +180,22 @@ function fit(b){
 }
 H.tips = function(){
   document.querySelectorAll("[data-tip]").forEach(b => {
-    if(b.querySelector(".tip-pop")) return;
-    b.type = "button"; b.classList.add("tip"); b.setAttribute("aria-expanded", "false");
-    b.innerHTML = '?<span class="tip-pop" role="tooltip"></span>';
+    if(b.querySelector(".ctip-pop")) return;
+    b.type = "button"; b.classList.add("ctip"); b.setAttribute("aria-expanded", "false");
+    b.innerHTML = '?<span class="ctip-pop" role="tooltip"></span>';
     b.addEventListener("click", e => { e.stopPropagation(); const open = b.getAttribute("aria-expanded") !== "true";
-      document.querySelectorAll(".tip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false"));
+      document.querySelectorAll(".ctip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false"));
       b.setAttribute("aria-expanded", String(open)); if(open) fit(b); });
     b.addEventListener("mouseenter", () => fit(b));
   });
-  document.addEventListener("click", () => document.querySelectorAll(".tip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false")));
-  document.addEventListener("keydown", e => { if(e.key === "Escape") document.querySelectorAll(".tip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false")); });
+  document.addEventListener("click", () => document.querySelectorAll(".ctip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false")));
+  document.addEventListener("keydown", e => { if(e.key === "Escape") document.querySelectorAll(".ctip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false")); });
 };
 H.others = function(current){
   const el = document.querySelector("[data-others]");
   if(!el) return;
   const items = [["c1","greidslubyrdi.html"],["c2","hamarkslan.html"],["c3","eiginfjarframlag.html"]].filter(x => x[0] !== current);
-  el.innerHTML = `<p class="c-eyebrow" data-t="others">${H.t("others")}</p><div class="c-others">${items.map(([k,u]) => `<a href="${u}"><span data-t="${k}">${H.t(k)}</span><span aria-hidden="true">→</span></a>`).join("")}</div>`;
+  el.innerHTML = `<p class="c-eyebrow" data-c="others">${H.t("others")}</p><div class="c-others">${items.map(([k,u]) => `<a href="${u}"><span data-c="${k}">${H.t(k)}</span><span aria-hidden="true">→</span></a>`).join("")}</div>`;
 };
 
 /* ---------- Lifandi gögn (á husnaedi.is) ---------- */
@@ -330,7 +330,6 @@ H.chart = function(el, o){
 /* ---------- Ræsing ---------- */
 H.start = function(page, init){
   H.extend(page);
-  H.header();
   const q = new URLSearchParams(location.search).get("lang");
   if(q && LANGS.includes(q)){ store.set("hlang", q); history.replaceState(null, "", location.pathname + location.hash); }
   lang = LANGS.includes(store.get("hlang")) ? store.get("hlang") : "is";

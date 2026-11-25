@@ -65,5 +65,5 @@ window.HCONFIG = {
   },
 
   /* Hvaðan vextir og verðbólga eru sótt sjálfkrafa þegar síðan er á husnaedi.is */
-  liveDataUrl: "../data/rates.json"
+  liveDataUrl: "data/rates.json"
 };
