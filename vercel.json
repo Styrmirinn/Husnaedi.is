@@ -121,11 +121,6 @@
    "permanent": true
   },
   {
-   "source": "/um-okkur",
-   "destination": "/um-okkur",
-   "permanent": true
-  },
-  {
    "source": "/en/um-okkur",
    "destination": "/um-okkur?lang=en",
    "permanent": true
@@ -173,11 +168,6 @@
   {
    "source": "/pl/h%C3%BAsn%C3%A6%C3%B0isl%C3%A1n",
    "destination": "/husnaedislan?lang=pl",
-   "permanent": true
-  },
-  {
-   "source": "/fyrstu-kaup",
-   "destination": "/fyrstu-kaup",
    "permanent": true
   },
   {
@@ -638,11 +628,6 @@
   {
    "source": "/pl/leigumarkaðskönnun",
    "destination": "/leigumarkadskonnun?lang=pl",
-   "permanent": true
-  },
-  {
-   "source": "/airbnb",
-   "destination": "/airbnb",
    "permanent": true
   },
   {
