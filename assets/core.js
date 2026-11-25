@@ -321,7 +321,12 @@ function ytPlay(frame, id, title){
   frame.replaceChildren(f);
 }
 function onLang(fn){ PAGE_HOOKS.push(fn); }
-function startSite(){ setLang(store.get("hlang") || "is"); }
+function startSite(){
+  // ?lang=en / ?lang=pl kemur frá gömlu Wix slóðunum (/en/..., /pl/...)
+  const q = new URLSearchParams(location.search).get("lang");
+  if(q && LANGS.includes(q)){ store.set("hlang", q); history.replaceState(null, "", location.pathname + location.hash); }
+  setLang(store.get("hlang") || "is");
+}
 
 /* ---------- Header behaviour, reveal, logo animation ---------- */
 addEventListener("scroll", () => $(".site-head").classList.toggle("scrolled", scrollY > 8), {passive:true});
