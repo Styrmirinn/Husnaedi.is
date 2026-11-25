@@ -91,6 +91,21 @@
    "permanent": true
   },
   {
+   "source": "/reiknivelar/greidslubyrdi",
+   "destination": "/greidslubyrdi",
+   "permanent": true
+  },
+  {
+   "source": "/reiknivelar/hamarkslan",
+   "destination": "/hamarkslan",
+   "permanent": true
+  },
+  {
+   "source": "/reiknivelar/eiginfjarframlag",
+   "destination": "/eiginfjarframlag",
+   "permanent": true
+  },
+  {
    "source": "/reiknivelar/greidslubyrdi.html",
    "destination": "/greidslubyrdi",
    "permanent": true
