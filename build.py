@@ -25,7 +25,7 @@ def page(out, pid, title, main, js, keep_comment):
 </html>
 '''
     open(B+out,'w').write(html)
-page('index.html','home','Húsnæði.is',r('parts/home-main.html'),r('parts/home.js'),True)
+page('index.html','home','Húsnæði.is',r('parts/home-main.html').replace('{{QCARDS}}',r('parts/qcards.html').replace('{{MORE}}','\n          '+r('parts/qcards-more.html'))),r('parts/home.js'),True)
 page('um-okkur.html','about','Um Húsnæði.is',r('parts/about-main.html'),r('parts/about.js'),False)
 print('built')
 

@@ -710,3 +710,5 @@ a.doc:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translat
 .qc-btn:hover svg{transform:translateX(3px)}
 .qc-btn:focus-visible{outline:3px solid rgba(0,72,238,.35);outline-offset:3px}
 @media (max-width:900px){.qcards{grid-template-columns:1fr}.qcard{min-height:0;padding:22px}.qcard h3{font-size:19px}.calc-intro{grid-template-columns:1fr}.calc-more{order:3}}
+
+.calc-box.lr-quick{margin:0 0 44px}

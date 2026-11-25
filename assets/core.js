@@ -321,7 +321,37 @@ function ytPlay(frame, id, title){
   frame.replaceChildren(f);
 }
 function onLang(fn){ PAGE_HOOKS.push(fn); }
+/* ---------- Reiknivéladæmin (forsíða og Lánareiknar), reiknuð með nýjustu vöxtum og verðbólgu ---------- */
+const QUICK = { rIdx: 4.55, infl: 5.9 };   // varagildi; uppfært úr data/rates.json
+function buildQuick(){
+  const el = n => document.getElementById("qv" + n);
+  if(!el(1)) return;
+  const { rIdx, infl } = QUICK;
+  const ann = (P, r, n) => r === 0 ? P/n : P * r / (1 - Math.pow(1 + r, -n));
+  const pv = (pay, r, n) => r === 0 ? pay*n : pay * (1 - Math.pow(1 + r, -n)) / r;
+  // 1) 50 m.kr. verðtryggt lán til 30 ára: fyrsta greiðsla (verðbætur fyrsta mánaðar meðtaldar)
+  const im = Math.pow(1 + infl/100, 1/12) - 1;
+  const pay = ann(50e6 * (1 + im), rIdx/1200, 360);
+  // 2) 700 þús. kr. útborguð laun, fyrstu kaup: 40% greiðslubyrðarhámark, álagspróf verðtryggðra lána (minnst 3%, mest 25 ár)
+  const loan = pv(700000 * 0.40, Math.max(rIdx, 3)/1200, 25*12);
+  // 3) 60 m.kr. íbúð, fyrstu kaup: 10% útborgun + stimpilgjald 0,4% + þinglýsing 3 × 3.800 + lántöku, greiðslumats og umsýslugjald
+  const eq = 60e6 * 0.10 + 60e6 * 0.004 + 3*3800 + 65000 + 12500 + 70000;
+  const m = v => nf(v/1e6, 1) + " " + t("mShort");
+  el(1).textContent = kr(pay); el(2).textContent = m(loan); el(3).textContent = m(eq);
+}
+function startQuick(){
+  if(!document.getElementById("qv1")) return;
+  onLang(buildQuick);
+  fetch("data/rates.json", {cache: "no-cache"}).then(r => r.ok ? r.json() : null).then(d => {
+    if(!d) return;
+    if(d.mortgage && d.mortgage.indexed) QUICK.rIdx = d.mortgage.indexed;
+    if(d.inflation && d.inflation.value != null) QUICK.infl = d.inflation.value;
+    buildQuick();
+  }).catch(() => {});
+}
+
 function startSite(){
+  startQuick();
   // ?lang=en / ?lang=pl kemur frá gömlu Wix slóðunum (/en/..., /pl/...)
   const q = new URLSearchParams(location.search).get("lang");
   if(q && LANGS.includes(q)){ store.set("hlang", q); history.replaceState(null, "", location.pathname + location.hash); }
