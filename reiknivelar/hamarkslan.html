@@ -54,11 +54,9 @@
           <div class="f-wrap"><input id="rate" data-kind="pct" data-min="0" data-max="30" data-value="9.69"><span class="f-unit">%</span></div>
         </div>
       </div>
-      <p class="f-hint" id="rateHint"></p>
-      <div class="field" style="margin-top:16px">
+      <div class="field">
         <label class="f-label" for="infl"><span data-t="infl">Áætluð verðbólga</span><button data-tip="tipInfl"></button></label>
         <div class="f-wrap"><input id="infl" data-kind="pct" data-min="-5" data-max="30" data-value="5.9"><span class="f-unit" data-t="perYear">% á ári</span></div>
-        <p class="f-hint" id="inflHint"></p>
       </div>
     </section>
 
@@ -69,8 +67,8 @@
         <p class="h-sub" id="rLimit"></p>
       </section>
       <div class="stats" style="margin-top:0">
-        <div class="stat"><p class="s-label"><span data-t="maxPrice">Áætlað hámarkskaupverð</span><button data-tip="tipPrice"></button></p><div class="s-value" id="rPrice">–</div><div class="s-sub" id="rPriceSub"></div></div>
-        <div class="stat"><p class="s-label"><span data-t="monthly">Mánaðarleg greiðslubyrði</span><button data-tip="tipMonthly"></button></p><div class="s-value" id="rPay">–</div><div class="s-sub" id="rPaySub"></div></div>
+        <div class="stat"><p class="s-label"><span data-t="maxPrice">Áætlað hámarkskaupverð</span><button data-tip="tipPrice"></button></p><div class="s-value" id="rPrice">–</div></div>
+        <div class="stat"><p class="s-label"><span data-t="monthly">Mánaðarleg greiðslubyrði</span><button data-tip="tipMonthly"></button></p><div class="s-value" id="rPay">–</div></div>
       </div>
 
       <section class="card">
@@ -80,13 +78,6 @@
           <div class="f-hint" style="margin:0" id="rRatioCap"></div>
         </div>
         <div class="bar" aria-hidden="true"><i id="ratioBar"></i></div>
-        <p class="f-hint" id="rRatioNote"></p>
-      </section>
-
-      <section class="card">
-        <h2 data-t="limitsH">Hvað takmarkar lánið?</h2>
-        <ul class="rows" id="limits"></ul>
-        <p class="f-hint" id="stressNote" style="margin-top:12px"></p>
       </section>
 
       <div class="note note-warn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6.2v.1" stroke-linecap="round"/></svg><span data-t="bankNote"></span></div>
@@ -94,10 +85,6 @@
   </div>
 
   <div class="wrap">
-    <section class="c-sources" aria-labelledby="srcH">
-      <h2 id="srcH" data-t="sources">Heimildir og forsendur</h2>
-      <ul id="srcList"></ul>
-    </section>
     <p class="disclaimer" data-t="disclaimer"></p>
     <div data-others style="margin-top:26px"></div>
   </div>
@@ -107,23 +94,23 @@
 <script>
 const PAGE = {
   is:{ docTitle:"Hámarkslán miðað við tekjur | Húsnæði.is", eyebrow:"Reiknivél", h1:"Hámarkslán miðað við tekjur",
-    lead:"Áætlaðu hversu mikið þú getur fengið að láni og hvað þú getur keypt dýra eign, út frá tekjum, skuldum og eigin fé.",
+    lead:"Sjáðu hversu mikið þú getur fengið lánað miðað við tekjur og eigið fé.",
     inputs:"Forsendur", income:"Ráðstöfunartekjur á mánuði", hintIncome:"Útborguð laun eftir skatt. Leggðu saman tekjur ef þið kaupið saman.",
     other:"Afborganir annarra lána á mánuði", equity:"Eigið fé", first:"Fyrstu fasteignakaup", type:"Tegund láns", term:"Lánstími",
-    infl:"Áætluð verðbólga", perYear:"% á ári", rateNom:"Vextir", rateIdx:"Vextir (raunvextir)",
+    infl:"Áætluð verðbólga", perYear:"% á ári", rateNom:"Vextir", rateIdx:"Vextir",
     hintNom:"Sjálfgefið: {v} %, miðgildi óverðtryggðra vaxta stóru bankanna.", hintIdx:"Sjálfgefið: {v} %, miðgildi verðtryggðra vaxta stóru bankanna.",
     hintInfl:"Sjálfgefið: {v} %, 12 mánaða verðbólga í {period} samkvæmt Hagstofu Íslands. Hefur áhrif á fyrstu greiðslu verðtryggðs láns.",
     maxLoan:"Áætluð hámarkslánsfjárhæð", maxPrice:"Áætlað hámarkskaupverð", monthly:"Mánaðarleg greiðslubyrði",
-    limIncome:"Tekjurnar takmarka lánið. Með meiri tekjum eða lægri afborgunum annarra lána gætirðu fengið hærra lán.",
-    limEquity:"Eigið féð takmarkar kaupverðið. Hámarksveðsetning er {ltv} %, svo þú þarft meira eigið fé til að kaupa dýrari eign.",
+    limIncome:"Tekjurnar ráða hámarkinu.",
+    limEquity:"Eigið féð ræður hámarkinu.",
     limNone:"Miðað við þessar forsendur er ekkert svigrúm fyrir húsnæðislán. Greiðslubyrði annarra lána er of há miðað við tekjur.",
     priceSub:"Eigið fé {eq} að frádregnum áætluðum kaupkostnaði {c}", paySub:"Fyrsta greiðsla, {m}, {y} ár, {r} % vextir",
-    ratioH:"Hlutfall greiðslubyrði af ráðstöfunartekjum", ratioCap:"Hámark samkvæmt reglum Seðlabankans: {cap} %",
+    ratioH:"Hlutfall greiðslubyrði af ráðstöfunartekjum", ratioCap:"Hámark: {cap} %",
     ratioNote:"Hlutfallið miðar við fyrstu greiðslu af láninu með þínum vöxtum. Í útreikningi samkvæmt reglunum er miðað við {stressRatio} % af tekjum að afborgunum annarra lána meðtöldum.",
     limitsH:"Hvað takmarkar lánið?", lDsti:"Hámark vegna greiðslubyrði ({cap} % af tekjum)", lLtv:"Hámark vegna veðsetningar ({ltv} % af kaupverði)", lResult:"Áætlað hámarkslán",
     stress:"Samkvæmt reglum Seðlabankans er greiðslubyrðin reiknuð sem jafngreiðslulán til {y} ára með {r} % vöxtum ({kind}), óháð raunverulegum lánstíma og greiðsluformi. Lánveitendur mega veita allt að {ex} % lána umfram hámarkið.",
     stressNom:"óverðtryggt, lágmark 5,5 %", stressIdx:"verðtryggt, lágmark 3 %",
-    bankNote:"Þetta er hámark samkvæmt reglum Seðlabankans, ekki greiðslumat. Bankinn metur líka framfærslukostnað heimilisins, aðrar skuldbindingar og lánasögu, og getur því samþykkt lægra lán. Niðurstaðan er ekki lánsloforð.",
+    bankNote:"Þetta er ekki greiðslumat. Bankinn metur líka útgjöld heimilisins og gæti samþykkt lægra lán.",
     s1:"Reglur Seðlabankans um greiðslubyrði: {r}", s2:"Reglur Seðlabankans um veðsetningarhlutfall: {r}",
     s3:"Áætlaður kaupkostnaður dregst frá eigin fé: stimpilgjald ({st} % af kaupverði, hálft við fyrstu kaup), þinglýsingargjöld, lántökugjald, greiðslumat og umsýslugjald fasteignasölu. Stimpilgjald reiknast í raun af fasteignamati, sem er oft lægra en kaupverð.",
     s4:"Reglur Seðlabankans ná aðeins til fasteignalána. Hér eru afborganir annarra lána dregnar frá svigrúminu, því bankar taka þær með í greiðslumati.",
@@ -137,23 +124,23 @@ const PAGE = {
     tipMonthly:"Fyrsta mánaðargreiðsla af hámarksláninu með þínum vöxtum og lánstíma, jafnar greiðslur.",
     tipLabel:"Nánari skýring" },
   en:{ docTitle:"Maximum loan based on income | Húsnæði.is", eyebrow:"Calculator", h1:"Maximum loan based on income",
-    lead:"Estimate how much you can borrow and how expensive a property you can buy, based on income, debts and savings.",
+    lead:"See how much you can borrow based on your income and savings.",
     inputs:"Assumptions", income:"Monthly disposable income", hintIncome:"Take home pay after tax. Add incomes together if you are buying together.",
     other:"Monthly payments on other loans", equity:"Own funds", first:"First time buyer", type:"Loan type", term:"Loan term",
-    infl:"Expected inflation", perYear:"% a year", rateNom:"Interest rate", rateIdx:"Interest rate (real)",
+    infl:"Expected inflation", perYear:"% a year", rateNom:"Interest rate", rateIdx:"Interest rate",
     hintNom:"Default: {v}%, median non indexed rate of the three big banks.", hintIdx:"Default: {v}%, median indexed rate of the three big banks.",
     hintInfl:"Default: {v}%, 12 month inflation in {period} according to Statistics Iceland. Affects the first payment of an indexed loan.",
     maxLoan:"Estimated maximum loan", maxPrice:"Estimated maximum purchase price", monthly:"Monthly payment",
-    limIncome:"Your income limits the loan. Higher income or lower payments on other loans could raise it.",
-    limEquity:"Your own funds limit the price. The maximum loan to value is {ltv}%, so a more expensive property needs more own funds.",
+    limIncome:"Your income sets the limit.",
+    limEquity:"Your savings set the limit.",
     limNone:"With these assumptions there is no room for a mortgage. Payments on other loans are too high relative to income.",
     priceSub:"Own funds {eq} less estimated purchase costs {c}", paySub:"First payment, {m}, {y} years, {r}% interest",
-    ratioH:"Payments as a share of disposable income", ratioCap:"Central Bank maximum: {cap}%",
+    ratioH:"Payments as a share of disposable income", ratioCap:"Maximum: {cap}%",
     ratioNote:"The share uses the first payment at your interest rate. The regulatory calculation uses {stressRatio}% of income including other loan payments.",
     limitsH:"What limits the loan?", lDsti:"Limit from payment burden ({cap}% of income)", lLtv:"Limit from loan to value ({ltv}% of price)", lResult:"Estimated maximum loan",
     stress:"Under Central Bank rules the payment is calculated as an annuity loan over {y} years at {r}% ({kind}), regardless of the actual term and repayment method. Lenders may grant up to {ex}% of loans above the limit.",
     stressNom:"non indexed, minimum 5.5%", stressIdx:"indexed, minimum 3%",
-    bankNote:"This is the maximum under Central Bank rules, not a credit assessment. The bank also looks at household living costs, other commitments and credit history, and may approve a lower loan. The result is not a loan approval.",
+    bankNote:"This is not a credit assessment. The bank also looks at household costs and may approve a lower loan.",
     s1:"Central Bank rules on debt service: {r}", s2:"Central Bank rules on loan to value: {r}",
     s3:"Estimated purchase costs are deducted from own funds: stamp duty ({st}% of price, half for first time buyers), registration fees, loan fee, credit assessment and the estate agent's buyer fee. Stamp duty is actually based on the official property valuation, which is often lower than the price.",
     s4:"Central Bank rules only cover mortgages. Here payments on other loans are deducted from the room, because banks include them in their credit assessment.",
@@ -167,23 +154,23 @@ const PAGE = {
     tipMonthly:"First monthly payment on the maximum loan at your interest rate and term, equal payments.",
     tipLabel:"More information" },
   pl:{ docTitle:"Maksymalny kredyt według dochodu | Húsnæði.is", eyebrow:"Kalkulator", h1:"Maksymalny kredyt według dochodu",
-    lead:"Oszacuj, ile możesz pożyczyć i jak drogą nieruchomość możesz kupić, na podstawie dochodu, zadłużenia i wkładu własnego.",
+    lead:"Sprawdź, ile możesz pożyczyć na podstawie dochodu i wkładu własnego.",
     inputs:"Założenia", income:"Miesięczny dochód netto", hintIncome:"Wynagrodzenie na rękę po opodatkowaniu. Zsumuj dochody, jeśli kupujecie razem.",
     other:"Miesięczne raty innych kredytów", equity:"Wkład własny", first:"Pierwszy zakup nieruchomości", type:"Rodzaj kredytu", term:"Okres kredytowania",
-    infl:"Zakładana inflacja", perYear:"% rocznie", rateNom:"Oprocentowanie", rateIdx:"Oprocentowanie (realne)",
+    infl:"Zakładana inflacja", perYear:"% rocznie", rateNom:"Oprocentowanie", rateIdx:"Oprocentowanie",
     hintNom:"Domyślnie: {v}%, mediana oprocentowania kredytów nieindeksowanych w trzech dużych bankach.", hintIdx:"Domyślnie: {v}%, mediana oprocentowania kredytów indeksowanych w trzech dużych bankach.",
     hintInfl:"Domyślnie: {v}%, inflacja 12 miesięczna, {period}, według Urzędu Statystycznego Islandii. Wpływa na pierwszą ratę kredytu indeksowanego.",
     maxLoan:"Szacowany maksymalny kredyt", maxPrice:"Szacowana maksymalna cena zakupu", monthly:"Miesięczna rata",
-    limIncome:"Kredyt ogranicza Twój dochód. Wyższy dochód lub niższe raty innych kredytów mogłyby go zwiększyć.",
-    limEquity:"Cenę ogranicza wkład własny. Maksymalny wskaźnik LTV wynosi {ltv}%, więc droższa nieruchomość wymaga większego wkładu.",
+    limIncome:"Limit wyznacza Twój dochód.",
+    limEquity:"Limit wyznacza Twój wkład własny.",
     limNone:"Przy tych założeniach nie ma miejsca na kredyt mieszkaniowy. Raty innych kredytów są zbyt wysokie w stosunku do dochodu.",
     priceSub:"Wkład własny {eq} minus szacowane koszty zakupu {c}", paySub:"Pierwsza rata, {m}, {y} lat, oprocentowanie {r}%",
-    ratioH:"Rata jako udział w dochodzie netto", ratioCap:"Maksimum według Banku Centralnego: {cap}%",
+    ratioH:"Rata jako udział w dochodzie netto", ratioCap:"Maksimum: {cap}%",
     ratioNote:"Udział obliczono na podstawie pierwszej raty przy Twoim oprocentowaniu. Obliczenie regulacyjne wykorzystuje {stressRatio}% dochodu, łącznie z ratami innych kredytów.",
     limitsH:"Co ogranicza kredyt?", lDsti:"Limit z obciążenia ratami ({cap}% dochodu)", lLtv:"Limit z LTV ({ltv}% ceny)", lResult:"Szacowany maksymalny kredyt",
     stress:"Zgodnie z przepisami Banku Centralnego ratę oblicza się jak dla kredytu o równych ratach na {y} lat przy oprocentowaniu {r}% ({kind}), niezależnie od faktycznego okresu i sposobu spłaty. Kredytodawcy mogą udzielić do {ex}% kredytów powyżej limitu.",
     stressNom:"nieindeksowany, minimum 5,5%", stressIdx:"indeksowany, minimum 3%",
-    bankNote:"To maksimum według przepisów Banku Centralnego, a nie ocena zdolności kredytowej. Bank ocenia też koszty utrzymania gospodarstwa domowego, inne zobowiązania i historię kredytową, i może przyznać niższy kredyt. Wynik nie jest przyrzeczeniem kredytu.",
+    bankNote:"To nie jest ocena zdolności kredytowej. Bank bierze też pod uwagę koszty gospodarstwa domowego i może przyznać niższy kredyt.",
     s1:"Przepisy Banku Centralnego o obciążeniu ratami: {r}", s2:"Przepisy Banku Centralnego o wskaźniku LTV: {r}",
     s3:"Szacowane koszty zakupu odejmuje się od wkładu własnego: opłata skarbowa ({st}% ceny, połowa przy pierwszym zakupie), opłaty za wpis, prowizja za udzielenie kredytu, ocena zdolności kredytowej i opłata pośrednika dla kupującego. Opłata skarbowa jest liczona od urzędowej wyceny, często niższej od ceny.",
     s4:"Przepisy Banku Centralnego dotyczą tylko kredytów hipotecznych. Tutaj raty innych kredytów odejmuje się od dostępnego limitu, ponieważ banki uwzględniają je w ocenie zdolności.",
@@ -247,32 +234,15 @@ H.start(PAGE, function(){
     const pay = s ? s.first.pay : 0;
     // Texti
     $("rateLbl").textContent = H.t(idx ? "rateIdx" : "rateNom");
-    $("rateHint").textContent = H.t(idx ? "hintIdx" : "hintNom", { v: H.num(idx ? C.rates.indexed : C.rates.nominal, 2) });
-    $("inflHint").textContent = H.t("hintInfl", { v: H.num(C.inflation.value, 1), period: H.period(C.inflation.period) });
     $("rLoan").textContent = H.kr(loan);
     $("rLimit").textContent = capPay <= 0 ? H.t("limNone") : byIncome ? H.t("limIncome") : H.t("limEquity", { ltv: H.num(ltv*100) });
     $("rPrice").textContent = H.kr(price);
-    $("rPriceSub").textContent = H.t("priceSub", { eq: H.krM(equity.value), c: H.krM(costs) });
     $("rPay").textContent = H.kr(pay);
-    $("rPaySub").textContent = H.t("paySub", { m: H.t(idx ? "indexed" : "nominal").toLowerCase(), y: H.num(years.value), r: H.num(rate.value, 2) });
     const ratio = income.value > 0 ? (pay + other.value) / income.value * 100 : 0;
     const stressRatio = income.value > 0 ? (H.annuity(loan, testRate/100/12, testYears*12) + other.value) / income.value * 100 : 0;
     $("rRatio").textContent = H.pct(ratio);
     $("rRatioCap").textContent = H.t("ratioCap", { cap: H.num(dsti) });
     const bar = $("ratioBar"); bar.style.width = Math.min(100, ratio / 60 * 100) + "%"; bar.style.background = ratio > dsti * 1.02 ? "var(--red)" : "var(--blue)";
-    $("rRatioNote").textContent = H.t("ratioNote", { stressRatio: H.num(stressRatio, 1) });
-    $("limits").innerHTML =
-      `<li><span>${H.t("lDsti", { cap: H.num(dsti) })}</span><span>${H.kr(loanDsti)}</span></li>` +
-      `<li><span>${H.t("lLtv", { ltv: H.num(ltv*100) })}</span><span>${H.kr(priceLtv * ltv)}</span></li>` +
-      `<li class="total"><span>${H.t("lResult")}</span><span>${H.kr(loan)}</span></li>`;
-    $("stressNote").textContent = H.t("stress", { y: H.num(testYears), r: H.num(testRate, 2), kind: H.t(idx ? "stressIdx" : "stressNom"), ex: H.num(R.dsti.exemptionShare) });
-    const a = (u, t) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
-    $("srcList").innerHTML = [
-      H.t("s1", { r: a(R.dsti.sourceUrl, R.dsti.source) }), H.t("s2", { r: a(R.ltv.sourceUrl, R.ltv.source) }),
-      H.t("defRates", { src: a(C.rates.sourceUrl, C.rates.source), date: H.date(C.rates.date) }),
-      H.t("defInfl", { src: a(C.inflation.sourceUrl, C.inflation.source), period: H.period(C.inflation.period), date: H.date(C.inflation.date) }),
-      H.t("s3", { st: H.num(K.stampDuty.individual, 1) }), H.t("s4"), H.t("inflNote")
-    ].map(x => `<li>${x}</li>`).join("");
   }
 });
 </script>

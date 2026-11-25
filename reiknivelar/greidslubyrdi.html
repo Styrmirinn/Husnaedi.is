@@ -46,11 +46,9 @@
           <div class="f-wrap"><input id="rate" data-kind="pct" data-min="0" data-max="30" data-value="9.69"><span class="f-unit">%</span></div>
         </div>
       </div>
-      <p class="f-hint" id="rateHint"></p>
-      <div class="field" style="margin-top:16px">
+      <div class="field">
         <label class="f-label" for="infl"><span data-t="infl">Áætluð verðbólga</span><button data-tip="tipInfl"></button></label>
         <div class="f-wrap"><input id="infl" data-kind="pct" data-min="-5" data-max="30" data-value="5.9"><span class="f-unit" data-t="perYear">% á ári</span></div>
-        <p class="f-hint" id="inflHint"></p>
       </div>
     </section>
 
@@ -62,25 +60,16 @@
         <p class="h-sub" id="rFirstSub"></p>
       </section>
       <div class="stats" style="margin-top:0">
-        <div class="stat"><p class="s-label"><span data-t="totalPaid">Heildargreiðslur</span><button data-tip="tipTotal"></button></p><div class="s-value" id="rTotal">–</div><div class="s-sub" id="rTotalSub"></div></div>
-        <div class="stat"><p class="s-label"><span data-t="totalInt">Heildarvaxtakostnaður</span><button data-tip="tipInt"></button></p><div class="s-value" id="rInt">–</div><div class="s-sub" id="rIntSub"></div></div>
-        <div class="stat" id="idxStat"><p class="s-label"><span data-t="totalIdx">Verðbætur samtals</span><button data-tip="tipIdx"></button></p><div class="s-value" id="rIdx">–</div><div class="s-sub" id="rIdxSub"></div></div>
-        <div class="stat"><p class="s-label"><span data-t="lastPay">Síðasta mánaðargreiðsla</span></p><div class="s-value" id="rLast">–</div><div class="s-sub" id="rLastSub"></div></div>
+        <div class="stat"><p class="s-label"><span data-t="totalPaid">Heildargreiðslur</span><button data-tip="tipTotal"></button></p><div class="s-value" id="rTotal">–</div></div>
+        <div class="stat"><p class="s-label"><span data-t="totalInt">Heildarvaxtakostnaður</span><button data-tip="tipInt"></button></p><div class="s-value" id="rInt">–</div></div>
+        <div class="stat" id="idxStat"><p class="s-label"><span data-t="totalIdx">Verðbætur samtals</span><button data-tip="tipIdx"></button></p><div class="s-value" id="rIdx">–</div></div>
+        <div class="stat"><p class="s-label"><span data-t="lastPay">Síðasta mánaðargreiðsla</span></p><div class="s-value" id="rLast">–</div></div>
       </div>
 
       <section class="card">
-        <div class="chart-head">
-          <h2 data-t="chartH">Þróun láns yfir lánstímann</h2>
-          <div class="seg" id="view" style="min-width:250px"><button data-v="nom" aria-pressed="true" data-t="viewNom">Krónur hvers tíma</button><button data-v="real" data-t="viewReal">Verðlag dagsins</button></div>
-        </div>
-        <div class="legend"><span><i style="background:#ff0050"></i><span data-t="lgPay">Mánaðargreiðsla (vinstri ás)</span></span><span><i style="background:#0061ff;opacity:.6"></i><span data-t="lgBal">Eftirstöðvar (hægri ás)</span></span></div>
+        <h2 data-t="chartH">Þróun láns yfir lánstímann</h2>
+        <div class="legend"><span><i style="background:#ff0050"></i><span data-t="lgPay">Mánaðargreiðsla</span></span><span><i style="background:#0061ff;opacity:.6"></i><span data-t="lgBal">Eftirstöðvar</span></span></div>
         <div class="chart" id="chart" style="margin-top:22px"></div>
-        <p class="chart-note" data-t="chartNote">Færðu bendilinn eða fingurinn yfir línuritið til að sjá stöðuna á hverju ári.</p>
-        <div style="margin-top:18px">
-          <label class="f-label" for="yr"><span id="balLbl">Eftirstöðvar eftir 10 ár</span></label>
-          <input type="range" id="yr" min="1" max="30" value="10" step="1">
-          <ul class="rows" id="balRows"></ul>
-        </div>
       </section>
 
       <div id="notes"></div>
@@ -93,10 +82,6 @@
   </div>
 
   <div class="wrap">
-    <section class="c-sources" aria-labelledby="srcH">
-      <h2 id="srcH" data-t="sources">Heimildir og forsendur</h2>
-      <ul id="srcList"></ul>
-    </section>
     <p class="disclaimer" data-t="disclaimer"></p>
     <div data-others style="margin-top:26px"></div>
   </div>
@@ -106,95 +91,95 @@
 <script>
 const PAGE = {
   is:{ docTitle:"Greiðslubyrði húsnæðisláns | Húsnæði.is", eyebrow:"Reiknivél", h1:"Greiðslubyrði húsnæðisláns",
-    lead:"Sjáðu hvað lánið kostar á mánuði, hvernig greiðslurnar og eftirstöðvarnar þróast yfir lánstímann og hvað þú greiðir samtals.",
+    lead:"Sjáðu hvað lánið kostar á mánuði og samtals.",
     inputs:"Forsendur", amount:"Lánsfjárhæð", type:"Tegund láns", method:"Greiðsluform", term:"Lánstími", infl:"Áætluð verðbólga", perYear:"% á ári",
-    rateNom:"Vextir", rateIdx:"Vextir (raunvextir)",
+    rateNom:"Vextir", rateIdx:"Vextir",
     hintNom:"Sjálfgefið: {v} %, miðgildi óverðtryggðra vaxta stóru bankanna. Jafngildir um {real} % raunvöxtum miðað við verðbólguforsenduna.",
     hintIdx:"Sjálfgefið: {v} %, miðgildi verðtryggðra vaxta stóru bankanna. Ofan á þetta bætast verðbætur, samtals jafngildir það um {nom} % nafnvöxtum miðað við verðbólguforsenduna.",
     hintInfl:"Sjálfgefið: {v} %, 12 mánaða verðbólga í {period} samkvæmt Hagstofu Íslands.",
     hintInflNom:"Hefur ekki áhrif á greiðslur óverðtryggðs láns, en er notuð til að sýna upphæðir á verðlagi dagsins.",
     firstPay:"Fyrsta mánaðargreiðsla", totalPaid:"Heildargreiðslur", totalInt:"Heildarvaxtakostnaður", totalIdx:"Verðbætur samtals", lastPay:"Síðasta mánaðargreiðsla",
     realSub:"Á verðlagi dagsins: {v}", noIdx:"Engar, lánið er óverðtryggt", lastSub:"Eftir {n} ár",
-    subNomAnn:"Greiðslan helst óbreytt allan lánstímann, svo lengi sem vextirnir breytast ekki.",
-    subNomEq:"Greiðslan lækkar jafnt og þétt eftir því sem höfuðstóllinn lækkar.",
-    subIdxAnn:"Greiðslan hækkar með verðlagi, um {g} % á ári miðað við verðbólguforsenduna.",
-    subIdxEq:"Greiðslan er hæst í byrjun að raunvirði en hækkar í krónum fyrstu árin vegna verðbóta.",
+    subNomAnn:"Helst óbreytt svo lengi sem vextirnir breytast ekki.",
+    subNomEq:"Lækkar eftir því sem lánið greiðist niður.",
+    subIdxAnn:"Hækkar með verðbólgu.",
+    subIdxEq:"Hækkar með verðbólgu fyrstu árin.",
     chartH:"Þróun láns yfir lánstímann", viewNom:"Krónur hvers tíma", viewReal:"Verðlag dagsins",
-    lgPay:"Mánaðargreiðsla (vinstri ás)", lgBal:"Eftirstöðvar (hægri ás)", chartNote:"Færðu bendilinn eða fingurinn yfir línuritið til að sjá stöðuna á hverju ári.",
+    lgPay:"Mánaðargreiðsla", lgBal:"Eftirstöðvar", chartNote:"Færðu bendilinn eða fingurinn yfir línuritið til að sjá stöðuna á hverju ári.",
     balAfter:"Eftirstöðvar eftir {n} ár", rowBal:"Eftirstöðvar", rowPaid:"Greitt samtals", rowPayNow:"Mánaðargreiðsla þá",
     tipPay:"Mánaðargreiðsla", tipBal:"Eftirstöðvar", tipIdxSoFar:"Verðbætur til þessa",
     tableBtn:"Sjá greiðsluáætlun eftir árum", thYear:"Ár", thPay:"Greitt á árinu", thInt:"Vextir", thIdx:"Verðbætur", thPrin:"Afborgun", thBal:"Eftirstöðvar",
-    peakNote:"Eftirstöðvarnar hækka fyrstu árin vegna verðbóta og ná hámarki eftir um {y} ár, þegar þær eru {v}. Þær fara ekki niður fyrir lánsfjárhæðina fyrr en eftir um {z} ár (í krónum hvers tíma).",
+    peakNote:"Eftirstöðvarnar hækka fyrstu {y} árin vegna verðbóta og fara ekki undir upphaflegu lánsfjárhæðina fyrr en eftir um {z} ár.",
     longIdx:"Verðtryggð jafngreiðslulán til lengri tíma en 25 ára eru umdeild, því höfuðstóllinn lækkar mjög hægt. Stjórnvöld hafa boðað frumvarp um 25 ára hámarkslánstíma slíkra lána.",
     method1:"Reiknað með mánaðarlegum gjalddögum. Á verðtryggðu láni hækkar höfuðstóllinn mánaðarlega um verðbólguna og vextir reiknast af verðbættum höfuðstól. Á verðlagi dagsins eru allar upphæðir núvirtar með verðbólguforsendunni, þannig að upphæðirnar verða sambærilegar við krónur í dag.",
     tipType:"Verðtryggt lán: höfuðstóllinn hækkar með vísitölu neysluverðs og vextirnir eru raunvextir ofan á verðbólgu. Óverðtryggt lán: höfuðstóllinn er í föstum krónum en vextirnir eru hærri því þeir þurfa að bæta lánveitanda upp verðbólguna.",
     tipMethod:"Jafnar greiðslur (jafngreiðslulán, annuitet): sama greiðsla á hverjum gjalddaga (á verðtryggðu láni sama greiðsla að raunvirði). Jafnar afborganir: sama upphæð greiðist af höfuðstólnum í hvert sinn, svo greiðslubyrðin er hærri í byrjun en lækkar.",
     tipRateNom:"Nafnvextir: árlegir vextir af óverðtryggðu láni. Þeir innihalda bæði raunvexti og bætur fyrir verðbólgu.",
     tipRateIdx:"Raunvextir: árlegir vextir af verðtryggðu láni, reiknaðir af höfuðstól sem hækkar með verðbólgu. Heildarkostnaðurinn er því vextir plús verðbætur.",
-    tipInfl:"Árleg hækkun vísitölu neysluverðs sem reiknað er með allan lánstímann. Hún ræður verðbótum á verðtryggðu láni og er notuð til að sýna upphæðir á verðlagi dagsins.",
-    tipTotal:"Allar greiðslur yfir lánstímann: afborganir, vextir og verðbætur, í krónum hvers tíma.",
+    tipInfl:"Árleg verðbólga sem reiknað er með allan lánstímann. Hún ræður verðbótum á verðtryggðu láni.",
+    tipTotal:"Allar greiðslur yfir lánstímann: afborganir, vextir og verðbætur.",
     tipInt:"Samtals vextir sem greiddir eru yfir lánstímann. Á verðtryggðu láni bætast verðbætur við.",
     tipIdx:"Hækkun höfuðstóls vegna verðbólgu sem lántaki greiðir yfir lánstímann. Verðbætur halda raunvirði lánsins óbreyttu.",
     tipLabel:"Nánari skýring" },
   en:{ docTitle:"Mortgage payment calculator | Húsnæði.is", eyebrow:"Calculator", h1:"Mortgage payments",
-    lead:"See what the loan costs each month, how payments and the outstanding balance develop over the term, and how much you pay in total.",
+    lead:"See what the loan costs each month and in total.",
     inputs:"Assumptions", amount:"Loan amount", type:"Loan type", method:"Repayment method", term:"Loan term", infl:"Expected inflation", perYear:"% a year",
-    rateNom:"Interest rate", rateIdx:"Interest rate (real)",
+    rateNom:"Interest rate", rateIdx:"Interest rate",
     hintNom:"Default: {v}%, median non indexed rate of the three big banks. Equal to about {real}% real interest at the inflation assumption.",
     hintIdx:"Default: {v}%, median indexed rate of the three big banks. Indexation comes on top; together this is about {nom}% nominal interest at the inflation assumption.",
     hintInfl:"Default: {v}%, 12 month inflation in {period} according to Statistics Iceland.",
     hintInflNom:"Does not affect payments on a non indexed loan, but is used to show amounts in today's prices.",
     firstPay:"First monthly payment", totalPaid:"Total payments", totalInt:"Total interest", totalIdx:"Total indexation", lastPay:"Last monthly payment",
     realSub:"In today's prices: {v}", noIdx:"None, the loan is not indexed", lastSub:"After {n} years",
-    subNomAnn:"The payment stays the same for the whole term, as long as the interest rate does not change.",
-    subNomEq:"The payment falls steadily as the principal goes down.",
-    subIdxAnn:"The payment rises with prices, about {g}% a year at the inflation assumption.",
-    subIdxEq:"The payment is highest in real terms at the start but rises in krónur in the first years because of indexation.",
+    subNomAnn:"Stays the same as long as the interest rate does not change.",
+    subNomEq:"Falls as the loan is paid down.",
+    subIdxAnn:"Rises with inflation.",
+    subIdxEq:"Rises with inflation in the first years.",
     chartH:"How the loan develops", viewNom:"Nominal krónur", viewReal:"Today's prices",
-    lgPay:"Monthly payment (left axis)", lgBal:"Outstanding balance (right axis)", chartNote:"Move your cursor or finger over the chart to see each year.",
+    lgPay:"Monthly payment", lgBal:"Outstanding balance", chartNote:"Move your cursor or finger over the chart to see each year.",
     balAfter:"Outstanding balance after {n} years", rowBal:"Outstanding balance", rowPaid:"Paid so far", rowPayNow:"Monthly payment then",
     tipPay:"Monthly payment", tipBal:"Outstanding balance", tipIdxSoFar:"Indexation so far",
     tableBtn:"Show yearly payment plan", thYear:"Year", thPay:"Paid in year", thInt:"Interest", thIdx:"Indexation", thPrin:"Principal", thBal:"Balance",
-    peakNote:"The balance rises in the first years because of indexation and peaks after about {y} years at {v}. It does not fall below the original loan amount until after about {z} years (in nominal krónur).",
+    peakNote:"The balance rises for the first {y} years because of indexation and does not fall below the original amount until after about {z} years.",
     longIdx:"Indexed annuity loans longer than 25 years are controversial because the principal falls very slowly. The government has announced a bill limiting such loans to 25 years.",
     method1:"Calculated with monthly payments. On an indexed loan the principal rises monthly with inflation and interest is charged on the indexed principal. In today's prices all amounts are discounted with the inflation assumption so they are comparable to krónur today.",
     tipType:"Indexed loan: the principal rises with the consumer price index and the interest rate is a real rate on top of inflation. Non indexed loan: the principal is fixed in krónur but the rate is higher because it must compensate the lender for inflation.",
     tipMethod:"Equal payments (annuity): the same payment every month (on an indexed loan the same payment in real terms). Equal principal: the same amount of principal is repaid each time, so payments start higher and then fall.",
     tipRateNom:"Nominal interest: the annual rate on a non indexed loan. It covers both real interest and compensation for inflation.",
     tipRateIdx:"Real interest: the annual rate on an indexed loan, charged on a principal that rises with inflation. The total cost is interest plus indexation.",
-    tipInfl:"Annual rise in the consumer price index assumed for the whole term. It drives indexation on an indexed loan and is used to show amounts in today's prices.",
-    tipTotal:"All payments over the term: principal, interest and indexation, in nominal krónur.",
+    tipInfl:"Annual inflation assumed for the whole term. It drives indexation on an indexed loan.",
+    tipTotal:"All payments over the term: principal, interest and indexation.",
     tipInt:"Total interest paid over the term. On an indexed loan, indexation comes on top.",
     tipIdx:"The rise in principal due to inflation that the borrower pays over the term. Indexation keeps the real value of the loan unchanged.",
     tipLabel:"More information" },
   pl:{ docTitle:"Rata kredytu mieszkaniowego | Húsnæði.is", eyebrow:"Kalkulator", h1:"Rata kredytu mieszkaniowego",
-    lead:"Sprawdź, ile kredyt kosztuje miesięcznie, jak zmieniają się raty i saldo w okresie kredytowania oraz ile zapłacisz łącznie.",
+    lead:"Sprawdź, ile kredyt kosztuje miesięcznie i łącznie.",
     inputs:"Założenia", amount:"Kwota kredytu", type:"Rodzaj kredytu", method:"Sposób spłaty", term:"Okres kredytowania", infl:"Zakładana inflacja", perYear:"% rocznie",
-    rateNom:"Oprocentowanie", rateIdx:"Oprocentowanie (realne)",
+    rateNom:"Oprocentowanie", rateIdx:"Oprocentowanie",
     hintNom:"Domyślnie: {v}%, mediana oprocentowania kredytów nieindeksowanych w trzech dużych bankach. Odpowiada to około {real}% realnego oprocentowania przy założonej inflacji.",
     hintIdx:"Domyślnie: {v}%, mediana oprocentowania kredytów indeksowanych w trzech dużych bankach. Do tego dochodzi indeksacja; łącznie odpowiada to około {nom}% oprocentowania nominalnego przy założonej inflacji.",
     hintInfl:"Domyślnie: {v}%, inflacja 12 miesięczna, {period}, według Urzędu Statystycznego Islandii.",
     hintInflNom:"Nie wpływa na raty kredytu nieindeksowanego, ale służy do pokazania kwot w dzisiejszych cenach.",
     firstPay:"Pierwsza rata miesięczna", totalPaid:"Suma wpłat", totalInt:"Łączne odsetki", totalIdx:"Łączna indeksacja", lastPay:"Ostatnia rata miesięczna",
     realSub:"W dzisiejszych cenach: {v}", noIdx:"Brak, kredyt nie jest indeksowany", lastSub:"Po {n} latach",
-    subNomAnn:"Rata pozostaje taka sama przez cały okres, dopóki nie zmieni się oprocentowanie.",
-    subNomEq:"Rata stopniowo maleje wraz ze spadkiem kapitału.",
-    subIdxAnn:"Rata rośnie wraz z cenami, o około {g}% rocznie przy założonej inflacji.",
-    subIdxEq:"Rata jest realnie najwyższa na początku, ale w pierwszych latach rośnie w koronach z powodu indeksacji.",
+    subNomAnn:"Pozostaje taka sama, dopóki nie zmieni się oprocentowanie.",
+    subNomEq:"Maleje wraz ze spłatą kredytu.",
+    subIdxAnn:"Rośnie wraz z inflacją.",
+    subIdxEq:"Rośnie wraz z inflacją w pierwszych latach.",
     chartH:"Przebieg kredytu w czasie", viewNom:"Korony nominalne", viewReal:"Dzisiejsze ceny",
-    lgPay:"Rata miesięczna (lewa oś)", lgBal:"Saldo zadłużenia (prawa oś)", chartNote:"Najedź kursorem lub palcem na wykres, aby zobaczyć stan w każdym roku.",
+    lgPay:"Rata miesięczna", lgBal:"Saldo zadłużenia", chartNote:"Najedź kursorem lub palcem na wykres, aby zobaczyć stan w każdym roku.",
     balAfter:"Saldo po {n} latach", rowBal:"Saldo zadłużenia", rowPaid:"Wpłacono łącznie", rowPayNow:"Rata miesięczna wtedy",
     tipPay:"Rata miesięczna", tipBal:"Saldo", tipIdxSoFar:"Indeksacja do tej pory",
     tableBtn:"Pokaż harmonogram roczny", thYear:"Rok", thPay:"Wpłacono w roku", thInt:"Odsetki", thIdx:"Indeksacja", thPrin:"Kapitał", thBal:"Saldo",
-    peakNote:"Saldo rośnie w pierwszych latach z powodu indeksacji i osiąga maksimum po około {y} latach: {v}. Spada poniżej pierwotnej kwoty kredytu dopiero po około {z} latach (w koronach nominalnych).",
+    peakNote:"Saldo rośnie przez pierwsze {y} lat z powodu indeksacji i spada poniżej pierwotnej kwoty dopiero po około {z} latach.",
     longIdx:"Indeksowane kredyty o równych ratach na okres dłuższy niż 25 lat są kontrowersyjne, ponieważ kapitał maleje bardzo powoli. Rząd zapowiedział projekt ustawy ograniczający takie kredyty do 25 lat.",
     method1:"Obliczenia dla rat miesięcznych. W kredycie indeksowanym kapitał rośnie co miesiąc o inflację, a odsetki naliczane są od zindeksowanego kapitału. W dzisiejszych cenach wszystkie kwoty są dyskontowane założoną inflacją, aby były porównywalne z dzisiejszymi koronami.",
     tipType:"Kredyt indeksowany: kapitał rośnie wraz z indeksem cen konsumpcyjnych, a oprocentowanie jest realne, ponad inflację. Kredyt nieindeksowany: kapitał jest stały w koronach, ale oprocentowanie jest wyższe, bo musi rekompensować inflację.",
     tipMethod:"Raty równe (annuitet): ta sama rata co miesiąc (w kredycie indeksowanym ta sama rata realnie). Raty malejące: co miesiąc spłacana jest ta sama część kapitału, więc raty są na początku wyższe, a potem maleją.",
     tipRateNom:"Oprocentowanie nominalne: roczna stopa kredytu nieindeksowanego. Obejmuje odsetki realne i rekompensatę za inflację.",
     tipRateIdx:"Oprocentowanie realne: roczna stopa kredytu indeksowanego, naliczana od kapitału rosnącego z inflacją. Całkowity koszt to odsetki plus indeksacja.",
-    tipInfl:"Roczny wzrost indeksu cen konsumpcyjnych zakładany na cały okres. Decyduje o indeksacji kredytu indeksowanego i służy do pokazania kwot w dzisiejszych cenach.",
-    tipTotal:"Wszystkie wpłaty w okresie kredytowania: kapitał, odsetki i indeksacja, w koronach nominalnych.",
+    tipInfl:"Roczna inflacja zakładana na cały okres. Decyduje o indeksacji kredytu indeksowanego.",
+    tipTotal:"Wszystkie wpłaty w okresie kredytowania: kapitał, odsetki i indeksacja.",
     tipInt:"Łączne odsetki zapłacone w okresie kredytowania. W kredycie indeksowanym dochodzi do tego indeksacja.",
     tipIdx:"Wzrost kapitału z powodu inflacji, który kredytobiorca spłaca w okresie kredytowania. Indeksacja utrzymuje realną wartość kredytu.",
     tipLabel:"Więcej informacji" }
@@ -209,8 +194,6 @@ H.start(PAGE, function(){
   const infl = H.bindInput($("infl"), () => { inflEdited = true; calc(); });
   const type = H.bindSeg($("type"), () => { rate.set(rates[type.value], true); calc(); });
   const method = H.bindSeg($("method"), calc);
-  const view = H.bindSeg($("view"), calc);
-  const yr = $("yr"); yr.addEventListener("input", calc);
   $("tblBtn").addEventListener("click", e => { const b = e.currentTarget, o = b.getAttribute("aria-expanded") !== "true"; b.setAttribute("aria-expanded", String(o)); $("tbl").hidden = !o; });
   rate.set(rates[type.value], true); infl.set(C.inflation.value, true);
 
@@ -226,7 +209,7 @@ H.start(PAGE, function(){
   H.others("c1");
 
   function calc(){
-    const idx = type.value === "indexed", real = view.value === "real";
+    const idx = type.value === "indexed", real = false;
     const P = amount.value, N = years.value, r = rate.value, pi = infl.value;
     const s = H.schedule({ P, years: N, ratePct: r, inflPct: pi, indexed: idx, method: method.value });
     const m = s.months, first = m[0], last = m[m.length-1];
@@ -234,18 +217,13 @@ H.start(PAGE, function(){
     $("rateLbl").textContent = H.t(idx ? "rateIdx" : "rateNom");
     $("rateTip").dataset.tip = idx ? "tipRateIdx" : "tipRateNom";
     const pop = $("rateTip").querySelector(".tip-pop"); if(pop) pop.textContent = H.t($("rateTip").dataset.tip);
-    const nomEq = ((1 + r/100) * (1 + pi/100) - 1) * 100, realEq = ((1 + r/100) / (1 + pi/100) - 1) * 100;
-    $("rateHint").textContent = idx ? H.t("hintIdx", { v: H.num(C.rates.indexed, 2), nom: H.num(nomEq, 1) }) : H.t("hintNom", { v: H.num(C.rates.nominal, 2), real: H.num(realEq, 1) });
-    $("inflHint").textContent = H.t("hintInfl", { v: H.num(C.inflation.value, 1), period: H.period(C.inflation.period) }) + (idx ? "" : " " + H.t("hintInflNom"));
     // Aðalniðurstöður
     $("rFirst").textContent = H.kr(first.pay);
-    const g = (Math.pow(1 + H.monthlyInfl(pi), 12) - 1) * 100;
-    $("rFirstSub").textContent = idx ? (method.value === "annuity" ? H.t("subIdxAnn", { g: H.num(g, 1) }) : H.t("subIdxEq")) : (method.value === "annuity" ? H.t("subNomAnn") : H.t("subNomEq"));
-    $("rTotal").textContent = H.krM(s.tPay); $("rTotalSub").textContent = H.t("realSub", { v: H.krM(s.tPayReal) });
-    $("rInt").textContent = H.krM(s.tInt); $("rIntSub").textContent = H.t("realSub", { v: H.krM(s.tIntReal) });
-    if(idx){ $("rIdx").textContent = H.krM(s.tIdx); $("rIdxSub").textContent = ""; }
-    else { $("rIdx").textContent = "0 " + H.t("kr"); $("rIdxSub").textContent = H.t("noIdx"); }
-    $("rLast").textContent = H.kr(last.pay); $("rLastSub").textContent = H.t("lastSub", { n: H.num(N) }) + " · " + H.t("realSub", { v: H.kr(last.pay / last.defl) });
+    $("rFirstSub").textContent = idx ? (method.value === "annuity" ? H.t("subIdxAnn") : H.t("subIdxEq")) : (method.value === "annuity" ? H.t("subNomAnn") : H.t("subNomEq"));
+    $("rTotal").textContent = H.krM(s.tPay);
+    $("rInt").textContent = H.krM(s.tInt);
+    $("idxStat").hidden = !idx; $("rIdx").textContent = H.krM(s.tIdx);
+    $("rLast").textContent = H.kr(last.pay);
     // Línurit
     const pts = [], cum = { paid: 0, idx: 0 };
     let ci = 0;
@@ -260,20 +238,12 @@ H.start(PAGE, function(){
     H.chart($("chart"), { points: pts, label: H.t("chartH"), xLabel: H.t("year"),
       fmtA: v => H.num(v/1000) + (H.lang() === "is" ? " þ." : "k"), fmtB: v => H.num(v/1e6) + (H.lang() === "is" ? " m." : H.lang() === "pl" ? " mln" : "m"),
       tipHtml: p => `<div class="t-y">${H.t("yearN", { n: p.x })}</div>${H.t("tipPay")}: <b>${H.kr(p.a)}</b><br>${H.t("tipBal")}: <b>${H.krM(p.b)}</b>` + (idx ? `<br>${H.t("tipIdxSoFar")}: <b>${H.krM(real ? p.idx / p.defl : p.idx)}</b>` : "") });
-    // Eftirstöðvar eftir X ár
-    yr.max = N; if(+yr.value > N) yr.value = Math.min(10, N);
-    const Y = +yr.value, e = m[Y*12 - 1];
-    let paid = 0; for(let i = 0; i < Y*12; i++) paid += real ? m[i].pay / m[i].defl : m[i].pay;
-    $("balLbl").textContent = H.t("balAfter", { n: Y });
-    const nxt = m[Math.min(m.length-1, Y*12)];
-    $("balRows").innerHTML = `<li><span>${H.t("rowBal")}</span><span>${H.kr(real ? e.bal / e.defl : e.bal)}</span></li><li><span>${H.t("rowPaid")}</span><span>${H.kr(paid)}</span></li>` + (Y < N ? `<li><span>${H.t("rowPayNow")}</span><span>${H.kr(real ? nxt.pay / nxt.defl : nxt.pay)}</span></li>` : "");
     // Ábendingar
     let notes = "";
     if(idx && s.maxBalK > 12){
       let z = m.findIndex(x => x.bal < P) + 1;
-      notes += note("warn", H.t("peakNote", { y: H.num(s.maxBalK/12, 0), v: H.krM(s.maxBal), z: H.num(Math.ceil(z/12)) }));
+      notes += note("info", H.t("peakNote", { y: H.num(s.maxBalK/12, 0), z: H.num(Math.ceil(z/12)) }));
     }
-    if(idx && method.value === "annuity" && N > 25) notes += note("info", H.t("longIdx"));
     $("notes").innerHTML = notes;
     // Tafla
     let rows = "";
@@ -283,16 +253,8 @@ H.start(PAGE, function(){
       const b = sl[sl.length-1]; rows += `<tr><td>${y}</td><td>${H.num(a)}</td><td>${H.num(i)}</td>${idx ? `<td>${H.num(x)}</td>` : ""}<td>${H.num(pr)}</td><td>${H.num(real ? b.bal/b.defl : b.bal)}</td></tr>`;
     }
     $("tbl").innerHTML = `<table class="sched"><thead><tr><th>${H.t("thYear")}</th><th>${H.t("thPay")}</th><th>${H.t("thInt")}</th>${idx ? `<th>${H.t("thIdx")}</th>` : ""}<th>${H.t("thPrin")}</th><th>${H.t("thBal")}</th></tr></thead><tbody>${rows}</tbody></table>`;
-    sources();
   }
   function note(kind, text){ text = text.replace(/\.\./g, "."); return `<div class="note note-${kind}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6.2v.1" stroke-linecap="round"/></svg><span>${text}</span></div>`; }
-  function sources(){
-    $("srcList").innerHTML = [
-      H.t("defRates", { src: `<a href="${C.rates.sourceUrl}" target="_blank" rel="noopener">${C.rates.source}</a>`, date: H.date(C.rates.date) }),
-      H.t("defInfl", { src: `<a href="${C.inflation.sourceUrl}" target="_blank" rel="noopener">${C.inflation.source}</a>`, period: H.period(C.inflation.period), date: H.date(C.inflation.date) }),
-      H.t("inflNote"), H.t("method1")
-    ].map(x => `<li>${x}</li>`).join("");
-  }
 });
 </script>
 <style>

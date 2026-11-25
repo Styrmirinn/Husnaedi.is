@@ -22,7 +22,7 @@ const COMMON = {
     reset:"Nota sjálfgefið", sources:"Heimildir og forsendur",
     defRates:"Sjálfgefnir vextir: {src}, {date}.", defInfl:"Sjálfgefin verðbólga: {src}, 12 mánaða breyting í {period} ({date}).",
     inflNote:"Verðbólguforsendan er ekki spá. Hún miðar við síðustu mælingu og helst óbreytt allan lánstímann. Vextir og verðbólga geta breyst mikið á lánstímanum.",
-    disclaimer:"Útreikningarnir eru eingöngu til viðmiðunar og fela ekki í sér lánsloforð eða bindandi tilboð. Raunveruleg lánakjör, greiðslubyrði og lánsfjárhæð ráðast af greiðslumati og skilmálum lánveitanda.",
+    disclaimer:"Niðurstöðurnar eru aðeins til viðmiðunar og eru ekki lánsloforð.",
     others:"Aðrar reiknivélar", c1:"Greiðslubyrði húsnæðisláns", c2:"Hámarkslán miðað við tekjur", c3:"Eiginfjárframlag",
     indexed:"Verðtryggt", nominal:"Óverðtryggt", annuity:"Jafnar greiðslur", equal:"Jafnar afborganir",
     yes:"Já", no:"Nei", year:"Ár", yearN:"Ár {n}", foot:"Húsnæði.is er óháður upplýsingavefur um húsnæðismál.",
@@ -31,7 +31,7 @@ const COMMON = {
     reset:"Use default", sources:"Sources and assumptions",
     defRates:"Default interest rates: {src}, {date}.", defInfl:"Default inflation: {src}, 12 month change in {period} ({date}).",
     inflNote:"The inflation assumption is not a forecast. It uses the latest measurement and stays the same for the whole loan term. Interest rates and inflation can change a lot over a loan's life.",
-    disclaimer:"These calculations are indicative only and are not a loan approval or a binding offer. Actual loan terms, payments and loan amounts depend on the lender's credit assessment and terms.",
+    disclaimer:"The results are indicative only and are not a loan approval.",
     others:"Other calculators", c1:"Mortgage payments", c2:"Maximum loan based on income", c3:"Down payment",
     indexed:"Indexed", nominal:"Non indexed", annuity:"Equal payments", equal:"Equal principal",
     yes:"Yes", no:"No", year:"Year", yearN:"Year {n}", foot:"Húsnæði.is is an independent information site about housing.",
@@ -40,7 +40,7 @@ const COMMON = {
     reset:"Użyj domyślnej", sources:"Źródła i założenia",
     defRates:"Domyślne oprocentowanie: {src}, {date}.", defInfl:"Domyślna inflacja: {src}, zmiana 12 miesięczna, {period} ({date}).",
     inflNote:"Założenie inflacji nie jest prognozą. Opiera się na ostatnim pomiarze i pozostaje stałe przez cały okres kredytu. Oprocentowanie i inflacja mogą się znacznie zmienić w trakcie spłaty.",
-    disclaimer:"Obliczenia mają charakter wyłącznie orientacyjny i nie stanowią przyrzeczenia kredytu ani wiążącej oferty. Rzeczywiste warunki, raty i kwota kredytu zależą od oceny zdolności kredytowej i warunków kredytodawcy.",
+    disclaimer:"Wyniki mają charakter orientacyjny i nie stanowią przyrzeczenia kredytu.",
     others:"Inne kalkulatory", c1:"Rata kredytu mieszkaniowego", c2:"Maksymalny kredyt według dochodu", c3:"Wkład własny",
     indexed:"Indeksowany", nominal:"Nieindeksowany", annuity:"Raty równe", equal:"Raty malejące",
     yes:"Tak", no:"Nie", year:"Rok", yearN:"Rok {n}", foot:"Húsnæði.is to niezależny serwis informacyjny o mieszkalnictwie.",
@@ -165,6 +165,19 @@ H.header = function(){
   const sk = document.createElement("a"); sk.className = "skip"; sk.href = "#main"; sk.dataset.t = "skip"; document.body.prepend(sk);
   h.querySelectorAll(".c-lang button").forEach(b => b.addEventListener("click", () => H.setLang(b.getAttribute("lang"))));
 };
+/* Heldur skýringunni innan skjásins (annars lendir hún utan við hægri brún í síma) */
+function fit(b){
+  const p = b.querySelector(".tip-pop"); if(!p) return;
+  requestAnimationFrame(() => {
+    p.style.setProperty("--tip-dx", "0px");
+    const r = p.getBoundingClientRect(); if(!r.width) return;
+    const vw = document.documentElement.clientWidth, m = 12;
+    let dx = 0;
+    if(r.right > vw - m) dx = vw - m - r.right;
+    if(r.left + dx < m) dx = m - r.left;
+    p.style.setProperty("--tip-dx", Math.round(dx) + "px");
+  });
+}
 H.tips = function(){
   document.querySelectorAll("[data-tip]").forEach(b => {
     if(b.querySelector(".tip-pop")) return;
@@ -172,7 +185,8 @@ H.tips = function(){
     b.innerHTML = '?<span class="tip-pop" role="tooltip"></span>';
     b.addEventListener("click", e => { e.stopPropagation(); const open = b.getAttribute("aria-expanded") !== "true";
       document.querySelectorAll(".tip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false"));
-      b.setAttribute("aria-expanded", String(open)); });
+      b.setAttribute("aria-expanded", String(open)); if(open) fit(b); });
+    b.addEventListener("mouseenter", () => fit(b));
   });
   document.addEventListener("click", () => document.querySelectorAll(".tip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false")));
   document.addEventListener("keydown", e => { if(e.key === "Escape") document.querySelectorAll(".tip[aria-expanded=true]").forEach(x => x.setAttribute("aria-expanded","false")); });

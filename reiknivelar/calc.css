@@ -69,10 +69,10 @@ input[type=range]{width:100%;accent-color:var(--blue);margin:10px 0 0}
 
 /* Útskýringar (tooltip) */
 .tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:0;background:var(--surface-2);color:var(--blue);font-size:12px;font-weight:700;cursor:help;padding:0;flex:none}
-.tip-pop{position:absolute;z-index:20;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:min(280px,80vw);background:var(--ink);color:#fff;font-size:13px;font-weight:400;line-height:1.45;padding:10px 12px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);text-align:left;opacity:0;pointer-events:none;transition:opacity .15s}
-.tip-pop::after{content:"";position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:var(--ink)}
-.tip[aria-expanded="true"] .tip-pop{opacity:1}
-@media (hover:hover){.tip:hover .tip-pop{opacity:1}}
+.tip-pop{position:absolute;z-index:20;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:min(280px,80vw);background:var(--ink);color:#fff;font-size:13px;font-weight:400;line-height:1.45;padding:10px 12px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);text-align:left;display:none;pointer-events:none;margin-left:var(--tip-dx,0px)}
+.tip-pop::after{content:"";position:absolute;top:100%;left:50%;margin-left:calc(-6px - var(--tip-dx,0px));border:6px solid transparent;border-top-color:var(--ink)}
+.tip[aria-expanded="true"] .tip-pop{display:block}
+@media (hover:hover){.tip:hover .tip-pop{display:block}}
 
 /* Niðurstöður */
 .hero-res{background:linear-gradient(135deg,var(--blue-logo),#0a2fa8);color:#fff;border:0}
@@ -138,3 +138,4 @@ input[type=range]{width:100%;accent-color:var(--blue);margin:10px 0 0}
 .c-others a:hover{border-color:var(--blue);transform:translateY(-1px)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+[hidden]{display:none!important}
