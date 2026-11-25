@@ -712,3 +712,7 @@ a.doc:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translat
 @media (max-width:900px){.qcards{grid-template-columns:1fr}.qcard{min-height:0;padding:22px}.qcard h3{font-size:19px}.calc-intro{grid-template-columns:1fr}.calc-more{order:3}}
 
 .calc-box.lr-quick{margin:0 0 44px}
+.person-mail{grid-column:2;justify-self:start;align-self:start;margin-top:10px;font-size:14.5px;color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.person:has(.person-mail) .house-photo{grid-row:span 3}
+.person-mail:hover{text-decoration:underline}
+.person:has(.person-mail){grid-template-rows:1fr auto 1fr}
