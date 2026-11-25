@@ -40,6 +40,15 @@ PRIORITY = {'index.html': '1.0', 'greidslubyrdi.html': '0.9', 'hamarkslan.html':
 START, END = '<!--seo-->', '<!--/seo-->'
 e = lambda s: html.escape(s, quote=True)
 
+PAGES_ON_DISK = set()
+def clean_links(s):
+    # Hreinar slóðir: verdtrygging.html -> /verdtrygging, index.html -> /
+    def rep(m):
+        name, rest = m.group(2), m.group(3) or ''
+        if name + '.html' not in PAGES_ON_DISK: return m.group(0)
+        return m.group(1) + ('/' if name == 'index' else '/' + name) + rest + '"'
+    return re.sub(r'(href=")(?:\./|/)?([a-z0-9-]+)\.html((?:[?#][^"]*)?)"', rep, s)
+
 def process(f):
     p = B + f; s = open(p).read()
     s = re.sub(re.escape(START) + r'.*?' + re.escape(END) + r'\n?', '', s, flags=re.S)
@@ -55,7 +64,7 @@ def process(f):
         s = re.sub(r'data-title="([^"]*)"', fix_dt, s, count=1)
     title = html.unescape(re.search(r'<title>(.*?)</title>', s).group(1))
     s = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{e(desc)}">', s, count=1)
-    url = SITE + '/' + ('' if f == 'index.html' else f)
+    url = SITE + '/' + ('' if f == 'index.html' else f[:-5])
     tags = f'''{START}
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -77,11 +86,13 @@ def process(f):
 '''
     s = s.replace('</head>', tags + '</head>', 1)
     s = re.sub(r'<link rel="icon" href="data:,">\n?', '', s)
+    s = clean_links(s)
     open(p, 'w').write(s)
     return url
 
 def run():
     files = sorted(f for f in os.listdir(B) if f.endswith('.html') and not f.startswith('src'))
+    PAGES_ON_DISK.update(files)
     missing = [f for f in files if f not in PAGES]
     if missing: raise SystemExit('seo.py: vantar lýsingu fyrir ' + ', '.join(missing))
     today = datetime.date.today().isoformat()

@@ -160,7 +160,7 @@ const LOGO = "<svg viewBox=\"0 0 1688 256\" fill-rule=\"evenodd\" role=\"img\" a
 H.header = function(){
   const h = document.createElement("header");
   h.className = "c-head";
-  h.innerHTML = `<div class="wrap"><a class="c-brand" href="../index.html" aria-label="Húsnæði.is">${H.logo || LOGO}</a><div class="c-lang" role="group" aria-label="Tungumál">${LANGS.map(l => `<button type="button" lang="${l}" title="${LNAME[l]}" aria-label="${LNAME[l]}"><span class="flag" aria-hidden="true">${FLAGS[l]}</span><span class="lcode">${l.toUpperCase()}</span></button>`).join("")}</div></div>`;
+  h.innerHTML = `<div class="wrap"><a class="c-brand" href="/" aria-label="Húsnæði.is">${H.logo || LOGO}</a><div class="c-lang" role="group" aria-label="Tungumál">${LANGS.map(l => `<button type="button" lang="${l}" title="${LNAME[l]}" aria-label="${LNAME[l]}"><span class="flag" aria-hidden="true">${FLAGS[l]}</span><span class="lcode">${l.toUpperCase()}</span></button>`).join("")}</div></div>`;
   document.body.prepend(h);
   const sk = document.createElement("a"); sk.className = "skip"; sk.href = "#main"; sk.dataset.t = "skip"; document.body.prepend(sk);
   h.querySelectorAll(".c-lang button").forEach(b => b.addEventListener("click", () => H.setLang(b.getAttribute("lang"))));
@@ -194,7 +194,7 @@ H.tips = function(){
 H.others = function(current){
   const el = document.querySelector("[data-others]");
   if(!el) return;
-  const items = [["c1","greidslubyrdi.html"],["c2","hamarkslan.html"],["c3","eiginfjarframlag.html"]].filter(x => x[0] !== current);
+  const items = [["c1","/greidslubyrdi"],["c2","/hamarkslan"],["c3","/eiginfjarframlag"]].filter(x => x[0] !== current);
   el.innerHTML = `<p class="c-eyebrow" data-c="others">${H.t("others")}</p><div class="c-others">${items.map(([k,u]) => `<a href="${u}"><span data-c="${k}">${H.t(k)}</span><span aria-hidden="true">→</span></a>`).join("")}</div>`;
 };
 

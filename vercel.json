@@ -1,4 +1,6 @@
 {
+ "cleanUrls": true,
+ "trailingSlash": false,
  "redirects": [
   {
    "source": "/",
@@ -90,32 +92,32 @@
   },
   {
    "source": "/reiknivelar/greidslubyrdi.html",
-   "destination": "/greidslubyrdi.html",
+   "destination": "/greidslubyrdi",
    "permanent": true
   },
   {
    "source": "/reiknivelar/hamarkslan.html",
-   "destination": "/hamarkslan.html",
+   "destination": "/hamarkslan",
    "permanent": true
   },
   {
    "source": "/reiknivelar/eiginfjarframlag.html",
-   "destination": "/eiginfjarframlag.html",
+   "destination": "/eiginfjarframlag",
    "permanent": true
   },
   {
    "source": "/um-okkur",
-   "destination": "/um-okkur.html",
+   "destination": "/um-okkur",
    "permanent": true
   },
   {
    "source": "/en/um-okkur",
-   "destination": "/um-okkur.html?lang=en",
+   "destination": "/um-okkur?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/um-okkur",
-   "destination": "/um-okkur.html?lang=pl",
+   "destination": "/um-okkur?lang=pl",
    "permanent": true
   },
   {
@@ -130,572 +132,572 @@
   },
   {
    "source": "/húsnæðislán",
-   "destination": "/husnaedislan.html",
+   "destination": "/husnaedislan",
    "permanent": true
   },
   {
    "source": "/h%C3%BAsn%C3%A6%C3%B0isl%C3%A1n",
-   "destination": "/husnaedislan.html",
+   "destination": "/husnaedislan",
    "permanent": true
   },
   {
    "source": "/en/h%C3%BAsn%C3%A6%C3%B0isl%C3%A1n",
-   "destination": "/husnaedislan.html?lang=en",
+   "destination": "/husnaedislan?lang=en",
    "permanent": true
   },
   {
    "source": "/en/húsnæðislán",
-   "destination": "/husnaedislan.html?lang=en",
+   "destination": "/husnaedislan?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/húsnæðislán",
-   "destination": "/husnaedislan.html?lang=pl",
+   "destination": "/husnaedislan?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/h%C3%BAsn%C3%A6%C3%B0isl%C3%A1n",
-   "destination": "/husnaedislan.html?lang=pl",
+   "destination": "/husnaedislan?lang=pl",
    "permanent": true
   },
   {
    "source": "/fyrstu-kaup",
-   "destination": "/fyrstu-kaup.html",
+   "destination": "/fyrstu-kaup",
    "permanent": true
   },
   {
    "source": "/en/fyrstu-kaup",
-   "destination": "/fyrstu-kaup.html?lang=en",
+   "destination": "/fyrstu-kaup?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/fyrstu-kaup",
-   "destination": "/fyrstu-kaup.html?lang=pl",
+   "destination": "/fyrstu-kaup?lang=pl",
    "permanent": true
   },
   {
    "source": "/hlutdeildarl%C3%A1n",
-   "destination": "/hlutdeildarlan.html",
+   "destination": "/hlutdeildarlan",
    "permanent": true
   },
   {
    "source": "/hlutdeildarlán",
-   "destination": "/hlutdeildarlan.html",
+   "destination": "/hlutdeildarlan",
    "permanent": true
   },
   {
    "source": "/en/hlutdeildarl%C3%A1n",
-   "destination": "/hlutdeildarlan.html?lang=en",
+   "destination": "/hlutdeildarlan?lang=en",
    "permanent": true
   },
   {
    "source": "/en/hlutdeildarlán",
-   "destination": "/hlutdeildarlan.html?lang=en",
+   "destination": "/hlutdeildarlan?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/hlutdeildarl%C3%A1n",
-   "destination": "/hlutdeildarlan.html?lang=pl",
+   "destination": "/hlutdeildarlan?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/hlutdeildarlán",
-   "destination": "/hlutdeildarlan.html?lang=pl",
+   "destination": "/hlutdeildarlan?lang=pl",
    "permanent": true
   },
   {
    "source": "/s%C3%A9reignasparna%C3%B0ur",
-   "destination": "/sereignasparnadur.html",
+   "destination": "/sereignasparnadur",
    "permanent": true
   },
   {
    "source": "/séreignasparnaður",
-   "destination": "/sereignasparnadur.html",
+   "destination": "/sereignasparnadur",
    "permanent": true
   },
   {
    "source": "/en/séreignasparnaður",
-   "destination": "/sereignasparnadur.html?lang=en",
+   "destination": "/sereignasparnadur?lang=en",
    "permanent": true
   },
   {
    "source": "/en/s%C3%A9reignasparna%C3%B0ur",
-   "destination": "/sereignasparnadur.html?lang=en",
+   "destination": "/sereignasparnadur?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/séreignasparnaður",
-   "destination": "/sereignasparnadur.html?lang=pl",
+   "destination": "/sereignasparnadur?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/s%C3%A9reignasparna%C3%B0ur",
-   "destination": "/sereignasparnadur.html?lang=pl",
+   "destination": "/sereignasparnadur?lang=pl",
    "permanent": true
   },
   {
    "source": "/verðtrygging",
-   "destination": "/verdtrygging.html",
+   "destination": "/verdtrygging",
    "permanent": true
   },
   {
    "source": "/ver%C3%B0trygging",
-   "destination": "/verdtrygging.html",
+   "destination": "/verdtrygging",
    "permanent": true
   },
   {
    "source": "/en/ver%C3%B0trygging",
-   "destination": "/verdtrygging.html?lang=en",
+   "destination": "/verdtrygging?lang=en",
    "permanent": true
   },
   {
    "source": "/en/verðtrygging",
-   "destination": "/verdtrygging.html?lang=en",
+   "destination": "/verdtrygging?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/ver%C3%B0trygging",
-   "destination": "/verdtrygging.html?lang=pl",
+   "destination": "/verdtrygging?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/verðtrygging",
-   "destination": "/verdtrygging.html?lang=pl",
+   "destination": "/verdtrygging?lang=pl",
    "permanent": true
   },
   {
    "source": "/l%C3%A1nareiknar",
-   "destination": "/lanareiknar.html",
+   "destination": "/lanareiknar",
    "permanent": true
   },
   {
    "source": "/lánareiknar",
-   "destination": "/lanareiknar.html",
+   "destination": "/lanareiknar",
    "permanent": true
   },
   {
    "source": "/en/l%C3%A1nareiknar",
-   "destination": "/lanareiknar.html?lang=en",
+   "destination": "/lanareiknar?lang=en",
    "permanent": true
   },
   {
    "source": "/en/lánareiknar",
-   "destination": "/lanareiknar.html?lang=en",
+   "destination": "/lanareiknar?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/l%C3%A1nareiknar",
-   "destination": "/lanareiknar.html?lang=pl",
+   "destination": "/lanareiknar?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/lánareiknar",
-   "destination": "/lanareiknar.html?lang=pl",
+   "destination": "/lanareiknar?lang=pl",
    "permanent": true
   },
   {
    "source": "/copy-of-lög-og-reglugerðir",
-   "destination": "/log-husnaedislan.html",
+   "destination": "/log-husnaedislan",
    "permanent": true
   },
   {
    "source": "/copy-of-l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-husnaedislan.html",
+   "destination": "/log-husnaedislan",
    "permanent": true
   },
   {
    "source": "/en/copy-of-lög-og-reglugerðir",
-   "destination": "/log-husnaedislan.html?lang=en",
+   "destination": "/log-husnaedislan?lang=en",
    "permanent": true
   },
   {
    "source": "/en/copy-of-l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-husnaedislan.html?lang=en",
+   "destination": "/log-husnaedislan?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/copy-of-lög-og-reglugerðir",
-   "destination": "/log-husnaedislan.html?lang=pl",
+   "destination": "/log-husnaedislan?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/copy-of-l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-husnaedislan.html?lang=pl",
+   "destination": "/log-husnaedislan?lang=pl",
    "permanent": true
   },
   {
    "source": "/húsnæðismarkaðurinn",
-   "destination": "/husnaedismarkadurinn.html",
+   "destination": "/husnaedismarkadurinn",
    "permanent": true
   },
   {
    "source": "/h%C3%BAsn%C3%A6%C3%B0ismarka%C3%B0urinn",
-   "destination": "/husnaedismarkadurinn.html",
+   "destination": "/husnaedismarkadurinn",
    "permanent": true
   },
   {
    "source": "/en/húsnæðismarkaðurinn",
-   "destination": "/husnaedismarkadurinn.html?lang=en",
+   "destination": "/husnaedismarkadurinn?lang=en",
    "permanent": true
   },
   {
    "source": "/en/h%C3%BAsn%C3%A6%C3%B0ismarka%C3%B0urinn",
-   "destination": "/husnaedismarkadurinn.html?lang=en",
+   "destination": "/husnaedismarkadurinn?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/húsnæðismarkaðurinn",
-   "destination": "/husnaedismarkadurinn.html?lang=pl",
+   "destination": "/husnaedismarkadurinn?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/h%C3%BAsn%C3%A6%C3%B0ismarka%C3%B0urinn",
-   "destination": "/husnaedismarkadurinn.html?lang=pl",
+   "destination": "/husnaedismarkadurinn?lang=pl",
    "permanent": true
   },
   {
    "source": "/fræðileg-gögn",
-   "destination": "/fraedileg-gogn.html",
+   "destination": "/fraedileg-gogn",
    "permanent": true
   },
   {
    "source": "/fr%C3%A6%C3%B0ileg-g%C3%B6gn",
-   "destination": "/fraedileg-gogn.html",
+   "destination": "/fraedileg-gogn",
    "permanent": true
   },
   {
    "source": "/en/fræðileg-gögn",
-   "destination": "/fraedileg-gogn.html?lang=en",
+   "destination": "/fraedileg-gogn?lang=en",
    "permanent": true
   },
   {
    "source": "/en/fr%C3%A6%C3%B0ileg-g%C3%B6gn",
-   "destination": "/fraedileg-gogn.html?lang=en",
+   "destination": "/fraedileg-gogn?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/fr%C3%A6%C3%B0ileg-g%C3%B6gn",
-   "destination": "/fraedileg-gogn.html?lang=pl",
+   "destination": "/fraedileg-gogn?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/fræðileg-gögn",
-   "destination": "/fraedileg-gogn.html?lang=pl",
+   "destination": "/fraedileg-gogn?lang=pl",
    "permanent": true
   },
   {
    "source": "/fj%C3%B6lmi%C3%B0laumfj%C3%B6llun",
-   "destination": "/fjolmidlaumfjollun.html",
+   "destination": "/fjolmidlaumfjollun",
    "permanent": true
   },
   {
    "source": "/fjölmiðlaumfjöllun",
-   "destination": "/fjolmidlaumfjollun.html",
+   "destination": "/fjolmidlaumfjollun",
    "permanent": true
   },
   {
    "source": "/en/fjölmiðlaumfjöllun",
-   "destination": "/fjolmidlaumfjollun.html?lang=en",
+   "destination": "/fjolmidlaumfjollun?lang=en",
    "permanent": true
   },
   {
    "source": "/en/fj%C3%B6lmi%C3%B0laumfj%C3%B6llun",
-   "destination": "/fjolmidlaumfjollun.html?lang=en",
+   "destination": "/fjolmidlaumfjollun?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/fjölmiðlaumfjöllun",
-   "destination": "/fjolmidlaumfjollun.html?lang=pl",
+   "destination": "/fjolmidlaumfjollun?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/fj%C3%B6lmi%C3%B0laumfj%C3%B6llun",
-   "destination": "/fjolmidlaumfjollun.html?lang=pl",
+   "destination": "/fjolmidlaumfjollun?lang=pl",
    "permanent": true
   },
   {
    "source": "/hms-mánaðarskýrslur",
-   "destination": "/hms-manadarskyrslur.html",
+   "destination": "/hms-manadarskyrslur",
    "permanent": true
   },
   {
    "source": "/hms-m%C3%A1na%C3%B0arsk%C3%BDrslur",
-   "destination": "/hms-manadarskyrslur.html",
+   "destination": "/hms-manadarskyrslur",
    "permanent": true
   },
   {
    "source": "/en/hms-m%C3%A1na%C3%B0arsk%C3%BDrslur",
-   "destination": "/hms-manadarskyrslur.html?lang=en",
+   "destination": "/hms-manadarskyrslur?lang=en",
    "permanent": true
   },
   {
    "source": "/en/hms-mánaðarskýrslur",
-   "destination": "/hms-manadarskyrslur.html?lang=en",
+   "destination": "/hms-manadarskyrslur?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/hms-m%C3%A1na%C3%B0arsk%C3%BDrslur",
-   "destination": "/hms-manadarskyrslur.html?lang=pl",
+   "destination": "/hms-manadarskyrslur?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/hms-mánaðarskýrslur",
-   "destination": "/hms-manadarskyrslur.html?lang=pl",
+   "destination": "/hms-manadarskyrslur?lang=pl",
    "permanent": true
   },
   {
    "source": "/ársskýrslur-íbúðalánasjóðs",
-   "destination": "/arsskyrslur-ils.html",
+   "destination": "/arsskyrslur-ils",
    "permanent": true
   },
   {
    "source": "/%C3%A1rssk%C3%BDrslur-%C3%ADb%C3%BA%C3%B0al%C3%A1nasj%C3%B3%C3%B0s",
-   "destination": "/arsskyrslur-ils.html",
+   "destination": "/arsskyrslur-ils",
    "permanent": true
   },
   {
    "source": "/en/%C3%A1rssk%C3%BDrslur-%C3%ADb%C3%BA%C3%B0al%C3%A1nasj%C3%B3%C3%B0s",
-   "destination": "/arsskyrslur-ils.html?lang=en",
+   "destination": "/arsskyrslur-ils?lang=en",
    "permanent": true
   },
   {
    "source": "/en/ársskýrslur-íbúðalánasjóðs",
-   "destination": "/arsskyrslur-ils.html?lang=en",
+   "destination": "/arsskyrslur-ils?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/%C3%A1rssk%C3%BDrslur-%C3%ADb%C3%BA%C3%B0al%C3%A1nasj%C3%B3%C3%B0s",
-   "destination": "/arsskyrslur-ils.html?lang=pl",
+   "destination": "/arsskyrslur-ils?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/ársskýrslur-íbúðalánasjóðs",
-   "destination": "/arsskyrslur-ils.html?lang=pl",
+   "destination": "/arsskyrslur-ils?lang=pl",
    "permanent": true
   },
   {
    "source": "/lög-og-reglugerðir",
-   "destination": "/log-husnaedismarkadur.html",
+   "destination": "/log-husnaedismarkadur",
    "permanent": true
   },
   {
    "source": "/l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-husnaedismarkadur.html",
+   "destination": "/log-husnaedismarkadur",
    "permanent": true
   },
   {
    "source": "/en/l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-husnaedismarkadur.html?lang=en",
+   "destination": "/log-husnaedismarkadur?lang=en",
    "permanent": true
   },
   {
    "source": "/en/lög-og-reglugerðir",
-   "destination": "/log-husnaedismarkadur.html?lang=en",
+   "destination": "/log-husnaedismarkadur?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/lög-og-reglugerðir",
-   "destination": "/log-husnaedismarkadur.html?lang=pl",
+   "destination": "/log-husnaedismarkadur?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-husnaedismarkadur.html?lang=pl",
+   "destination": "/log-husnaedismarkadur?lang=pl",
    "permanent": true
   },
   {
    "source": "/leigumarka%C3%B0urinn",
-   "destination": "/leigumarkadurinn.html",
+   "destination": "/leigumarkadurinn",
    "permanent": true
   },
   {
    "source": "/leigumarkaðurinn",
-   "destination": "/leigumarkadurinn.html",
+   "destination": "/leigumarkadurinn",
    "permanent": true
   },
   {
    "source": "/en/leigumarkaðurinn",
-   "destination": "/leigumarkadurinn.html?lang=en",
+   "destination": "/leigumarkadurinn?lang=en",
    "permanent": true
   },
   {
    "source": "/en/leigumarka%C3%B0urinn",
-   "destination": "/leigumarkadurinn.html?lang=en",
+   "destination": "/leigumarkadurinn?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/leigumarkaðurinn",
-   "destination": "/leigumarkadurinn.html?lang=pl",
+   "destination": "/leigumarkadurinn?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/leigumarka%C3%B0urinn",
-   "destination": "/leigumarkadurinn.html?lang=pl",
+   "destination": "/leigumarkadurinn?lang=pl",
    "permanent": true
   },
   {
    "source": "/fr%C3%A6%C3%B0ileg-g%C3%B6gn-1",
-   "destination": "/fraedileg-gogn-leiga.html",
+   "destination": "/fraedileg-gogn-leiga",
    "permanent": true
   },
   {
    "source": "/fræðileg-gögn-1",
-   "destination": "/fraedileg-gogn-leiga.html",
+   "destination": "/fraedileg-gogn-leiga",
    "permanent": true
   },
   {
    "source": "/en/fr%C3%A6%C3%B0ileg-g%C3%B6gn-1",
-   "destination": "/fraedileg-gogn-leiga.html?lang=en",
+   "destination": "/fraedileg-gogn-leiga?lang=en",
    "permanent": true
   },
   {
    "source": "/en/fræðileg-gögn-1",
-   "destination": "/fraedileg-gogn-leiga.html?lang=en",
+   "destination": "/fraedileg-gogn-leiga?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/fr%C3%A6%C3%B0ileg-g%C3%B6gn-1",
-   "destination": "/fraedileg-gogn-leiga.html?lang=pl",
+   "destination": "/fraedileg-gogn-leiga?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/fræðileg-gögn-1",
-   "destination": "/fraedileg-gogn-leiga.html?lang=pl",
+   "destination": "/fraedileg-gogn-leiga?lang=pl",
    "permanent": true
   },
   {
    "source": "/fjölmiðlaumfjöllun-1",
-   "destination": "/fjolmidlaumfjollun-leiga.html",
+   "destination": "/fjolmidlaumfjollun-leiga",
    "permanent": true
   },
   {
    "source": "/fj%C3%B6lmi%C3%B0laumfj%C3%B6llun-1",
-   "destination": "/fjolmidlaumfjollun-leiga.html",
+   "destination": "/fjolmidlaumfjollun-leiga",
    "permanent": true
   },
   {
    "source": "/en/fj%C3%B6lmi%C3%B0laumfj%C3%B6llun-1",
-   "destination": "/fjolmidlaumfjollun-leiga.html?lang=en",
+   "destination": "/fjolmidlaumfjollun-leiga?lang=en",
    "permanent": true
   },
   {
    "source": "/en/fjölmiðlaumfjöllun-1",
-   "destination": "/fjolmidlaumfjollun-leiga.html?lang=en",
+   "destination": "/fjolmidlaumfjollun-leiga?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/fj%C3%B6lmi%C3%B0laumfj%C3%B6llun-1",
-   "destination": "/fjolmidlaumfjollun-leiga.html?lang=pl",
+   "destination": "/fjolmidlaumfjollun-leiga?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/fjölmiðlaumfjöllun-1",
-   "destination": "/fjolmidlaumfjollun-leiga.html?lang=pl",
+   "destination": "/fjolmidlaumfjollun-leiga?lang=pl",
    "permanent": true
   },
   {
    "source": "/leigumarkaðskönnun",
-   "destination": "/leigumarkadskonnun.html",
+   "destination": "/leigumarkadskonnun",
    "permanent": true
   },
   {
    "source": "/leigumarka%C3%B0sk%C3%B6nnun",
-   "destination": "/leigumarkadskonnun.html",
+   "destination": "/leigumarkadskonnun",
    "permanent": true
   },
   {
    "source": "/en/leigumarka%C3%B0sk%C3%B6nnun",
-   "destination": "/leigumarkadskonnun.html?lang=en",
+   "destination": "/leigumarkadskonnun?lang=en",
    "permanent": true
   },
   {
    "source": "/en/leigumarkaðskönnun",
-   "destination": "/leigumarkadskonnun.html?lang=en",
+   "destination": "/leigumarkadskonnun?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/leigumarka%C3%B0sk%C3%B6nnun",
-   "destination": "/leigumarkadskonnun.html?lang=pl",
+   "destination": "/leigumarkadskonnun?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/leigumarkaðskönnun",
-   "destination": "/leigumarkadskonnun.html?lang=pl",
+   "destination": "/leigumarkadskonnun?lang=pl",
    "permanent": true
   },
   {
    "source": "/airbnb",
-   "destination": "/airbnb.html",
+   "destination": "/airbnb",
    "permanent": true
   },
   {
    "source": "/en/airbnb",
-   "destination": "/airbnb.html?lang=en",
+   "destination": "/airbnb?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/airbnb",
-   "destination": "/airbnb.html?lang=pl",
+   "destination": "/airbnb?lang=pl",
    "permanent": true
   },
   {
    "source": "/copy-of-h%C3%BAs-l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-leigumarkadur.html",
+   "destination": "/log-leigumarkadur",
    "permanent": true
   },
   {
    "source": "/copy-of-hús-lög-og-reglugerðir",
-   "destination": "/log-leigumarkadur.html",
+   "destination": "/log-leigumarkadur",
    "permanent": true
   },
   {
    "source": "/en/copy-of-h%C3%BAs-l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-leigumarkadur.html?lang=en",
+   "destination": "/log-leigumarkadur?lang=en",
    "permanent": true
   },
   {
    "source": "/en/copy-of-hús-lög-og-reglugerðir",
-   "destination": "/log-leigumarkadur.html?lang=en",
+   "destination": "/log-leigumarkadur?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/copy-of-h%C3%BAs-l%C3%B6g-og-regluger%C3%B0ir",
-   "destination": "/log-leigumarkadur.html?lang=pl",
+   "destination": "/log-leigumarkadur?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/copy-of-hús-lög-og-reglugerðir",
-   "destination": "/log-leigumarkadur.html?lang=pl",
+   "destination": "/log-leigumarkadur?lang=pl",
    "permanent": true
   },
   {
    "source": "/hagt%C3%B6lur-og-m%C3%A6labor%C3%B0",
-   "destination": "/hagtolur.html",
+   "destination": "/hagtolur",
    "permanent": true
   },
   {
    "source": "/hagtölur-og-mælaborð",
-   "destination": "/hagtolur.html",
+   "destination": "/hagtolur",
    "permanent": true
   },
   {
    "source": "/en/hagt%C3%B6lur-og-m%C3%A6labor%C3%B0",
-   "destination": "/hagtolur.html?lang=en",
+   "destination": "/hagtolur?lang=en",
    "permanent": true
   },
   {
    "source": "/en/hagtölur-og-mælaborð",
-   "destination": "/hagtolur.html?lang=en",
+   "destination": "/hagtolur?lang=en",
    "permanent": true
   },
   {
    "source": "/pl/hagt%C3%B6lur-og-m%C3%A6labor%C3%B0",
-   "destination": "/hagtolur.html?lang=pl",
+   "destination": "/hagtolur?lang=pl",
    "permanent": true
   },
   {
    "source": "/pl/hagtölur-og-mælaborð",
-   "destination": "/hagtolur.html?lang=pl",
+   "destination": "/hagtolur?lang=pl",
    "permanent": true
   },
   {
