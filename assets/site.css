@@ -716,3 +716,23 @@ a.doc:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translat
 .person:has(.person-mail) .house-photo{grid-row:span 3}
 .person-mail:hover{text-decoration:underline}
 .person:has(.person-mail){grid-template-rows:1fr auto 1fr}
+
+/* Útskýringar efst á efnissíðum */
+.ex-sec{padding:40px 0 8px}
+.ex-card{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px 56px;background:#fff;border:1px solid var(--line);border-radius:28px;padding:44px;box-shadow:var(--shadow)}
+.ex-kicker{margin:0 0 10px;font-family:var(--font-ui);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);font-weight:600}
+.ex-head h2{margin:0 0 16px;font-size:clamp(26px,2.6vw,34px);line-height:1.12;letter-spacing:-.02em}
+.ex-lead{margin:0;font-size:17px;line-height:1.65;color:var(--ink-2)}
+.ex-points{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ex-points li{background:var(--surface);border-radius:18px;padding:20px 22px}
+.ex-points h3{margin:0 0 6px;font-size:16.5px;font-weight:600;color:var(--ink)}
+.ex-points p{margin:0;font-size:15px;line-height:1.6;color:var(--ink-2)}
+.ex-foot{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:16px 28px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:22px}
+.ex-note{margin:0;font-size:15px;color:var(--ink-2);max-width:62ch}
+.ex-links{display:flex;gap:10px;flex-wrap:wrap}
+.ex-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;background:var(--blue);color:#fff;text-decoration:none;font-weight:600;font-size:15px;transition:background .18s}
+.ex-link svg{width:15px;height:15px;transition:transform .2s}
+.ex-link:hover{background:#0a3fb8}.ex-link:hover svg{transform:translateX(3px)}
+.ex-link.ex-ext{background:var(--surface-2);color:var(--blue-ink)}
+.ex-link.ex-ext:hover{background:var(--line)}
+@media (max-width:900px){.ex-card{grid-template-columns:1fr;padding:26px 22px;border-radius:22px}.ex-points{grid-template-columns:1fr}.ex-lead{font-size:16px}}
