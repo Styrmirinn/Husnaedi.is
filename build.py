@@ -65,3 +65,7 @@ startSite();
     open(B+name+'.html','w').write(html)
 for n in ('greidslubyrdi','hamarkslan','eiginfjarframlag'): calc_page(n)
 print('built calcs')
+
+# Favicon, lýsingar, canonical, Open Graph og sitemap á allar síður
+import sys; sys.path.insert(0, B)
+import seo; seo.run()
