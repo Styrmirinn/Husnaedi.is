@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-26",
   "policyRate": {
     "value": 8,
     "effective": "2026-11-18",
@@ -9,11 +9,11 @@
     "updated": "2026-11-18"
   },
   "inflation": {
-    "value": 5.9,
-    "period": "2026-10",
-    "source": "Seðlabanki Íslands",
-    "sourceUrl": "https://www.sedlabanki.is/",
-    "updated": "2026-11-17"
+    "value": 5.8,
+    "period": "2026-11",
+    "source": "Hagstofa Íslands",
+    "sourceUrl": "https://px.hagstofa.is/pxis/pxweb/is/Efnahagur/Efnahagur__visitolur__1_vnv__1_vnv/VIS01000.px",
+    "updated": "2026-11-26"
   },
   "mortgage": {
     "nominal": 9.69,
